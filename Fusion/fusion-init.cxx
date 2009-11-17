@@ -2,59 +2,78 @@
 #include <string>
 using namespace std ;
 
-#include <boost/signals2.hpp>
 #include <boost/typeof/typeof.hpp>
 
 #include <boost/fusion/container.hpp>
 #include <boost/fusion/sequence/intrinsic.hpp>
 #include <boost/fusion/functional/invocation/invoke.hpp>
 #include <boost/fusion/functional.hpp>
-#include <boost/fusion/iterator.hpp>
 #include <boost/fusion/include/for_each.hpp>
+#include <boost/utility/value_init.hpp>
 
+#include <boost/format.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
 
 using boost::shared_ptr ;
+using boost::format ;
 using namespace boost ;
-using namespace boost::signals2 ;
-
-#define MAX_SIGNAL_PARAMS 10
-#define SIGNAL_ARGS       boost::fusion::make_vector
-#define SignalArgsVec     boost::fusion::vector <BOOST_PP_ENUM_PARAMS(MAX_SIGNAL_PARAMS, T)>
 
 #define BOOST_SIGNAL(...) boost::shared_ptr< boost::signals2::signal < __VA_ARGS__ > >
+#define PTR(...) boost::shared_ptr< __VA_ARGS__ >
 
 class MySignals
 {
 	private:
 		typedef boost::fusion::vector <
-            BOOST_SIGNAL(void(const int&, const string&))
-            , BOOST_SIGNAL(void())
-            , BOOST_SIGNAL(void(const string&))
-            > SignalsVec ;
+			PTR(int), PTR(float), PTR(double)
+			> Vector ;
 
-		SignalsVec m_signals ;
+		Vector m_vec ;
 
-		typedef fusion::result_of::begin<SignalsVec>::type BeginIter ;
-		typedef fusion::result_of::end<SignalsVec>::type EndIter ;
+		template<int id>
+			void init ()
+			{
+				typedef typename fusion::result_of::at_c<Vector, id>::type ItemType ;
+				typedef typename fusion::result_of::at_c<Vector, id>::type::value_type ValueType ;
 
-        struct initialize
+				fusion::at_c<id>(m_vec) = new ValueType ;
+			}
+
+        struct Initialize
         {
             template <typename T>
                 void operator() (T& p_item) const
                 {
-					typedef typename T::value_type ItemType ;
+					typedef typename T::value_type ArgType ;
+	//				typedef typename fusion::result_of::at_c<Vector, 1>::type ItemType ;
 
-					p_item = T(new ItemType) ;
-#if 1
-					typedef typename fusion::result_of::value_of<
-						fusion::result_of::advance_c<BeginIter, 2>::type >::type::value_type ValueType ;
-					cout << typeid(ValueType).name() << endl ;
+					if (typeid(ArgType) == typeid(int))
+						p_item = T(new ArgType(5)) ;
+
+					if (typeid(ArgType) == typeid(float))
+						p_item = T(new ArgType(10.0)) ;
+
+					if (typeid(ArgType) == typeid(double))
+						p_item = T(new ArgType(15.2)) ;
+#if 0
+					cout << format("Arg Type is %1%, Item Type is %2%")
+						% typeid(ArgType).name() % typeid(ItemType).name()
+						<< endl ;
 #endif
                 }
 
         } ;
+
+		struct Print
+		{
+			template <typename T>
+				void operator() (T& p_item) const
+				{
+					cout << "Value is: " << *p_item << endl ;
+				}
+		} ;
 
 	public:
 		static MySignals* instance (void) 
@@ -64,6 +83,12 @@ class MySignals
 			return m_instance ; 
 		}
 
+#if 0
+		enum {
+			Zero = 0,
+			One,
+			Two
+		} ;
 		enum {
 			IntStringSignal = 0,
 			VoidSignal,
@@ -87,20 +112,24 @@ class MySignals
 			{                                                                     
 				emitSignal<id> (SIGNAL_ARGS()) ;                                  
 			}
+#endif
 
 	private:
 		static MySignals* m_instance ;
 		MySignals () 
         { 
-			fusion::for_each(m_signals, initialize()) ;
-            //fusion::at_c<VoidSignal>(m_signals) = new signal<void()>() ;
-            //fusion::at_c<IntStringSignal>(m_signals) = new signal<void(const int&, const string&)>() ;
-            //fusion::at_c<StringSignal>(m_signals) = new signal<void(const string&)>() ;
+		//	init<0>() ;
+			fusion::for_each(m_vec, Initialize()) ;
+			fusion::for_each(m_vec, Print()) ;
+            //fusion::at_c<VoidSignal>(m_vec) = new signal<void()>() ;
+            //fusion::at_c<IntStringSignal>(m_vec) = new signal<void(const int&, const string&)>() ;
+            //fusion::at_c<StringSignal>(m_vec) = new signal<void(const string&)>() ;
         }
 } ;
 
 MySignals* MySignals :: m_instance = (MySignals *)0 ;
 
+#if 0
 void print_string (const string& p_string) 
 {
 	cout << "String Signal" << endl ;
@@ -118,10 +147,12 @@ void print_void (void)
     cout << "Void Slot" << endl ;
     return ;
 }
+#endif
 
 int main (void)
 {
 	MySignals* sig = MySignals::instance() ;
+#if 0
     sig->signal<MySignals::VoidSignal>()->connect(boost::lambda::bind(&print_void)) ;
-	//sig->emitSignal<MySignals::VoidSignal>() ;
+#endif
 }
