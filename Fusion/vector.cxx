@@ -43,21 +43,21 @@ class MySignals
 		struct get_type
 		{
 			typedef typename fusion::result_of::value_of <
-				typename fusion::result_of::advance_c<BeginIter, id>::type >::type::value_type value_type ;
+				typename fusion::result_of::advance_c<BeginIter, id>::type >::type::reference value_type ;
 		} ;
 
         struct initialize
         {
-            template <typename T>
-                void operator() (T& p_item) const
+            template <typename SmartPtr>
+                void operator() (SmartPtr& p_item) const
                 {
-					typedef typename T::value_type ItemType ;
+					typedef typename SmartPtr::value_type ItemType ;
 
-					p_item = T(new ItemType) ;
-#if 1
+					p_item = SmartPtr(new ItemType) ;
+#if 0
 					typedef typename fusion::result_of::value_of<
 						fusion::result_of::advance_c<BeginIter, 2>::type >::type::value_type ValueType ;
-					cout << typeid(get_type<1>::value_type).name() << endl ;
+					cout << typeid(get_type<StringSignal>::value_type).name() << endl ;
 					cout << "---------------------" << endl ;
 #endif
                 }
@@ -79,13 +79,13 @@ class MySignals
 		} ;
 
 	template <int id> 
-		typename fusion::result_of::at_c<SignalsVec, id>::type 
-			signal (void) { return fusion::at_c<id>(m_signals) ; }
+		typename get_type<id>::value_type
+			signal (void) { return *(fusion::at_c<id>(m_signals)) ; }
 
 	template <int id, BOOST_PP_ENUM_PARAMS(MAX_SIGNAL_PARAMS, typename T)>        
 		void emitSignal (const SignalArgsVec& p_vector)                           
 			{                                                                     
-				fusion::fused <typename fusion::result_of::at_c<SignalsVec, id>::type>     
+				fusion::fused <typename get_type<id>::value_type>
 				functionObj (signal <id>()) ;                                     
 				functionObj (p_vector) ;                                          
 			}                                                                     
@@ -101,9 +101,6 @@ class MySignals
 		MySignals () 
         { 
 			fusion::for_each(m_signals, initialize()) ;
-            //fusion::at_c<VoidSignal>(m_signals) = new signal<void()>() ;
-            //fusion::at_c<IntStringSignal>(m_signals) = new signal<void(const int&, const string&)>() ;
-            //fusion::at_c<StringSignal>(m_signals) = new signal<void(const string&)>() ;
         }
 } ;
 
@@ -130,6 +127,9 @@ void print_void (void)
 int main (void)
 {
 	MySignals* sig = MySignals::instance() ;
-    sig->signal<MySignals::VoidSignal>()->connect(boost::lambda::bind(&print_void)) ;
-	//sig->emitSignal<MySignals::VoidSignal>() ;
+    sig->signal<MySignals::VoidSignal>().connect(boost::lambda::bind(&print_void)) ;
+    sig->signal<MySignals::StringSignal>().connect(boost::lambda::bind(&print_string, boost::lambda::_1)) ;
+    sig->signal<MySignals::IntStringSignal>().connect(boost::lambda::bind(&print_data, boost::lambda::_1, boost::lambda::_2)) ;
+
+	sig->emitSignal<MySignals::IntStringSignal>(SIGNAL_ARGS(4, "Surya")) ;
 }
