@@ -39,6 +39,13 @@ class MySignals
 		typedef fusion::result_of::begin<SignalsVec>::type BeginIter ;
 		typedef fusion::result_of::end<SignalsVec>::type EndIter ;
 
+		template <int id>
+		struct get_type
+		{
+			typedef typename fusion::result_of::value_of <
+				typename fusion::result_of::advance_c<BeginIter, id>::type >::type::value_type value_type ;
+		} ;
+
         struct initialize
         {
             template <typename T>
@@ -50,7 +57,8 @@ class MySignals
 #if 1
 					typedef typename fusion::result_of::value_of<
 						fusion::result_of::advance_c<BeginIter, 2>::type >::type::value_type ValueType ;
-					cout << typeid(ValueType).name() << endl ;
+					cout << typeid(get_type<1>::value_type).name() << endl ;
+					cout << "---------------------" << endl ;
 #endif
                 }
 
