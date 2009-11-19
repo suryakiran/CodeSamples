@@ -131,5 +131,6 @@ int main (void)
     sig->signal<MySignals::StringSignal>().connect(boost::lambda::bind(&print_string, boost::lambda::_1)) ;
     sig->signal<MySignals::IntStringSignal>().connect(boost::lambda::bind(&print_data, boost::lambda::_1, boost::lambda::_2)) ;
 
-	sig->emitSignal<MySignals::IntStringSignal>(SIGNAL_ARGS(4, "Surya")) ;
+	sig->emitSignal<MySignals::VoidSignal>() ;
+//	sig->emitSignal<MySignals::IntStringSignal>(SIGNAL_ARGS(4, "Surya")) ;
 }
