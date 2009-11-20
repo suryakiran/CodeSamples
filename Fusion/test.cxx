@@ -3,7 +3,6 @@
 
 #include <boost/signals2.hpp>
 #include <boost/typeof/typeof.hpp>
-#include <boost/preprocessor.hpp>
 
 #include <boost/fusion/container.hpp>
 #include <boost/fusion/sequence/intrinsic.hpp>
@@ -18,6 +17,16 @@
 using namespace std ;
 using namespace boost ;
 using boost::format ;
+
+#include <boost/preprocessor/control/expr_if.hpp>
+#include <boost/preprocessor/arithmetic/inc.hpp>
+#include <boost/preprocessor/iteration/local.hpp>
+#include <boost/preprocessor/punctuation/comma_if.hpp>
+#include <boost/preprocessor/repetition/enum_shifted_binary_params.hpp>
+#include <boost/preprocessor/repetition/enum_shifted_params.hpp>
+
+//#undef BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS
+//#undef BOOST_PP_IF
 
 #define MAX_SIGNAL_PARAMS 10
 
@@ -107,7 +116,9 @@ class MySignals
 
 #define BOOST_PP_LOCAL_MACRO(n)\
 	template<int id BOOST_PP_COMMA_IF(n) BOOST_PP_ENUM_SHIFTED_PARAMS(BOOST_PP_INC(n), typename T)> \
-	void emitSignal(BOOST_PP_EXPR_IF(n,BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS(BOOST_PP_INC(n), const T, &var)))\
+	void emitSignal(\
+            BOOST_PP_IF(n, BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS, void BOOST_PP_TUPLE_EAT(3))\
+            (BOOST_PP_INC(n), const T, &var))\
 	{\
 		boost::fusion::fused<typename get_type<id>::value_type> functionObj (signal<id>()) ;\
 		functionObj (boost::fusion::make_vector(BOOST_PP_ENUM_SHIFTED_PARAMS(BOOST_PP_INC(n), var))) ;\
@@ -126,6 +137,7 @@ class MySignals
 
 MySignals* MySignals :: m_instance = (MySignals *)0 ;
 
+#if 0
 void print_string (const string& p_string) 
 {
 	cout << "String Signal" << endl ;
@@ -143,9 +155,11 @@ void print_void (void)
     cout << "Void Slot" << endl ;
     return ;
 }
+#endif
 
 int main (void)
 {
+#if 0
 	MySignals* sig = MySignals::instance() ;
     sig->signal<MySignals::VoidSignal>().connect(boost::lambda::bind(&print_void)) ;
     sig->signal<MySignals::StringSignal>().connect(boost::lambda::bind(&print_string, boost::lambda::_1)) ;
@@ -153,5 +167,6 @@ int main (void)
 
 	sig->emitSignal<MySignals::VoidSignal>() ;
 	sig->emitSignal<MySignals::IntStringSignal>(4, "Surya") ;
+#endif
 }
 
