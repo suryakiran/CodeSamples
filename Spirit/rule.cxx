@@ -3,25 +3,34 @@
 
 using namespace std ;
 
+struct Print
+{
+	template <typename T>
+	void operator() (T& p_item) const
+	{
+		cout << format ("Value: -%2%-")
+			% typeid(T).name() % p_item << endl ;
+	}
+} ;
+
 int main (void)
 {
-	vector<double> values ;
+	boost::fusion::vector<string, string, string> values ;
 	cout << boolalpha ;
 
-	const string value("123.45") ;
-	double val (0.0) ;
+	const string line("Refresh Progress\nName: Surya\nCompleted: 10\nTotal: 100") ;
 
-	qi::phrase_parse (value.begin(), value.end(),
-			qi::double_, ascii::space, val) ;
-	cout << val << endl ;
-	//const string& line ("5052.45|63.45|17021.85|236.20") ;
-	//bool r = qi::phrase_parse (line.begin(), line.end(),
-	//		qi::double_[push_back(phx::ref(values), qi::_1)] >> 
-	//		*('|' >> qi::double_ [push_back(phx::ref(values), qi::_1)]), ascii::space) ;
+	qi::rule <string::const_iterator, string(), qi::skip_type> stringRule ;
+	stringRule %= qi::lexeme[+(qi::char_ - qi::eol)] ;
 
-	//BOOST_FOREACH (double v , values)
-	//	cout << v << endl ;
-	//cout << r << endl ;
-//	qi::rule <string::iterator, 
-	//cout << "Hello Spirit" << endl ;
+	qi::rule<string::const_iterator, boost::fusion::vector<string, string, string>(), 
+		qi::skip_type> r ;
+	r %= qi::lit("Refresh Progress") >> qi::eol >>
+		qi::lit("Name: ") >> stringRule >> qi::eol >>
+		qi::lit("Completed: ") >> stringRule >> qi::eol >>
+		qi::lit("Total: ") >> stringRule ;
+
+	qi::phrase_parse (line.begin(), line.end(), r, ascii::space, values) ; 
+
+	boost::fusion::for_each (values, Print()) ;
 }

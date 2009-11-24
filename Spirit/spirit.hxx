@@ -4,6 +4,8 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/lambda/lambda.hpp>
+#include <boost/fusion/container.hpp>
+#include <boost/format.hpp>
 
 namespace qi = boost::spirit::qi  ;
 namespace ascii = boost::spirit::ascii ;
@@ -19,5 +21,6 @@ using boost::lambda::_2 ;
 using boost::lambda::_3 ;
 
 using phx::push_back ;
+using boost::format ;
 
 #endif
