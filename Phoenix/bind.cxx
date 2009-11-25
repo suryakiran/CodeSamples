@@ -6,10 +6,13 @@
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 
 using namespace std ;
 using namespace boost::phoenix ;
 using namespace boost::phoenix::arg_names ;
+using boost::shared_ptr ;
 
 namespace phx = boost::phoenix ;
 namespace pha = boost::phoenix::arg_names ;
@@ -33,12 +36,29 @@ class Test
 			else return "Junk" ;
 		}
 
-	private:
+		virtual void printValue (const string& s)
+		{ 
+			cout << "In Base: " << s << endl ; 
+		}
+
+	protected:
 		string s_ ;
+} ;
+
+class TestDerived : public Test
+{
+	public:
+		explicit TestDerived (string s) : Test(s) { }
+
+		virtual void printValue (const string& s)
+		{
+			cout << "In Derived: " << s << endl ; 
+		}
 } ;
 
 int main (void)
 {
+#if 0
 	vector<Test> vt ;
 	vt.push_back (Test("surya")) ;
 	vt.push_back (Test("kiran")) ;
@@ -52,18 +72,25 @@ int main (void)
 	vector<Test>::iterator iter = std::find_if (vt.begin(), vt.end(),
 		phx::bind(fun, pha::arg1, "ZZ") == "surya") ;
 
-	if (iter == vt.end())
-		cout << "No Result" << endl ;
-	else
-		cout << *iter << endl ;
-
-#if 0
-	std::for_each (vt.begin(), vt.end(),
-			phx::bind(&Test::getValue, pha::arg1)
-	) ;
-
-	std::for_each (vt.begin(), vt.end(),
-			bll::bind(&Test::getValue, bll::_1)
-			) ;
 #endif
+
+	typedef shared_ptr<Test> TestPtr ;
+	TestPtr tp = TestPtr (new TestDerived ("Surya")) ;
+
+	boost::function <void (const string&)> func ;
+
+	if (func.empty()) 
+		cout << "Empty Function" << endl ;
+	else
+		cout << "Non Empty Function" << endl ;
+
+	func = phx::bind(&Test::printValue, phx::bind(&TestPtr::operator->, tp), pha::_1) ;
+
+	if (func.empty()) 
+		cout << "Empty Function" << endl ;
+	else
+	{
+		cout << "Non Empty Function" << endl ;
+	}
+	func ("Kiran") ;
 }
