@@ -35,7 +35,7 @@ Find_Package (
   COMPONENTS signals
   )
 
-Include_Directories (${Boost_INCLUDE_DIRS})
+Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
 Link_Directories    (${Boost_LIBRARY_DIRS})
 
 SET_GTK_FLAGS()
