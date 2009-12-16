@@ -38,6 +38,27 @@ class PropertyTree : public pt::ptree
 			getValue (const std::string& p_key) const
 			{ return get<ValueType>(getKey(p_key)) ; }
 
+#if 0
+		void setValue (const string& p_key, const date& p_date)
+		{
+			ostringstream os ;
+			os.imbue(locale(cout.getloc(), new date_facet("%B:%d:%Y"))) ;
+			os << p_date ;
+			put(getKey(p_key), os.str()) ;
+		}
+
+		template <> date getValue (const string& p_key) const
+		{
+			string s = getValue<string>(p_key) ;
+
+			istringstream is ;
+			is.imbue(locale(cout.getloc(), new date_input_facet("%B:%d:%Y"))) ;
+			is.str(s) ; date d ; is >> d ;
+
+			return d ;
+		}
+#endif
+
 		void printTree (std::ostream& p_stream = std::cout) const
 		{ 
 			pt::write_xml (p_stream, static_cast<pt::ptree>(*this), 
@@ -56,12 +77,3 @@ class PropertyTree : public pt::ptree
 } ;
 
 #endif
-void printTree (pt::ptree& p_tree, std::ostream& p_stream = cout)
-{
-	p_stream << "++++++++++++++" << endl ;
-	p_stream << endl ;
-	pt::write_xml (p_stream, p_tree, pt::xml_writer_settings<char>(' ', 4)) ;
-	p_stream << endl ;
-	p_stream << "++++++++++++++" << endl ;
-	p_stream << endl ;
-}

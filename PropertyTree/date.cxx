@@ -8,24 +8,16 @@ using namespace boost::gregorian ;
 
 int main (void)
 {
-	pt::ptree tree ;
-	
-	date d (2009, Dec, 16);
+	PropertyTree tree ;
 
-	tree.put ("Test.String", "Junk") ;
-	tree.put ("Test.Flag", true) ;
-	tree.put ("Test.Date", d) ;
+	date d (2008,Dec,18) ;
+	tree.put ("Test.String", "Ting") ;
+	tree.put ("Test.Boolean", false) ;
+	tree.setValue ("Test.Date", d) ;
 
-	ostringstream os ;
-	printTree (tree, os) ;
-	cout << os.str() << endl ;
+	tree.printTree() ;
 
-	istringstream is ;
-	is.str(os.str()) ;
-
-	pt::ptree newTree ;
-	pt::read_xml (is, newTree) ;
-
-	printTree (newTree) ;
+	cout.imbue (locale(cout.getloc(), new date_facet("%y/%m/%B"))) ;
+	cout << tree.getValue<date> ("Test.Date") << endl ;
 	return 0 ;
 }
