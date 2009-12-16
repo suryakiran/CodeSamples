@@ -6,5 +6,5 @@ namespace pt = boost::property_tree ;
 int main (void)
 {
 	pt::ptree tree ;
-	phx::bind(&pt::ptree::put<string, bool>, tree, string("Temp.Flag"), true) ;
+	phx::bind(&pt::ptree::put<bool>, tree, string("Temp.Flag"), true) ;
 }
