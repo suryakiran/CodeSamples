@@ -32,7 +32,7 @@ GET_BOOST ()
 
 Find_Package (
   Boost ${BOOST_VERSION}
-  COMPONENTS signals
+  COMPONENTS signals date_time
   )
 
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
@@ -46,3 +46,4 @@ Add_Subdirectory (Fusion)
 Add_Subdirectory (PreProcessor)
 Add_Subdirectory (Phoenix)
 Add_Subdirectory (Spirit)
+Add_Subdirectory (PropertyTree)
