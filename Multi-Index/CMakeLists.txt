@@ -11,4 +11,5 @@ ForEach (file ${SOURCES})
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
 		)
+	Add_Test (NAME MultiIndexTests COMMAND ${exeName})
 EndForEach (file ${SOURCES})

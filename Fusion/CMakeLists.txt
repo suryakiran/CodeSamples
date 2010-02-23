@@ -11,4 +11,8 @@ ForEach (file ${SOURCES})
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
 		)
+	Add_Test (
+		NAME FusionTests-${exeName} 
+		COMMAND ${exeName} --config $<CONFIGURATION>
+		)
 EndForEach (file ${SOURCES})

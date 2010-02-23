@@ -11,4 +11,5 @@ ForEach (file ${SOURCES})
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
 		)
+	Add_Test (NAME PhoenixTests-${exeName} COMMAND ${exeName})
 EndForEach (file ${SOURCES})

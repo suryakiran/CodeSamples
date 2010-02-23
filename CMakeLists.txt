@@ -1,5 +1,7 @@
 Project (CodeSamples)
 
+ENABLE_TESTING()
+
 Cmake_Minimum_Required (VERSION 2.6)
 
 If (UNIX)
@@ -40,12 +42,12 @@ Link_Directories    (${Boost_LIBRARY_DIRS})
 
 SET_GTK_FLAGS()
 
-Add_Subdirectory (Multi-Index)
+#Add_Subdirectory (Multi-Index)
 Add_Subdirectory (Fusion)
-Add_Subdirectory (PreProcessor)
-Add_Subdirectory (Phoenix)
-Add_Subdirectory (Spirit)
-Add_Subdirectory (PropertyTree)
-Add_Subdirectory (Holidays)
-Add_Subdirectory (Templates)
-Add_Subdirectory (CPP)
+#Add_Subdirectory (PreProcessor)
+#Add_Subdirectory (Phoenix)
+#Add_Subdirectory (Spirit)
+#Add_Subdirectory (PropertyTree)
+#Add_Subdirectory (Holidays)
+#Add_Subdirectory (Templates)
+#Add_Subdirectory (CPP)
