@@ -87,3 +87,32 @@ void parse_args(int argc, char **argv)
 	}
 }
 
+string getTDline (std::istream& is, const string& currentLine)
+{
+	string l(currentLine), line ;
+
+	if (l.empty())
+	{
+		while (getline (is, l, '\n'))
+		{
+			IGNORE_BLANK_LINE(l) ;
+			if (!l.empty()) break ;
+		}
+	}
+
+	if (str::starts_with (l, "<td align"))
+	{
+		line = l ;
+		if (!str::ends_with (line, "</td>"))
+		{
+			while (getline (is, l, '\n'))
+			{
+				IGNORE_BLANK_LINE(l) ;
+				line += ' ' + l ;
+				if (str::ends_with(l, "</td>"))
+					break ;
+			}
+		}
+	}
+	return line ;
+}

@@ -14,15 +14,36 @@ const xpr::sregex& quotedWord =
 	as_xpr('"') >> *(~(xset= '"')) >> '"' ; 
 
 const xpr::sregex& numberDelims =
-	as_xpr('.')|',' ;
+	as_xpr('.')|','|'-' ;
 
 const xpr::sregex& textBeforeAnchor =
 	as_xpr(*(~(xset= '<'))) ;
+
+const xpr::sregex& textBeforeCloseAnchor =
+	as_xpr(*(~(xset= '>'))) ;
 
 const xpr::sregex& skipAnchor =
 	as_xpr('<') >> *(~(xset= '>')) >> '>' ;
 
 const xpr::sregex& anyQuote =
 		(xset='\'','"') ;
+
+const xpr::sregex& endTd =
+	as_xpr('<') >> *_s >> "/td" >> *_s >> '>' ;
+
+const xpr::sregex& endA =
+	as_xpr('<') >> *_s >> "/a" >> *_s >> '>' ;
+
+const xpr::sregex& beginTd =
+	as_xpr('<') >> *_s >> "td" >> +_s ;
+
+const xpr::sregex& closeAnchor =
+	as_xpr(*_s) >> '>' >> *_s ;
+
+const xpr::sregex& tdAnchor =
+	beginTd >> *(~(xset= '>')) >> '>' ;
+
+const xpr::sregex& aHref =
+	as_xpr ('<') >> *_s >> 'a' >> +_s >> "href" >> *_s >> '=' >> *_s >> anyQuote >> *_s;
 
 #endif
