@@ -19,4 +19,10 @@ const xpr::sregex& numberDelims =
 const xpr::sregex& textBeforeAnchor =
 	as_xpr(*(~(xset= '<'))) ;
 
+const xpr::sregex& skipAnchor =
+	as_xpr('<') >> *(~(xset= '>')) >> '>' ;
+
+const xpr::sregex& anyQuote =
+		(xset='\'','"') ;
+
 #endif
