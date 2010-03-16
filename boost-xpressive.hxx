@@ -46,4 +46,13 @@ const xpr::sregex& tdAnchor =
 const xpr::sregex& aHref =
 	as_xpr ('<') >> *_s >> 'a' >> +_s >> "href" >> *_s >> '=' >> *_s >> anyQuote >> *_s;
 
+const xpr::sregex& number =
+	as_xpr(+(_d|numberDelims)) ;
+
+const xpr::sregex& longMonth =
+	as_xpr("January")|"February"|"March"|"April"|"May"|"June"|"July"|"August"|"September"|"October"|"November"|"December" ;
+
+const xpr::sregex& shortMonth =
+	as_xpr("Jan")|"Feb"|"Mar"|"Apr"|"May"|"Jun"|"Jul"|"Aug"|"Sep"|"Oct"|"Nov"|"Dec" ;
+
 #endif

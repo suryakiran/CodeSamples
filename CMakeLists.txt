@@ -43,7 +43,7 @@ Link_Directories    (${Boost_LIBRARY_DIRS})
 SET_GTK_FLAGS()
 
 #Add_Subdirectory (Multi-Index)
-Add_Subdirectory (Fusion)
+#Add_Subdirectory (Fusion)
 Add_Subdirectory (FileReading)
 #Add_Subdirectory (PreProcessor)
 #Add_Subdirectory (Phoenix)
