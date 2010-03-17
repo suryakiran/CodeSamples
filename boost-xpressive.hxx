@@ -55,4 +55,7 @@ const xpr::sregex& longMonth =
 const xpr::sregex& shortMonth =
 	as_xpr("Jan")|"Feb"|"Mar"|"Apr"|"May"|"Jun"|"Jul"|"Aug"|"Sep"|"Oct"|"Nov"|"Dec" ;
 
+const xpr::sregex& longWeek =
+	as_xpr ("Sunday")|"Monday"|"Tuesday"|"Wednesday"|"Thursday"|"Friday"|"Saturday" ;
+
 #endif
