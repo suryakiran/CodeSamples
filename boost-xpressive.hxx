@@ -49,11 +49,17 @@ const xpr::sregex& aHref =
 const xpr::sregex& number =
 	as_xpr(+(_d|numberDelims)) ;
 
+const xpr::sregex& floatNumber =
+		!(xset= '-','+') >> +_d >> !(xset='.') >> xpr::repeat<0,2>(_d);
+
 const xpr::sregex& longMonth =
 	as_xpr("January")|"February"|"March"|"April"|"May"|"June"|"July"|"August"|"September"|"October"|"November"|"December" ;
 
 const xpr::sregex& shortMonth =
 	as_xpr("Jan")|"Feb"|"Mar"|"Apr"|"May"|"Jun"|"Jul"|"Aug"|"Sep"|"Oct"|"Nov"|"Dec" ;
+
+const xpr::sregex& shortMonthU =
+	as_xpr("JAN")|"FEB"|"MAR"|"APR"|"MAY"|"JUN"|"JUL"|"AUG"|"SEP"|"OCT"|"NOV"|"DEC" ;
 
 const xpr::sregex& longWeek =
 	as_xpr ("Sunday")|"Monday"|"Tuesday"|"Wednesday"|"Thursday"|"Friday"|"Saturday" ;

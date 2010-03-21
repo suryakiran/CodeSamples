@@ -19,12 +19,15 @@ namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
 
 template <class Container>
-void printContainer (const std::string& p_message, const Container& p_container)
+void printContainer (const std::string& p_message, const Container& p_container, char p_delim=',')
 {
 	typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter ;
 	cout << p_message << endl ;
-	for (Iter iter = boost::begin(p_container); iter != boost::end(p_container); ++iter) {
-		cout << "\t-" << *iter ;
+	Iter beginIter (boost::begin(p_container)), endIter (boost::end(p_container)) ;
+	for (Iter iter = beginIter; iter != endIter; ++iter) 
+	{
+		if (iter != beginIter) cout << p_delim ;
+		cout << *iter ;	
 	}
 	cout << endl ;
 }
