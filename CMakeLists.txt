@@ -34,7 +34,7 @@ GET_BOOST ()
 
 Find_Package (
   Boost ${BOOST_VERSION}
-  COMPONENTS signals date_time
+  COMPONENTS date_time
   )
 
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
@@ -44,7 +44,7 @@ SET_GTK_FLAGS()
 
 #Add_Subdirectory (Multi-Index)
 #Add_Subdirectory (Fusion)
-Add_Subdirectory (FileReading)
+#Add_Subdirectory (FileReading)
 #Add_Subdirectory (PreProcessor)
 #Add_Subdirectory (Phoenix)
 #Add_Subdirectory (Spirit)
@@ -52,3 +52,4 @@ Add_Subdirectory (FileReading)
 #Add_Subdirectory (Holidays)
 #Add_Subdirectory (Templates)
 #Add_Subdirectory (CPP)
+Add_Subdirectory (DownloadFile)
