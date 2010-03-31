@@ -28,14 +28,32 @@ const xpr::sregex& skipAnchor =
 const xpr::sregex& anyQuote =
 		(xset='\'','"') ;
 
-const xpr::sregex& endTd =
-	as_xpr('<') >> *_s >> "/td" >> *_s >> '>' ;
-
 const xpr::sregex& endA =
 	as_xpr('<') >> *_s >> "/a" >> *_s >> '>' ;
 
+const xpr::sregex& beginTr =
+	as_xpr('<') >> *_s >> "tr" >> *_s >> '>' ;
+
+const xpr::sregex& endTr =
+	as_xpr('<') >> *_s >> "/tr" >> *_s >> '>' ;
+
 const xpr::sregex& beginTd =
 	as_xpr('<') >> *_s >> "td" >> +_s ;
+
+const xpr::sregex& boldBegin =
+	as_xpr('<') >> *_s >> 'b' >> *_s >> '>';
+
+const xpr::sregex& boldEnd =
+	as_xpr('<') >> *_s >> "/b" >> *_s >> '>';
+
+const xpr::sregex& endTd =
+	as_xpr('<') >> *_s >> "/td" >> *_s >> '>' ;
+
+const xpr::sregex& beginTh =
+	as_xpr('<') >> *_s >> "th" >> +_s >> textBeforeCloseAnchor >> '>' ;
+
+const xpr::sregex& endTh =
+	as_xpr('<') >> *_s >> "/th" >> *_s >> '>' ;
 
 const xpr::sregex& closeAnchor =
 	as_xpr(*_s) >> '>' >> *_s ;

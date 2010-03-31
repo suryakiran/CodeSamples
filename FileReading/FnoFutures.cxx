@@ -15,9 +15,10 @@ int main (int argc, char** argv)
 
 	xpr::sregex priceDetails =
 		beginTr >> *_s 
-		>> beginTh 	>> *_s >> (priceTag= textBeforeAnchor) >> *_s >> endTh
+		>> beginTh 	>> *_s >> !boldBegin >> *_s >> (priceTag= textBeforeAnchor) 
+		>> *_s >> !boldEnd >> *_s >> endTh
 		>> *_s >> beginTd >> textBeforeCloseAnchor >> '>' >> *_s 
-		>> (valueTag= floatNumber) >> *_s >> endTd
+		>> !boldBegin >> *_s >> (valueTag= floatNumber) >> *_s >> !boldEnd >> *_s >> endTd
 		>> *_s >> endTr
 		;
 

@@ -43,7 +43,8 @@ class MainWindow : public QMainWindow, private Ui::MainWindow, public DownloadPr
 		void saveConfiguration   (void) ;
 		void showConfigurations  (void) ;
 		void updateDownloadStatus(bool p_success) ;
-		map<string, string> getFormData (void) ;
+		void updateDetails       (const pt::ptree&);
+		vector<StringPair> getFormData (void) ;
 
 	private Q_SLOTS:
 		QTreeWidgetItem* addFormField (void) ;

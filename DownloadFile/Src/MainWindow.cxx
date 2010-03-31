@@ -62,24 +62,19 @@ void MainWindow :: connectSignals (void)
 	connect (removeField, SIGNAL(clicked()), this, SLOT(removeFormField())) ;
 	connect (fileSelector, SIGNAL(clicked()), this, SLOT(selectFile())) ;
 	connect (oldConfName, SIGNAL(currentIndexChanged(QString)), this, SLOT(loadConfiguration(QString))) ;
-	connect (oldConfName, SIGNAL(currentIndexChanged(QString)), newConfName, SLOT(setText(QString))) ;
 }
 
 void MainWindow :: loadConfiguration (const QString& p_conf)
 {
-	const pt::ptree& curTree = get_child 
-		((format("DownloadFileConfiguration.%1%") % p_conf.toStdString()).str()) ;
-	siteAddr->setText(curTree.get<string>("Site").c_str()) ;
-	httpMethod->setCurrentIndex (httpMethod->findText(curTree.get<string>("HTTPMethod").c_str())) ;
-	saveFile->setText(curTree.get<string>("OutFile").c_str()) ;
-
-	formDetails->clear() ;
-	const pt::ptree& formData = curTree.get_child ("FormData") ;
-	BOOST_FOREACH (const pt::ptree::value_type& f, formData)
+	newConfName->clear();
+	if (p_conf == "New Configuration") 
+		updateDetails(pt::ptree());
+	else 
 	{
-		QTreeWidgetItem* item = addFormField() ;
-		item->setText(0, f.first.c_str()) ;
-		item->setText(1, f.second.data().c_str()) ;
+		newConfName->setText (p_conf);
+		const pt::ptree& curTree = get_child 
+			((format("DownloadFileConfiguration.%1%") % p_conf.toStdString()).str()) ;
+		updateDetails(curTree);
 	}
 }
 
@@ -107,18 +102,30 @@ void MainWindow :: selectFile (void)
 		m_fileDlg->setFileMode (QFileDialog::AnyFile) ;
 		connect (m_fileDlg, SIGNAL(fileSelected(QString)), saveFile, SLOT(setText(QString))) ;
 	}
+	QString curFileName (saveFile->text()) ;
+
+	if (!curFileName.isEmpty()) 
+	{
+		QDir d ;
+		do
+		{
+			curFileName += "/..";
+		}while (!d.setCurrent(curFileName));
+		m_fileDlg->setDirectory (d);
+	}
+
 	m_fileDlg->exec() ;
 }
 
-map<string, string> MainWindow :: getFormData (void)
+vector<StringPair> MainWindow :: getFormData (void)
 {
-	map<string, string> formData ;
+	vector<StringPair> formData ;
 
 	QTreeWidgetItemIterator iter (formDetails) ;
 	while (*iter)
 	{
 		QTreeWidgetItem* item = *iter ;
-		formData[item->text(0).toStdString()] = item->text(1).toStdString() ;
+		formData.push_back(make_pair(item->text(0).toStdString(), item->text(1).toStdString())) ;
 		++iter ;
 	}
 
@@ -128,7 +135,7 @@ map<string, string> MainWindow :: getFormData (void)
 void MainWindow :: downloadFile (void)
 {
 	saveConfiguration () ;
-	map<string, string> formData (getFormData()) ;
+	vector<StringPair> formData (getFormData()) ;
 	string site (siteAddr->text().trimmed().toStdString()) ;
 	string outFile (saveFile->text().trimmed().toStdString()) ;
 
@@ -147,17 +154,21 @@ void MainWindow :: downloadFile (void)
 
 void MainWindow :: saveConfiguration (void)
 {
+	oldConfName->blockSignals(true);
 	string oldConf (oldConfName->currentText().trimmed().toStdString()) ;
-	string newConf (getKey(newConfName->text().trimmed().toStdString())) ;
-	if (newConf.empty())
+	string newConfStripped (newConfName->text().trimmed().toStdString()) ;
+	if (newConfStripped.empty())
 		return ;
-	
+	else if(oldConfName->findText(newConfStripped.c_str()) == -1)
+		oldConfName->addItem(newConfStripped.c_str());
+
+	string newConf (getKey(newConfStripped));
 	get_child ("DownloadFileConfiguration").erase(oldConf) ;
 	pt::ptree& newConfTree = put_child (newConf, pt::ptree()) ;
 
 	{
 		pt::ptree& curTree = newConfTree.put_child ("FormData", pt::ptree()) ; 
-		map<string, string> formData (getFormData()) ;
+		vector<StringPair> formData (getFormData()) ;
 		BOOST_FOREACH (StringPair sp, formData)
 			curTree.put (sp.first, sp.second) ;
 	}
@@ -167,12 +178,35 @@ void MainWindow :: saveConfiguration (void)
 	newConfTree.put ("OutFile", saveFile->text().trimmed().toStdString()) ;
 
 	printTree (m_configurationFile) ;
+
+	oldConfName->setCurrentIndex(oldConfName->findText(newConfStripped.c_str()));
+	oldConfName->blockSignals(false);
 }
 
 void MainWindow :: updateDownloadStatus (bool p_success)
 {
 	if (p_success)
-		statusBar()->showMessage ("Download Success") ;
+		statusBar()->showMessage ("Download Success", 1000) ;
 	else
-		statusBar()->showMessage ("Download Failure") ;
+		statusBar()->showMessage ("Download Failure", 1000) ;
+}
+
+void MainWindow :: updateDetails (const pt::ptree& p_tree)
+{
+	siteAddr->setText(p_tree.get<string>("Site", "").c_str()) ;
+	int curIdx (httpMethod->findText(p_tree.get<string>("HTTPMethod", "").c_str()));
+	httpMethod->setCurrentIndex ((curIdx == -1) ? 0 : curIdx);
+	saveFile->setText(p_tree.get<string>("OutFile","").c_str()) ;
+
+	formDetails->clear() ;
+	boost::optional<const pt::ptree&> formData = p_tree.get_child_optional ("FormData") ;
+	if (formData)
+	{
+		BOOST_FOREACH (const pt::ptree::value_type& f, formData.get())
+		{
+			QTreeWidgetItem* item = addFormField() ;
+			item->setText(0, f.first.c_str()) ;
+			item->setText(1, f.second.data().c_str()) ;
+		}
+	}
 }

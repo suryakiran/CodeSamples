@@ -7,6 +7,7 @@
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/assign/std/vector.hpp>
 #include <boost/assign/std/list.hpp>
+#include <boost/assign/list_inserter.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>

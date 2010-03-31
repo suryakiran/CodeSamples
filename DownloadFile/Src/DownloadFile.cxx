@@ -34,7 +34,7 @@ using Poco::Net::HTTPClientSession ;
 #include <sstream>
 #include <cassert>
 
-#include <boost/foreach.hpp>
+#include <boost.hxx>
 
 string       DownloadFile :: m_proxyHost ("") ;
 unsigned int DownloadFile :: m_proxyPort (0) ;
@@ -83,6 +83,27 @@ void DownloadFile :: download (void)
 	fstream fout ;
 	try
 	{
+		HTMLForm form ;
+		HTTPRequest req ("HTTP/1.1") ;
+		if (m_httpGet)
+		{
+			req.setMethod("GET") ;
+			vector<string> tags ;
+			BOOST_FOREACH (StringPair kv, m_postFieldData)
+				tags += (format("%1%=%2%") % kv.first % kv.second).str();
+			if (!tags.empty())
+			{
+				m_site += "?";
+				m_site += str::join (tags, "&");
+			}
+		}
+		else
+		{
+			req.setMethod("POST") ;
+			BOOST_FOREACH (StringPair kv, m_postFieldData)
+				form.set (kv.first, kv.second) ;
+		}
+
 		URI uri (m_site) ;
 
 		HTTPClientSession session (uri.getHost(), uri.getPort()) ;
@@ -92,18 +113,10 @@ void DownloadFile :: download (void)
 			session.setProxyHost (m_proxyHost) ;
 		}
 
-		HTTPRequest req ("HTTP/1.1") ;
 		req.setURI (uri.getPathAndQuery()) ;
 
-		HTMLForm form ;
 
 		Poco::Timespan timeOut (m_timeSpan.first, m_timeSpan.second) ; 
-
-		if (m_httpGet) req.setMethod("GET") ;
-		else           req.setMethod("POST") ;
-
-		BOOST_FOREACH (StringPair kv, m_postFieldData)
-			form.set (kv.first, kv.second) ;
 
 		form.prepareSubmit (req) ;
 		req.setContentType(form.getEncoding()) ;
