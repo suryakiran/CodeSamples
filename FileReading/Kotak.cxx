@@ -3,6 +3,7 @@
 #include "boost-xpressive.hxx"
 
 #include <boost/assign/std/set.hpp>
+#include <boost/assign/std/map.hpp>
 #include <boost/assign/list_inserter.hpp>
 using namespace boost::assign ;
 
@@ -16,7 +17,20 @@ int main (int argc, char** argv)
 	pt::ptree tree ;
 	string l ;
 
-	xpr::mark_tag nameTag(1) ;
+	pt::ptree& nsePrices = tree.put_child("Scrip.Price Details.Nse", pt::ptree());
+	pt::ptree& bsePrices = tree.put_child("Scrip.Price Details.Bse", pt::ptree());
+
+	map<string, string> fieldMap;
+	insert (fieldMap) 
+		("Last Traded Price", "Last Traded Price")
+		("Day's Open", "Day Open") ("Day's High", "Day High") ("Day's Low", "Day Low")
+		("High", "Year High") ("Low", "Year Low")
+		;
+
+	vector<string> highLowPriceOrder ;
+	highLowPriceOrder += "Year High", "Year Low";
+
+	xpr::mark_tag nameTag(1), numTag(1) ;
 	xpr::smatch results ;
 
 	xpr::sregex nameReg =
@@ -25,22 +39,85 @@ int main (int argc, char** argv)
 		>> (nameTag= +(alnum|(xset=' ','(',')'))) >> *(~(xset= '<')) >> "</td>" 
 		;
 
-	xpr::sregex priceReg =
-		as_xpr("<td nowrap>") >> "&nbsp;" >> +(_d | numberDelims) >> "</td>" ;
-
 	xpr::sregex priceTypeReg =
-		as_xpr("<td nowrap align=") >> quotedWord >> '>'
-		>> textBeforeAnchor >> "</td>" ;
+		beginTd >> "nowrap" >> textBeforeCloseAnchor >> '>'
+		>> (nameTag= *(~(xset[xpr::range('0','9')|'>']))) >> endTd
+		;
+
+	xpr::sregex priceReg =
+		beginTd >> "nowrap" >> textBeforeCloseAnchor >> '>'
+		>> *_s >> (numTag= floatNumber) >> *_s >> endTd
+		;
+
+	xpr::sregex highLowPriceReg =
+		beginTd >> "align" >> textBeforeCloseAnchor >> '>'
+		>> *_s >> (numTag= floatNumber) >> *_s >> endTd
+		;
+
+	bool typeFound (false);
+	string key;
 
 	while (getline(fin, l, '\n'))
 	{
 		IGNORE_BLANK_LINE(l) ;
+		str::erase_all(l, "&nbsp;");
 
 		if (xpr::regex_match (l, results, nameReg))
+		{
 			cout << results[nameTag] << endl ;
+			continue ;
+		}
+
+		if (typeFound && xpr::regex_match (l, results, priceReg))
+		{
+			double num (lexical_cast<double>(results[numTag]));
+			if (bsePrices.find(key) == bsePrices.not_found())
+				bsePrices.put(key, num) ;
+			else
+				nsePrices.put(key, num);
+			continue ;
+		}
+		else if (xpr::regex_match(l, results, highLowPriceReg))
+		{
+			double num (lexical_cast<double>(results[numTag]));
+			bool priceSet (false);
+			BOOST_FOREACH(string cur, highLowPriceOrder)
+			{
+				if (bsePrices.find(cur) == bsePrices.not_found())
+				{
+					bsePrices.put(cur, num) ;
+					priceSet = true;
+					break;
+				}
+				else
+					continue;
+			}
+
+			if (priceSet) continue;
+			BOOST_FOREACH(string cur, highLowPriceOrder)
+			{
+				if (nsePrices.find(cur) == nsePrices.not_found())
+				{
+					nsePrices.put(cur, num) ;
+					break;
+				}
+				else
+					continue;
+			}
+		}
 
 		if (xpr::regex_match (l, results, priceTypeReg))
-			cout << l << endl ;
+		{
+			string priceType (results[nameTag]);
+			if (fieldMap.count(priceType))
+			{
+				key = fieldMap[priceType];
+				typeFound = true;
+			}
+			else 
+				typeFound = false;
+			continue ;
+		}
 	}
 
 	pt::write_xml (cout, tree, pt::xml_writer_settings<char>(' ', 4)) ;

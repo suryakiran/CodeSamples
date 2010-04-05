@@ -67,6 +67,7 @@ int main (int argc, char** argv)
 
 	vector<int> holidayNumbers ;
 	vector<string> holidayNames, holidayDates, holidayWeeks ;
+	int yearNum (0);
 
 	while (getline (fin, l, '\n'))
 	{
@@ -89,9 +90,10 @@ int main (int argc, char** argv)
 				}
 				else if (xpr::regex_match (l, results, holidayDate))
 				{
+					yearNum = lexical_cast<int>(results[yearTag]);
 					string s ((format ("%1$02d-%2%-%3%")
 							% lexical_cast<int>(results[dateTag])
-							% results[monthTag] % results[yearTag]).str()) ;
+							% results[monthTag] % yearNum).str()) ;
 					holidayDates += s ;
 					continue ;
 				}
@@ -120,6 +122,7 @@ int main (int argc, char** argv)
 		}
 	}
 
+	holidaysTree.put("Year", yearNum);
 #define BEGIN_TUPLE(vec1,vec2,vec3,vec4)\
 	boost::make_tuple(vec1.begin(),vec2.begin(),vec3.begin(),vec4.begin())
 

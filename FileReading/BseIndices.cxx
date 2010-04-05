@@ -21,8 +21,8 @@ int main (int argc, char** argv)
 
 	xpr::mark_tag indexTag (1), valueTag(1), profitTag(1), profitValue(2) ;
 	xpr::sregex indexReg =
-		as_xpr("<td class=\"bl-12\">")
-		>> "<a href='javascript" >> textBeforeCloseAnchor >> "><u>"
+		beginTd >> "class" >> *_s >> '=' >> "\"bl_12\"" >> *_s >> '>'
+		>> aHref >> "javascript" >> textBeforeCloseAnchor >> "><u>"
 		>> (indexTag= textBeforeAnchor)
 		;
 
@@ -66,6 +66,7 @@ int main (int argc, char** argv)
 				curTree.put ("Change", price) ;
 			}
 		}
+
 	}
 
 	pt::write_xml (cout, tree, pt::xml_writer_settings<char>(' ', 4)) ;
