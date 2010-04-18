@@ -6,43 +6,7 @@
 #include <boost/assign/list_inserter.hpp>
 using namespace boost::assign ;
 
-#include <boost/iterator/zip_iterator.hpp>
-
-void fillValues (const boost::tuple<const string&, const double&>& p_tuple,
-		pt::ptree& p_tree)
-{
-	p_tree.put (camelCase(p_tuple.get<0>()), p_tuple.get<1>()) ;
-}
-
-string getTDline (std::istream& is, const string& currentLine)
-{
-	string l(currentLine), line ;
-
-	if (l.empty())
-	{
-		while (getline (is, l, '\n'))
-		{
-			IGNORE_BLANK_LINE(l) ;
-			if (!l.empty()) break ;
-		}
-	}
-
-	if (str::starts_with (l, "<td align"))
-	{
-		line = l ;
-		if (!str::ends_with (line, "</td>"))
-		{
-			while (getline (is, l, '\n'))
-			{
-				IGNORE_BLANK_LINE(l) ;
-				line += ' ' + l ;
-				if (str::ends_with(l, "</td>"))
-					break ;
-			}
-		}
-	}
-	return line ;
-}
+#include "stock-prices.hxx"
 
 int main (int argc, char** argv)
 {
@@ -52,12 +16,20 @@ int main (int argc, char** argv)
 
 	pt::ptree tree ;
 
-	set<string> ignoreFields ;
-
-	insert (ignoreFields)
-		("DATE") ("LAST TRADED TIME") ("DAY VOLUME")
-		("% CHANGE") ("BEST OFFER PRICE") ("BEST BID PRICE") ("BEST OFFER QTY")
+	set<string> requiredFields ;
+	map<string, StringFieldPair> fieldMap;
+	
+	insert (requiredFields)
+		("LAST TRADE PRICE") ("DAY HIGH") ("DAY LOW") ("52 WEEK HIGH") ("52 WEEK LOW")
+		("DAY OPEN") ("PREVIOUS DAY CLOSE")
 		;
+
+	insert (fieldMap)
+		("LAST TRADE PRICE", FIELD_ID(CurrentPrice)) ("PREVIOUS DAY CLOSE", FIELD_ID(PreviousDayClose))
+		("DAY HIGH", FIELD_ID(DayHigh)) ("DAY LOW", FIELD_ID(DayLow)) ("DAY OPEN", FIELD_ID(DayOpen))
+		("52 WEEK HIGH", FIELD_ID(YearLow)) ("52 WEEK LOW", FIELD_ID(YearHigh))
+		;
+
     string l ;
 
 	tree.put("Scrip.Details.Source", "Icici") ;
@@ -82,7 +54,9 @@ int main (int argc, char** argv)
 		>> (contentTag= *(_d | numberDelims)) >> "</td>"
 		;
 
-	vector<double> nseValues, bseValues ;
+	vector<double> nseValues(requiredFields.size(), 0.0);
+	vector<double> bseValues(requiredFields.size(), 0.0) ;
+
 	vector<string> fields ;
 
 	while (getline (fin, l, '\n'))
@@ -97,16 +71,17 @@ int main (int argc, char** argv)
 		if (xpr::regex_match (line, results, tableHeading))
 		{
 			string field (results[headingTag]) ;
-			if (!ignoreFields.count(field))
+			if (requiredFields.count(field))
 			{
-				fields.push_back (field) ;
+				fields.push_back (fieldMap[field].first) ;
+				int idx (fieldMap[field].second);
 				string dummy ;
 				line = getTDline (fin, dummy) ;
 				if (xpr::regex_match (line, results, tableContent))
 				{
 					string val (results[contentTag]);
 					str::erase_all (val, ",") ;
-					nseValues.push_back (lexical_cast<double>(val)) ;
+					nseValues[idx] = lexical_cast<double>(val) ;
 				}
 
 				line = getTDline (fin, dummy) ;
@@ -114,7 +89,7 @@ int main (int argc, char** argv)
 				{
 					string val (results[contentTag]);
 					str::erase_all (val, ",") ;
-					bseValues.push_back (lexical_cast<double>(val)) ;
+					bseValues[idx] = lexical_cast<double>(val) ;
 				}
 			}
 		}

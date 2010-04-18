@@ -2,6 +2,12 @@
 #include <string>
 using namespace std ;
 
+#define BOOST_MULTI_INDEX_LIMIT_INDEXED_BY_SIZE 5
+#define BOOST_MULTI_INDEX_LIMIT_TAG_SIZE 3
+#define BOOST_MULTI_INDEX_LIMIT_COMPOSITE_KEY_SIZE 5 
+
+#include <Common/mic_visualizer.hpp>
+
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -38,14 +44,16 @@ class Test
 struct byNumber { } ;
 struct byString { } ;
 
+typedef
+multi_index_container <Test, indexed_by <
+ordered_unique<tag<byNumber>, identity <Test> >
+, ordered_non_unique < tag<byString>, BOOST_MULTI_INDEX_CONST_MEM_FUN(Test, string, getString) >
+> > Container ;
+
+VISUALIZE_MULTI_INDEX_CONTAINER(Container);
+
 int main (void)
 {
-	typedef
-	multi_index_container <Test, indexed_by <
-		ordered_unique<tag<byNumber>, identity <Test> >
-		, ordered_non_unique < tag<byString>, BOOST_MULTI_INDEX_CONST_MEM_FUN(Test, string, getString) >
-		> > Container ;
-
 	typedef Container::index<byNumber>::type TestByNumber ;
 	typedef Container::index<byString>::type TestByString ;
 

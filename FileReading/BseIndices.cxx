@@ -2,7 +2,7 @@
 #include "boost-xpressive.hxx"
 #include "file-reading.hxx"
 
-#include <boost/assign/std/set.hpp>
+#include <boost/assign/std/vector.hpp>
 #include <boost/assign/list_inserter.hpp>
 using namespace boost::assign ;
 
@@ -14,59 +14,51 @@ int main (int argc, char** argv)
 	fin.open (inputFile, ios_base::in | ios_base::binary) ;
 
 	xpr::smatch results ;
+	xpr::mark_tag indexTag(1), numTag(1) ;
 	string l ;
 
+	vector<string> priceFields ;
+	priceFields += "Open", "High", "Low", "Last", "Prev Close", "Change", "Pc Change" ;
+
 	pt::ptree tree ;
-	pt::ptree& indexTree = tree.put_child ("From Money Control.Bse Indices", pt::ptree()) ;
+	pt::ptree& indexTree = tree.put_child ("Indices.Bse", pt::ptree()) ;
 
-	xpr::mark_tag indexTag (1), valueTag(1), profitTag(1), profitValue(2) ;
-	xpr::sregex indexReg =
-		beginTd >> "class" >> *_s >> '=' >> "\"bl_12\"" >> *_s >> '>'
-		>> aHref >> "javascript" >> textBeforeCloseAnchor >> "><u>"
-		>> (indexTag= textBeforeAnchor)
+	xpr::sregex indexLink =
+		beginTag("a") >> *_s >> beginTag("FONT")
+		>> *_s >> (indexTag= textBeforeAnchor)
+		>> endTag("font", false) >> *_s >> endTag("a")
 		;
 
-	xpr::sregex valueReg =
-		as_xpr("<td align") >> *_s >> '=' >> *_s >> quotedWord >> *_s 
-		>> "class" >> *_s >> '=' >> *_s >> quotedWord >> *_s >> '>'
-		>> (valueTag = *(_d | numberDelims)) >> *_s >> endTd
+	xpr::sregex tdReg =
+		beginTag("TD") >> *_s >> beginTag("FONT")
+		>> *_s >> (numTag= floatNumber) >> *_s 
+		>> endTag("font", false) >> *_s >> endTag("TD", false)
 		;
 
-	xpr::sregex profitLossReg =
-		as_xpr("<td align") >> *_s >> '=' >> *_s >> quotedWord >> *_s
-		>> "class" >> *_s >> '=' >> *_s >> (profitTag= quotedWord) >> *_s >> '>'
-		>> (profitValue = *(_d | numberDelims)) >> *_s >> endTd
-		;
+	xpr::sregex trBegin = beginTag("TR", true, false) ;
+	xpr::sregex trEnd = endTag("TR", true);
 
 	while (getline (fin, l, '\n'))
 	{
 		IGNORE_BLANK_LINE(l) ;
+		str::erase_all(l, ",");
 
-		if (xpr::regex_search (l, results, indexReg))
+		if (xpr::regex_search (l, results, indexLink))
 		{
-			string idx (results[indexTag]) ;
-			pt::ptree& curTree = indexTree.put_child (idx, pt::ptree()) ;
+			pt::ptree& curTree = indexTree.put_child(string(results[indexTag]), pt::ptree());
+			int i(0);
+			while(getline (fin, l, '\n'))
+			{
+				IGNORE_BLANK_LINE(l) ;
+				str::erase_all(l, ",");
 
-			string dummy ("") ;
-			l = getTDline (fin, dummy) ;
-			if (xpr::regex_search (l, results, valueReg))
-			{
-				curTree.put ("Current Price", results[valueTag]) ;
-			}
-			l = getTDline (fin, dummy) ;
-			if (xpr::regex_search (l, results, profitLossReg))
-			{
-				string profitColor (results[profitTag]) ;
-				str::erase_all (profitColor, "\"") ;
-				double factor (1.0), price (0.0) ;
-				if (str::starts_with(profitColor, "r-"))
-					factor = -1.0 ;
-				try { price = factor * lexical_cast<double>(results[profitValue]) ; }
-				catch (...) { }
-				curTree.put ("Change", price) ;
+				if (xpr::regex_search (l, results, tdReg))
+					curTree.put(priceFields[i++], lexical_cast<double>(results[numTag]));
+
+				if (xpr::regex_search (l, results, trEnd))
+					break;
 			}
 		}
-
 	}
 
 	pt::write_xml (cout, tree, pt::xml_writer_settings<char>(' ', 4)) ;

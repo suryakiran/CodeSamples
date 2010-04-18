@@ -38,7 +38,7 @@ const xpr::sregex& endTr =
 	as_xpr('<') >> *_s >> "/tr" >> *_s >> '>' ;
 
 const xpr::sregex& beginTd =
-	as_xpr('<') >> *_s >> "td" >> +_s ;
+	as_xpr('<') >> *_s >> xpr::icase("td") >> +_s ;
 
 const xpr::sregex& boldBegin =
 	as_xpr('<') >> *_s >> 'b' >> *_s >> '>';
@@ -47,7 +47,7 @@ const xpr::sregex& boldEnd =
 	as_xpr('<') >> *_s >> "/b" >> *_s >> '>';
 
 const xpr::sregex& endTd =
-	as_xpr('<') >> *_s >> "/td" >> *_s >> '>' ;
+	as_xpr('<') >> *_s >> xpr::icase("/td") >> *_s >> '>' ;
 
 const xpr::sregex& beginTh =
 	as_xpr('<') >> *_s >> "th" >> +_s >> textBeforeCloseAnchor >> '>' ;
@@ -82,4 +82,33 @@ const xpr::sregex& shortMonthU =
 const xpr::sregex& longWeek =
 	as_xpr ("Sunday")|"Monday"|"Tuesday"|"Wednesday"|"Thursday"|"Friday"|"Saturday" ;
 
+xpr::sregex beginTag(const string& p_tagName, bool p_caseSensitive = true, bool p_hasAttributes = true)
+{
+	string regStr ("<\\s*") ;
+
+	regStr = (boost::format("<\\s*%1%%2%%3%%4%%5%")
+		% (p_caseSensitive ? "" : "(?i:")
+		% p_tagName
+		% (p_caseSensitive ? "" : ")")
+		% (p_hasAttributes ? "\\s+" : "\\s*")
+		% (p_hasAttributes ? "[^>]+>" : ">")
+		).str()
+		;
+
+	return xpr::sregex::compile(regStr);
+}
+
+xpr::sregex endTag(const string& p_tagName, bool p_caseSensitive = true)
+{
+	string regStr ("<\\s*") ;
+
+	regStr = (boost::format("<\\s*%1%/%2%%3%\\s*>")
+		% (p_caseSensitive ? "" : "(?i:")
+		% p_tagName
+		% (p_caseSensitive ? "" : ")")
+		).str()
+		;
+
+	return xpr::sregex::compile(regStr);
+}
 #endif

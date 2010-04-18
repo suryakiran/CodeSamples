@@ -22,13 +22,14 @@ int main (int argc, char** argv)
 
 	map<string, string> fieldMap;
 	insert (fieldMap) 
-		("Last Traded Price", "Last Traded Price")
-		("Day's Open", "Day Open") ("Day's High", "Day High") ("Day's Low", "Day Low")
-		("High", "Year High") ("Low", "Year Low")
+		("Last Traded Price", "CurrentPrice")
+		("Day's Open", "DayOpen") ("Day's High", "DayHigh") ("Day's Low", "DayLow")
+		("High", "YearHigh") ("Low", "YearLow")
+		("Previous Close", "PreviousDayClose")
 		;
 
 	vector<string> highLowPriceOrder ;
-	highLowPriceOrder += "Year High", "Year Low";
+	highLowPriceOrder += "YearHigh", "YearLow";
 
 	xpr::mark_tag nameTag(1), numTag(1) ;
 	xpr::smatch results ;

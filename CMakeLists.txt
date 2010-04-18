@@ -14,7 +14,9 @@ Else (UNIX)
 	EndIf (${CMAKE_SYSTEM_VERSION} EQUAL 6.0)
 EndIf (UNIX)
 
-Set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../Generic/CMake)
+Set (GenericDir ${CMAKE_CURRENT_SOURCE_DIR}/../Generic)
+
+Set (CMAKE_MODULE_PATH ${GenericDir}/CMake)
 Include (${CMAKE_MODULE_PATH}/Macros.cmake)
 Include (${CMAKE_MODULE_PATH}/Targets.cmake)
 Include (${CMAKE_MODULE_PATH}/Compiler.cmake)
@@ -32,7 +34,7 @@ GET_BOOST ()
 
 Find_Package (
   Boost ${BOOST_VERSION}
-  COMPONENTS date_time
+  COMPONENTS date_time program_options
   )
 
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
@@ -40,11 +42,13 @@ Link_Directories    (${Boost_LIBRARY_DIRS})
 
 SET_GTK_FLAGS()
 
-#Add_Subdirectory (Multi-Index)
+Add_Subdirectory (Multi-Index)
 #Add_Subdirectory (Fusion)
 Add_Subdirectory (FileReading)
+Add_Subdirectory (Miscellaneous)
+Add_Subdirectory (NG)
 #Add_Subdirectory (PreProcessor)
-#Add_Subdirectory (Phoenix)
+Add_Subdirectory (Phoenix)
 #Add_Subdirectory (Spirit)
 #Add_Subdirectory (PropertyTree)
 #Add_Subdirectory (Holidays)

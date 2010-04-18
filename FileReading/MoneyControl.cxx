@@ -1,9 +1,11 @@
 #include "std.hxx"
 #include "boost-xpressive.hxx"
 #include "file-reading.hxx"
+#include "stock-prices.hxx"
 
 #include <boost/assign/std/set.hpp>
 #include <boost/assign/list_inserter.hpp>
+#include <bitset>
 using namespace boost::assign ;
 
 int main (int argc, char** argv)
@@ -12,133 +14,152 @@ int main (int argc, char** argv)
 	fs::fstream fin ;
 	fin.open (inputFile, ios_base::in | ios_base::binary) ;
 
-	set<string> validFields ;
+	map<string, StringFieldPair> validFields ;
 	insert (validFields) 
-		("Open") ("High") ("Low") ("52 Wk") ("Last Traded Price") 
-		("Prev Close") ("Year High") ("Year Low") ;
+		("Open Price", FIELD_ID(DayOpen))
+		("High Price", FIELD_ID(DayHigh))
+		("Low Price", FIELD_ID(DayLow))
+		("52 Wk High", FIELD_ID(YearHigh))
+		("52 Wk Low", FIELD_ID(YearLow))
+		("Prev Close", FIELD_ID(PreviousDayClose))
+		("Current Price", FIELD_ID(CurrentPrice))
+		;
 
-	typedef pair<bool, bool> BoolPair ;
-	map<string, BoolPair> fieldCaptured ;
+	typedef map<string, StringFieldPair>::value_type ValidFieldMap ;
+	vector<string> fields(validFields.size());
 
-	BOOST_FOREACH (const string& s, validFields)
-		fieldCaptured[s] = make_pair(false, false) ; //First bse, second nse ;
-
-	fieldCaptured.erase("52 Wk") ;
+	BOOST_FOREACH (const ValidFieldMap& vfm, validFields)
+		fields[vfm.second.second] = vfm.second.first;
 
 	xpr::smatch results ;
 	string l ;
 
 	xpr::mark_tag textTag(1), priceTag(1) ;
 	pt::ptree tree ;
-	pt::ptree& nsePrices = tree.put_child ("Scrip.PriceDetails.Nse", pt::ptree()) ;
-	pt::ptree& bsePrices = tree.put_child ("Scrip.PriceDetails.Bse", pt::ptree()) ;
-
-	nsePrices.put ("Last Traded Price", 0.0) ;
-	bsePrices.put ("Last Traded Price", 0.0) ;
-
-	xpr::sregex overview =
-		as_xpr("<b>") >> *_s >> "Overview" >> *_s >> "</b>" ;
+	pt::ptree& nseTree = tree.put_child ("Scrip.PriceDetails.Nse", pt::ptree()) ;
+	pt::ptree& bseTree = tree.put_child ("Scrip.PriceDetails.Bse", pt::ptree()) ;
 
 	xpr::sregex validText =
 		as_xpr(*(~(xset= '<','&',';'))) ;
 
-	xpr::sregex spanReg = 
-		as_xpr('<') >> *_s >> "span" >> *_s >> "class" >> *_s >> '=' >> *_s
-		>> quotedWord >> *_s >> '>' >> (priceTag= textBeforeAnchor) >> "</span>" ;
+	xpr::sregex td = 
+		beginTag("strong", true, false) >> *_s
+		>> (textTag= validText) >> *_s >> '<'
+		;
 
-	xpr::sregex strongDetails =
-		as_xpr("\"det\"") >> *_s >> '>' >> *_s >> '<' >> *_s >> "strong" >> *_s ;
+	xpr::sregex th = 
+		beginTag("th") >> *_s
+		>> (textTag= validText) >> *_s >> endTag("th")
+		;
 
-	xpr::sregex fieldTag =
-		as_xpr("\"hed\"") | strongDetails ;
+	xpr::sregex tdPrice =
+		beginTag("td") >> *_s
+		>> (priceTag = floatNumber) >> *_s >> endTag("td")
+		;
 
-	xpr::sregex td =
-		as_xpr("<td class") >> *_s >> "=" >> *_s >> fieldTag >> '>'
-		>> *_s >> (textTag= validText) ;
+	xpr::sregex thPrice =
+		beginTag("th") >> *_s
+		>> (priceTag = floatNumber) >> *_s >> endTag("th") ;
 
-	xpr::sregex price =
-		as_xpr("<td") >> *(~(xset= '>')) >> '>' >> *_s
-		>> (priceTag = *(_d|numberDelims)) >> *_s >> '<' ;
+	xpr::sregex curPriceReg =
+		beginTag("div", true, false) >> *_s >> beginTag("p") >> *_s
+		>> beginTag("strong", true, false) >> *_s 
+		>> (priceTag= floatNumber) >> *_s >> endTag("strong") >> *_s 
+		>> endTag("p")
+		;
 
-	bool priceDetailsBegin (false) ;
-	bool bseDetails (true) ;
-	string prevField ("") ;
+	vector<xpr::sregex> tabObjs ;
+	tabObjs.push_back(td);
+	tabObjs.push_back(th);
+
+	vector<xpr::sregex> priceRegs ;
+	priceRegs.push_back(tdPrice);
+	priceRegs.push_back(thPrice);
+
+	vector<double> bsePrices(validFields.size(), 0.0), nsePrices(validFields.size(), 0.0) ;
+	bitset<NumberOfFields> bseFields(0), nseFields(0) ;
 
 	while (getline (fin, l, '\n'))
 	{
 		IGNORE_BLANK_LINE(l) ;
+		str::erase_all (l, ",");
 
-		if (xpr::regex_search (l, results, overview))
-			priceDetailsBegin = true ;
-
-		if (!priceDetailsBegin)
-			continue ;
-
-		if (xpr::regex_search (l, results, spanReg))
+		bool tagFound(false);
+		if (xpr::regex_match (l, results, curPriceReg))
 		{
-			string field ("Last Traded Price") ;
-			string s (results[priceTag]) ;
-			str::trim(s) ;
-			str::erase_all (s, ",") ;
-			double price (0.0) ;
-			try { price = lexical_cast<double>(s) ; }
-			catch (...) { }
-			if (!fieldCaptured[field].first)
+			fields[CurrentPrice] = "CurrentPrice";
+			if (bseFields.test(CurrentPrice)) 
 			{
-				bsePrices.put(field, price) ;
-				fieldCaptured[field].first = true ;
+				nsePrices[CurrentPrice] = lexical_cast<double>(results[priceTag]);
+				nseFields.set(CurrentPrice);
 			}
-			else if (!fieldCaptured[field].second)
+			else
 			{
-				nsePrices.put(field, price) ;
-				fieldCaptured[field].second = true ;
+				bsePrices[CurrentPrice] = lexical_cast<double>(results[priceTag]);
+				bseFields.set(CurrentPrice);
 			}
+			continue ;
 		}
 
-		if (xpr::regex_search (l, results, td))
+		BOOST_FOREACH(xpr::sregex reg, tabObjs)
 		{
-			string field (results[textTag]) ;
-			str::trim(field) ;
-			str::erase_all(field, ".") ;
-			if (validFields.count(field))
+			if (xpr::regex_search (l, results, reg))
 			{
-				string currentField (field) ;
-				if (prevField == "High")
-					currentField = "Year High" ;
-				if (prevField == "Low")
-					currentField = "Year Low" ;
-
-				prevField = field ;
-				while (getline (fin, l, '\n'))
+				tagFound = true ;
+				string field (results[textTag]);
+				str::trim(field) ;
+				str::erase_all(field, ".") ;
+				if (validFields.count(field))
 				{
-					IGNORE_BLANK_LINE(l) ;
-					if (regex_search (l, results, price))
+					int idx(validFields[field].second);
+
+					vector<double>& prices = bseFields.test(idx) ? nsePrices : bsePrices ;
+
+					if (bseFields.test(idx)) nseFields.set(idx) ;
+					else                     bseFields.set(idx);
+
+					while(getline(fin, l, '\n'))
 					{
-						string s (results[priceTag]) ;
-						str::erase_all (s, ",") ;
-
-						double price (0.0) ;
-						try { price = lexical_cast<double>(s); }
-						catch (...) { }
-
-						if (!fieldCaptured[currentField].first)
+						IGNORE_BLANK_LINE(l);
+						str::erase_all(l, ",");
+						if (l.empty())
+							continue ;
+						bool priceFound (false);
+						BOOST_FOREACH(xpr::sregex priceReg, priceRegs)
 						{
-							bsePrices.put(currentField, price) ;
-							fieldCaptured[currentField].first = true ;
+							if (xpr::regex_match(l, results, priceReg))
+							{
+								priceFound = true ;
+								prices[idx] = lexical_cast<double>(results[priceTag]);
+								break ;
+							} 
+							else if (xpr::regex_match(l, results, endTag("tr")))
+							{
+								priceFound = true;
+								break ;
+							}
 						}
-						else if (!fieldCaptured[currentField].second)
-						{
-							nsePrices.put(currentField, price) ;
-							fieldCaptured[currentField].second = true ;
-						}
-
-						break ;
+						if (priceFound)
+							break ;
 					}
 				}
 			}
+			if (tagFound) break ;
 		}
+		if (tagFound) continue ;
 	}
 
+	std::for_each (
+		boost::make_zip_iterator (boost::make_tuple(fields.begin(), nsePrices.begin())),
+		boost::make_zip_iterator (boost::make_tuple(fields.end(), nsePrices.end())),
+		phx::bind (fillValues, pha::arg1, phx::ref(nseTree))
+		) ;
+
+	std::for_each (
+		boost::make_zip_iterator (boost::make_tuple(fields.begin(), bsePrices.begin())),
+		boost::make_zip_iterator (boost::make_tuple(fields.end(), bsePrices.end())),
+		phx::bind (fillValues, pha::arg1, phx::ref(bseTree))
+		) ;
 	pt::write_xml (cout, tree, pt::xml_writer_settings<char>(' ', 4)) ;
 	fin.close() ;
 }
