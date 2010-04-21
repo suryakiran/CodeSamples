@@ -10,6 +10,7 @@
 namespace qi = boost::spirit::qi  ;
 namespace ascii = boost::spirit::ascii ;
 namespace phx = boost::phoenix ;
+namespace pha = phx::arg_names ;
 
 #include <iomanip>
 #include <iostream>
