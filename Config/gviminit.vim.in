@@ -1,0 +1,8 @@
+set path=.
+@GVIM_SEARCH_DIRS@
+
+chdir @CMAKE_SOURCE_DIR@
+
+nmap ,m :call OpenFile('@CMAKE_PARENT_LIST_FILE@')<CR>
+nmap ,i :call OpenFile('@CMAKE_BINARY_DIR@/gviminit.vim')<CR>
+nmap ,g :call OpenFile('@CONFIG_DIR@/gviminit.vim.in')<CR>
