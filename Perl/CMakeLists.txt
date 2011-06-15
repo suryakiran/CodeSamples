@@ -8,6 +8,18 @@ File (GLOB COMMON_FILES *.h)
 
 Include_Directories (${PERL_INCLUDE_PATH})
 
+Execute_Process (
+  COMMAND
+  ${PERL_EXECUTABLE} -MExtUtils::Embed -e ccopts
+  OUTPUT_VARIABLE PERL_CCOPTS
+  )
+
+Execute_Process (
+  COMMAND
+  ${PERL_EXECUTABLE} -MExtUtils::Embed -e ldopts
+  OUTPUT_VARIABLE PERL_LDOPTS
+  )
+
 ForEach (cf ${CXX_FILES} ${C_FILES})
   Get_Filename_Component (exe_name ${cf} NAME_WE)
   String (CONFIGURE ${dir_tmpl} dir @ONLY)
