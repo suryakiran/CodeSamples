@@ -33,7 +33,7 @@ call_PerlSubs (void)
 
 int main (int argc, char** argv, char** env)
 {
-  char* command_line[2] = {"", "D:\\Projects\\SourceArea\\CodeSamples\\Perl\\CallPerl_files\\CallPerl.pl"};
+  char* command_line[2] = {"", "/home/suki/Projects/SourceArea/CodeSamples/Perl/CallPerl_files/CallPerl.pl"};
   
   PERL_SYS_INIT3(&argc, &argv, &env);
   my_perl = perl_alloc();

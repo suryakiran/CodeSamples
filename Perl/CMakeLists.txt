@@ -8,16 +8,11 @@ File (GLOB COMMON_FILES *.h)
 
 Include_Directories (${PERL_INCLUDE_PATH})
 
-Execute_Process (
-  COMMAND
-  ${PERL_EXECUTABLE} -MExtUtils::Embed -e ccopts
-  OUTPUT_VARIABLE PERL_CCOPTS
-  )
+Set (PERL_XSI_FILE ${CMAKE_CURRENT_BINARY_DIR}/perlxsi.c)
 
-Execute_Process (
-  COMMAND
-  ${PERL_EXECUTABLE} -MExtUtils::Embed -e ldopts
-  OUTPUT_VARIABLE PERL_LDOPTS
+Add_Custom_Command (
+  OUTPUT ${PERL_XSI_FILE}
+  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit
   )
 
 ForEach (cf ${CXX_FILES} ${C_FILES})
@@ -26,7 +21,8 @@ ForEach (cf ${CXX_FILES} ${C_FILES})
   Include_Directories (${dir})
   File (GLOB CPP_FILES ${dir}/*.cpp)
   File (GLOB H_FILES ${dir}/*.h)
-  Add_Executable (${exe_name} ${cf} ${CPP_FILES} ${H_FILES} ${COMMON_FILES})
+  Add_Executable (${exe_name} ${cf} ${CPP_FILES} ${H_FILES} ${COMMON_FILES}
+    ${PERL_XSI_FILE})
   Set_Target_Properties (${exe_name} PROPERTIES 
     COMPILE_DEFINITIONS "FILES_DIR=\"${dir}\""
     )
