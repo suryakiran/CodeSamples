@@ -7,7 +7,8 @@ Include_Directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 #Include (FindPythonInterp)
 #Include (FindPythonLibs)
-Include (FindPerlLibs)
+#Include (FindPerlLibs)
+Include (${CMAKE_MODULE_PATH}/Perl.cmake)
 
 #Include (${CMAKE_MODULE_PATH}/Macros.cmake)
 
