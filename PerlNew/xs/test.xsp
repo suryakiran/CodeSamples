@@ -1,0 +1,15 @@
+#include <Example.h>
+
+%module{Example};
+
+class Example
+{
+  %name{new} Example();
+  ~Example();
+
+  void setInt (const int& p_val);
+  const int& getInt () const;
+
+  void setString (const std::string& p_s);
+  const std::string& getString () const;
+};

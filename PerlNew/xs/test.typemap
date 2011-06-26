@@ -1,0 +1,7 @@
+%typemap{const int&}{parsed}{
+  %cpp_type{%int%};
+};
+
+%typemap{const std::string&}{parsed} {
+  %cpp_type{%std::string%};
+};
