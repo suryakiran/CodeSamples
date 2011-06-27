@@ -11,6 +11,8 @@ class Derived : public Base
     void setDouble (const double& p_d);
     const double& getDouble (void) const;
 
+    virtual void virtualFun (void);
+
     ~Derived ();
 
   private:

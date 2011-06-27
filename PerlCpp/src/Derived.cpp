@@ -24,3 +24,9 @@ Derived::~Derived()
 {
     cout << "-Derived Destructor" << endl;
 }
+
+void
+Derived::virtualFun ()
+{
+  cout << "Virtual Function in Derived" << endl;
+}

@@ -9,4 +9,6 @@
 
   void setDouble (const double& p_s);
   const double& getDouble () const;
+
+  virtual void virtualFun ();
 };
