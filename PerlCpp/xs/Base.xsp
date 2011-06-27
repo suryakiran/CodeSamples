@@ -1,11 +1,11 @@
-#include <Example.h>
+#include <Base.h>
 
-%module{Example};
+%module{Test};
 
-class Example
+%name{Test::Base} class Base
 {
-  %name{new} Example();
-  ~Example();
+  %name{new} Base();
+  ~Base();
 
   void setInt (const int& p_val);
   const int& getInt () const;

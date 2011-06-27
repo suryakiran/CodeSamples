@@ -2,6 +2,10 @@
   %cpp_type{%int%};
 };
 
+%typemap{const double&}{parsed}{
+  %cpp_type{%double%};
+};
+
 %typemap{const std::string&}{parsed} {
   %cpp_type{%std::string%};
 };

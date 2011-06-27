@@ -1,0 +1,3 @@
+TYPEMAP
+Base* O_OBJECT
+Derived* O_OBJECT

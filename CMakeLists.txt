@@ -1,8 +1,8 @@
 Project (CodeSamples)
 CMake_Minimum_Required (VERSION 2.8.4)
 
-Set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
-Set (CONFIG_DIR ${CMAKE_SOURCE_DIR}/Config)
+Include (${CMAKE_SOURCE_DIR}/CMake/Dirs.cmake)
+
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 #Include (FindPythonInterp)
@@ -14,9 +14,10 @@ Include (${CMAKE_MODULE_PATH}/Perl.cmake)
 
 #Add_Subdirectory (Python)
 #Add_Subdirectory (Perl)
-Add_Subdirectory (PerlNew)
+#Add_Subdirectory (PerlNew)
+Add_Subdirectory (PerlCpp)
 
 #Write_Gvim_Search_Dirs (${PYTHON_INCLUDE_DIRS} ${PERL_INCLUDE_PATH})
-Set (GvimInFile ${CONFIG_DIR}/gviminit.vim.in)
+Set (GvimInFile ${CMAKE_CONFIG_DIR}/gviminit.vim.in)
 Set (GvimOutFile ${CMAKE_BINARY_DIR}/gviminit.vim)
 Configure_File (${GvimInFile} ${GvimOutFile} @ONLY)

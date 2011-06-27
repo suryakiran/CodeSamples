@@ -1,0 +1,12 @@
+#include <Derived.h>
+
+%module{Test};
+
+%name{Test::Derived} class Derived : public %name{Test::Base} Base
+{
+  %name{new} Derived();
+  ~Derived();
+
+  void setDouble (const double& p_s);
+  const double& getDouble () const;
+};

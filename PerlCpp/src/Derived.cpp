@@ -1,0 +1,26 @@
+#include <Derived.h>
+#include <iostream>
+using namespace std;
+
+Derived::Derived()
+  : Base(), m_d (19.5)
+{
+  cout << "-Derived Constructor" << endl;
+}
+
+void
+Derived::setDouble (const double& p_d)
+{
+  m_d = p_d;
+}
+
+const double&
+Derived::getDouble (void) const
+{
+  return m_d;
+}
+
+Derived::~Derived()
+{
+    cout << "-Derived Destructor" << endl;
+}

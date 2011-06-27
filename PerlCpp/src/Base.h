@@ -1,12 +1,12 @@
-#ifndef Example_h_INCLUDED
-#define Example_h_INCLUDED
+#ifndef Base_h_INCLUDED
+#define Base_h_INCLUDED
 
 #include <string>
 
-class Example
+class Base
 {
   public:
-    Example ();
+    Base ();
 
     void setInt (const int& p_i);
     const int& getInt (void) const;
@@ -14,7 +14,7 @@ class Example
     void setString (const std::string& p_s);
     const std::string& getString() const;
 
-    ~Example ();
+    virtual ~Base ();
 
   private:
     int m_i;

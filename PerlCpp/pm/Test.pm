@@ -1,4 +1,4 @@
-package Example;
+package Test;
 
 use strict;
 use warnings;
@@ -18,4 +18,6 @@ our @EXPORT = qw (
 
 our $VERSION = '0.01';
 
-bootstrap Example $VERSION;
+bootstrap Test $VERSION;
+
+1;
