@@ -17,6 +17,17 @@ ForEach (xsf ${XS_FILES})
   Get_Filename_Component (xs_name ${xsf} NAME_WE)
   Set (CPP_FILE ${CMAKE_CURRENT_BINARY_DIR}/${xs_name}.cpp)
   List (APPEND XS_CPP_FILES ${CPP_FILE})
+  Execute_Process (
+    COMMAND 
+    ${PERL_EXECUTABLE} ${CMAKE_PERL_DIR}/GetXSDependencies.pl -f ${xsf} -s ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE
+      DepsOut
+    ERROR_VARIABLE 
+      DepsError
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE
+    )
+
   Add_Custom_Command (
     OUTPUT 
       ${CPP_FILE}
@@ -25,7 +36,7 @@ ForEach (xsf ${XS_FILES})
       --source-dir=${CMAKE_CURRENT_SOURCE_DIR}
       --binary-dir=${CMAKE_CURRENT_BINARY_DIR}
     DEPENDS 
-    ${xsf} ${PARSE_XS_PL_FILE}
+      ${xsf} ${PARSE_XS_PL_FILE} ${DepsOut}
   )
 EndForEach (xsf)
 
