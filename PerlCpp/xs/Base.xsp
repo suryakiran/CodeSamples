@@ -4,14 +4,11 @@
 
 %name{Test::Base} class Base
 {
-  %name{new} Base();
-  ~Base();
+  virtual ~Base();
 
   void setInt (const int& p_val);
   const int& getInt () const;
 
   void setString (const std::string& p_s);
   const std::string& getString () const;
-
-  virtual void virtualFun();
 };

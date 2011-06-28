@@ -36,9 +36,3 @@ Base::~Base()
 {
     cout << "Base Destructor" << endl;
 }
-
-void
-Base::virtualFun ()
-{
-  cout << "Virtual Function in Base" << endl;
-}

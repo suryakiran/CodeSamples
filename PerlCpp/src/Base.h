@@ -14,7 +14,7 @@ class Base
     void setString (const std::string& p_s);
     const std::string& getString() const;
 
-    virtual void virtualFun (void);
+    virtual void virtualFun (void) = 0;
 
     virtual ~Base ();
 
