@@ -1,9 +1,10 @@
 #ifndef Base_h_INCLUDED
 #define Base_h_INCLUDED
 
+#include <PerlCppSrc.hxx>
 #include <string>
 
-class Base
+class DLLPerlCppSrc Base
 {
   public:
     Base ();

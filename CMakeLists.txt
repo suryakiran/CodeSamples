@@ -1,6 +1,9 @@
 Project (CodeSamples)
 CMake_Minimum_Required (VERSION 2.8.4)
 
+Set_Property (GLOBAL PROPERTY AppPrefix PERL_CPP)
+Get_Property (AppPrefix GLOBAL PROPERTY AppPrefix)
+
 Include (${CMAKE_SOURCE_DIR}/CMake/Dirs.cmake)
 
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR})

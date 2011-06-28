@@ -42,6 +42,11 @@ EndForEach (xsf)
 
 Add_Custom_Target (xs DEPENDS ${XS_CPP_FILES})
 
+Set (LibName ${PerlCppSrcExtnLib})
+Set (LIBNAME ${LibName})
+Include_Directories (${CMAKE_CURRENT_BINARY_DIR})
+Configure_File (${CMAKE_DLL_H_IN_FILE} ${CMAKE_CURRENT_BINARY_DIR}/${LibName}.hxx)
+
 Add_Library (
   ${PerlCppSrcExtnLib}
   SHARED ${XS_CPP_FILES}

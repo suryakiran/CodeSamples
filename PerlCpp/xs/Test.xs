@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+
+#include <Test.hxx>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10,6 +15,13 @@ extern "C" {
 
 #ifdef __cplusplus
 }
+#endif
+
+#ifdef WINDOWS
+#undef XS
+#ifndef XS
+#  define XS(name) extern "C" DLLTest XSPROTO(name)
+#endif
 #endif
 
 #include <Derived.h>
