@@ -30,7 +30,7 @@ Target_Link_Libraries (
   )
 
 Configure_File (
-  ${CMAKE_CURRENT_SOURCE_DIR}/perl-test.pl.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/perl/perl-test.pl.in
   ${CMAKE_CURRENT_BINARY_DIR}/perl-test.pl 
   @ONLY
   )
