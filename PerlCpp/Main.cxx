@@ -10,6 +10,8 @@ using namespace po;
 #include <EXTERN.h>
 #include <perl.h>
 
+EXTERN_C void xs_init (pTHX);
+
 static PerlInterpreter* my_perl;
 string srcDir, binDir;
 
@@ -38,15 +40,9 @@ call_PerlSubs (void)
   XPUSHs (sv_2mortal(newSVpv("Surya.Kiran.Gullapalli", 0)));
   PUTBACK;
 
-  int count = call_pv ("func_return_array", G_ARRAY);
+  int count = call_pv ("test_fun", G_VOID);
 
   SPAGAIN;
-
-  cout << "Number of items returned: " << count << endl;
-  
-  for (int i = 0; i < count; ++i) {
-    cout << '\t' << POPp << endl;
-  }
 
   PUTBACK;
   FREETMPS;
@@ -55,7 +51,6 @@ call_PerlSubs (void)
 
 void parse_args (int argc, char** argv)
 {
-
   options_description desc ("Allowed Options") ;
   desc.add_options()
     ("source-dir",  value <string>(), "Source Directory")
@@ -91,17 +86,16 @@ int main (int argc, char** argv, char** env)
   PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
 
   CommandLineArgs cla;
-  fs::path p (srcDir);
-  p /= "perl";
-  p /= "test.pl";
+  fs::path p (binDir);
+  p /= "test";
   cla.add(p);
 
-  perl_parse (my_perl, NULL, cla.count(), cla(), NULL); 
+  perl_parse (my_perl, xs_init, cla.count(), cla(), NULL); 
   call_PerlSubs();
 
-  Derived* d = new Derived();
-  cout << d->getDouble() << endl;
-  delete d;
+  //Derived* d = new Derived();
+  //cout << d->getDouble() << endl;
+  //delete d;
 
   clean_perl();
 }

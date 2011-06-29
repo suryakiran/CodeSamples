@@ -12,7 +12,7 @@ Set (PERL_XSI_FILE ${CMAKE_CURRENT_BINARY_DIR}/perlxsi.c)
 
 Add_Custom_Command (
   OUTPUT ${PERL_XSI_FILE}
-  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit
+  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit -- Test
   )
 
 ForEach (cf ${CXX_FILES} ${C_FILES})

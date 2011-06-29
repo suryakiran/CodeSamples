@@ -1,0 +1,28 @@
+#!@PERL_EXECUTABLE@ -w
+#
+use strict;
+use warnings;
+
+use File::Spec::Functions;
+
+BEGIN {
+  unshift @INC, catfile("@CMAKE_CURRENT_BINARY_DIR@", "xs");
+  unshift @INC, catfile("@CMAKE_CURRENT_SOURCE_DIR@", "pm");
+  unshift @INC, catfile("@CMAKE_CURRENT_BINARY_DIR@", "src");
+}
+
+use Test;
+
+sub test_fun {
+  my $x = new Test::Derived;
+  $x->setInt(53);
+  $x->virtualFun();
+  print "Integer: ", $x->getInt(), "\n";
+  print "Double: ", $x->getDouble(), "\n";
+}
+
+sub func_return_array {
+  my ($string) = @_;
+
+  return split(/\./, $string);
+}
