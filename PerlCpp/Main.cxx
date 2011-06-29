@@ -3,10 +3,15 @@
 #include <CommandLineArgs.hxx>
 using namespace std;
 
+#include <boost/program_options.hpp>
+namespace po = boost::program_options;
+using namespace po;
+
 #include <EXTERN.h>
 #include <perl.h>
 
 static PerlInterpreter* my_perl;
+string srcDir, binDir;
 
 void init_perl()
 {
@@ -47,15 +52,49 @@ call_PerlSubs (void)
   FREETMPS;
   LEAVE;
 }
+
+void parse_args (int argc, char** argv)
+{
+
+  options_description desc ("Allowed Options") ;
+  desc.add_options()
+    ("source-dir",  value <string>(), "Source Directory")
+    ("binary-dir",  value <string>(), "Binary Directory")
+    ;
+
+  variables_map vm ;
+  try
+  {
+    store (parse_command_line (argc, argv, desc), vm) ;
+    notify (vm) ;
+  }
+  catch( std::exception& e)
+  {
+    cout << "Exception in reading command line variables: " << e.what() << endl ;
+  }
+
+  if (vm.count("source-dir")) {
+    srcDir = vm["source-dir"].as<string>();
+  }
+
+  if (vm.count("binary-dir")) {
+    binDir = vm["binary-dir"].as<string>();
+  }
+}
+
 int main (int argc, char** argv, char** env)
 {
+  parse_args (argc, argv);
   PERL_SYS_INIT3(&argc, &argv, &env);
   my_perl = perl_alloc();
   perl_construct (my_perl);
   PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
 
   CommandLineArgs cla;
-  cla.add("/home/suki/Projects/SourceArea/CodeSamples/Perl/CallPerl_files/CallPerl.pl");
+  fs::path p (srcDir);
+  p /= "perl";
+  p /= "test.pl";
+  cla.add(p);
 
   perl_parse (my_perl, NULL, cla.count(), cla(), NULL); 
   call_PerlSubs();

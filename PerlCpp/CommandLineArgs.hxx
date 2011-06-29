@@ -4,6 +4,9 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 using namespace std;
 
 class CommandLineArgs
@@ -13,6 +16,11 @@ class CommandLineArgs
     ~CommandLineArgs();
 
     int count() const;
+
+    void add (const fs::path& p_path)
+    {
+      m_args.push_back (p_path.string());
+    }
 
     template<class T>
     void add(const T& p_arg)
