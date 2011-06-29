@@ -16,8 +16,7 @@ Include (${CMAKE_MODULE_PATH}/Perl.cmake)
 #Include (${CMAKE_MODULE_PATH}/Macros.cmake)
 
 #Add_Subdirectory (Python)
-#Add_Subdirectory (Perl)
-#Add_Subdirectory (PerlNew)
+Add_Subdirectory (Perl)
 Add_Subdirectory (PerlCpp)
 
 #Write_Gvim_Search_Dirs (${PYTHON_INCLUDE_DIRS} ${PERL_INCLUDE_PATH})
