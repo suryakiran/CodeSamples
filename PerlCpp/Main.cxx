@@ -10,6 +10,8 @@ using namespace po;
 #include <EXTERN.h>
 #include <perl.h>
 
+#include <SV2Obj.hxx>
+
 EXTERN_C void xs_init (pTHX);
 
 static PerlInterpreter* my_perl;
@@ -45,9 +47,7 @@ call_PerlSubs (void)
   if (count == 1) {
     SV* sv = POPs;
     Base* d(0);
-    if((sv_isobject(sv)) && (SvTYPE(SvRV(sv)) == SVt_PVMG)) {
-      d = (Base *)SvIV((SV*)SvRV(sv));
-    }
+    d = sv_object_cast<Base> (sv)();
 
     if (d) {
       cout << "-- ";
