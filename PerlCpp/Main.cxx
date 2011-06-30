@@ -40,7 +40,22 @@ call_PerlSubs (void)
   XPUSHs (sv_2mortal(newSVpv("Surya.Kiran.Gullapalli", 0)));
   PUTBACK;
 
-  int count = call_pv ("test_fun", G_VOID);
+  int count = call_pv ("test_fun", G_SCALAR);
+
+  if (count == 1) {
+    SV* sv = POPs;
+    Base* d(0);
+    if((sv_isobject(sv)) && (SvTYPE(SvRV(sv)) == SVt_PVMG)) {
+      d = (Base *)SvIV((SV*)SvRV(sv));
+    }
+
+    if (d) {
+      cout << "-- ";
+      d->virtualFun();
+    }
+
+    cout << "-- Returning a scalar" << endl;
+  }
 
   SPAGAIN;
 

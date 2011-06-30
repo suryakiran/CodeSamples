@@ -17,8 +17,11 @@ sub test_fun {
   my $x = new Test::Derived;
   $x->setInt(53);
   $x->virtualFun();
+  $x->setDouble (23.45);
   print "Integer: ", $x->getInt(), "\n";
   print "Double: ", $x->getDouble(), "\n";
+
+  return $x;
 }
 
 sub func_return_array {
