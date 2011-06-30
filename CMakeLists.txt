@@ -8,10 +8,14 @@ Include (${CMAKE_SOURCE_DIR}/CMake/Dirs.cmake)
 
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR})
 
+If (WIN32)
+  Add_Definitions ("-DBOOST_ALL_DYN_LINK")
+EndIf (WIN32)
+
 Set(Boost_ADDITIONAL_VERSIONS "1.46.1")
 Find_Package (
   Boost
-  COMPONENTS program_options filesystem
+  COMPONENTS program_options filesystem system
   )
 
 Include_Directories (${Boost_INCLUDE_DIR})

@@ -34,6 +34,7 @@ Target_Link_Libraries (
   ${PERL_LIBRARY}
   ${Boost_PROGRAM_OPTIONS_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
   )
 
 File (GLOB IN_FILES ${CMAKE_CURRENT_SOURCE_DIR}/perl/*.in)
