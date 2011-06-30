@@ -19,7 +19,7 @@ class sv_object_cast
     target_pointer operator() ()
     {
       if (sv_isobject(m_sv) && (SvTYPE(SvRV(m_sv)) == SVt_PVMG)) {
-        m_target = (target_pointer)SvIV((SV*)SvRV(m_sv));
+        m_target = reinterpret_cast<target_pointer>(SvIV((SV*)SvRV(m_sv)));
       }
 
       return m_target;
