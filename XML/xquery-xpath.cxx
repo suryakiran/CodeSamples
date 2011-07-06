@@ -13,7 +13,7 @@ int main (int argc, char** argv)
   siteInfoFile /= "SiteInfo.xml";
 
   XQilla xqilla;
-  AutoDelete<XQQuery> query (xqilla.parse(X("/SiteInfo/Site/@Name|/SiteInfo/Site/@Type")));
+  AutoDelete<XQQuery> query (xqilla.parse(X("/SiteInfo/Site/@Name")));
   AutoDelete<DynamicContext> context (query->createDynamicContext());
   Sequence seq = context->resolveDocument(X(siteInfoFile.string().c_str()));
 
@@ -27,7 +27,17 @@ int main (int argc, char** argv)
 
   Item::Ptr item;
   while (item = result->next(context)) {
-    cout << UTF8(item->asString(context)) << endl;
+    const Node* node = dynamic_cast<const Node*>(item.get());
+    if (node) {
+      cout << UTF8(node->dmStringValue(context)) << endl;
+      Result attributes = node->dmParent(context)->dmAttributes(context, result.get());
+      Item::Ptr attrItem;
+      int i (0);
+      while (attrItem = attributes->next(context)) {
+        ++i;
+        cout << '\t' << i << '\t' << UTF8(attrItem->asString(context)) << endl;
+      }
+    }
   }
 
   return 0;
