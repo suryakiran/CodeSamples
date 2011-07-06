@@ -1,0 +1,40 @@
+#!@PERL_EXECUTABLE@ -w
+
+use Getopt::Long;
+use strict;
+
+BEGIN {
+  unshift @INC, "@CMAKE_SOURCE_DIR@/PerlModules";
+}
+
+use Gdb;
+use App;
+
+my $current_exe_file = "@CURRENT_EXE_FILE@";
+
+my ($debugApplication);
+
+my $result = GetOptions (
+    "debug|d" => \$debugApplication,
+    );
+
+my %appArgs = (
+  srcdir => "@CMAKE_SOURCE_DIR@",
+  bindir => "@CMAKE_BINARY_DIR@",
+  cur_srcdir => "@CMAKE_CURRENT_SOURCE_DIR@",
+  cur_bindir => "@CMAKE_CURRENT_BINARY_DIR@"
+);
+
+if ($debugApplication) {
+  my $gdb = Gdb->new(
+      exe_file => "$current_exe_file", 
+      init_file => catfile("@CMAKE_BINARY_DIR@", 'init.gdb')
+      );
+  $gdb->launch(%appArgs);
+} else {
+  my $app = App->new (
+    exe_file => "$current_exe_file", 
+  );
+
+  $app->launch(%appArgs);
+}

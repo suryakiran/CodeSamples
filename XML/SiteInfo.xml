@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<SiteInfo>
+  <Site Name="Icici" Type="Get">
+    <Address>http://getquote.icicidirect.com/trading/equity/trading_stock_quote.asp</Address>
+    <QueryField>Symbol</QueryField>
+  </Site>
+  <Site Name="Money Control" Type="Get">
+    <Address>http://getquote.icicidirect.com/trading/equity/trading_stock_quote.asp</Address>
+    <QueryField>Symbol</QueryField>
+  </Site>
+  <Site Name="BSE Indices" Type="Get">
+    <Address>http://www.bseindia.com/mktlive/mktwatch.asp</Address>
+  </Site>
+  <Site Name="Icici Codes" Type="Post">
+    <Address>http://content.icicidirect.com/findsymbolchart.asp</Address>
+    <QueryField>Symbol</QueryField>
+  </Site>
+</SiteInfo>
