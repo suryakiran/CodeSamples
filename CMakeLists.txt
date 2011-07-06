@@ -48,6 +48,7 @@ Add_Subdirectory (CPP)
 Add_Subdirectory (DownloadFile)
 Add_Subdirectory (Perl)
 Add_Subdirectory (PerlCpp)
+Add_Subdirectory (XML)
 
 Set (GvimInFile ${CMAKE_CONFIG_DIR}/gviminit.vim.in)
 Set (GvimOutFile ${CMAKE_BINARY_DIR}/gviminit.vim)
