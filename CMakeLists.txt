@@ -5,7 +5,6 @@ Include (${CMAKE_SOURCE_DIR}/CMake/Dirs.cmake)
 
 If (UNIX)
 	Add_Definitions ("-DUNIX")
-	Set (CMAKE_SKIP_BUILD_RPATH TRUE)
 Else (UNIX)
 	Add_Definitions ("-DWINDOWS")
 	Add_Definitions ("-DBOOST_TYPEOF_SILENT")
@@ -33,6 +32,10 @@ Find_Package (
 Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
 Link_Directories    (${Boost_LIBRARY_DIRS})
 
+Set (ParseArgsLib "parse_args")
+Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
+Add_Subdirectory (CommandLineArgs)
+
 Add_Subdirectory (Multi-Index)
 Add_Subdirectory (Fusion)
 Add_Subdirectory (FileReading)
@@ -53,3 +56,10 @@ Add_Subdirectory (XML)
 Set (GvimInFile ${CMAKE_CONFIG_DIR}/gviminit.vim.in)
 Set (GvimOutFile ${CMAKE_BINARY_DIR}/gviminit.vim)
 Configure_File (${GvimInFile} ${GvimOutFile} @ONLY)
+
+Find_File (
+  PERL_IN_FILE
+    test.pl.in
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+  )
