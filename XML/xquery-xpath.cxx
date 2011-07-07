@@ -2,6 +2,7 @@
 #include <ParseArgs.hxx>
 #include <boost/filesystem.hpp>
 #include <xqilla/xqilla-simple.hpp>
+#include <Node.h>
 
 using namespace std;
 namespace fs = boost::filesystem;
@@ -58,12 +59,7 @@ int main (int argc, char** argv)
 
   Item::Ptr item;
   while (item = result->next(context)) {
-    const Node* node = dynamic_cast<const Node*>(item.get());
-    if (node) {
-      Node::Ptr parent (node->dmParent(context));
-      map<string, string> attrs = getAttributes (parent, context, result);
-      map<string, string> children = getChildren (parent, context, result);
-    }
+    Xqilla::Node node (item, context, result.get());
   }
   return 0;
 }

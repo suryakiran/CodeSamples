@@ -3,6 +3,8 @@ Project(XML)
 Include (${CMAKE_MODULE_PATH}/Xerces.cmake)
 Include (${CMAKE_MODULE_PATH}/Xqilla.cmake)
 
+Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
+
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 Set (PERL_OUT_FILE ${CMAKE_BINARY_DIR}/xquery-xpath)
 
@@ -15,9 +17,13 @@ Set (XmlTargets)
 
 ForEach (file ${SOURCES})
 	Get_FileName_Component (exeName ${file} NAME_WE)
+  String (CONFIGURE ${dir_tmpl} dir @ONLY)
+  Include_Directories (${dir})
+  File (GLOB CPP_FILES ${dir}/*.cpp)
+  File (GLOB H_FILES ${dir}/*.h)
   Set (ProjectName "XML Tests ${exeName}")
   Set (exeName XML-${exeName})
-	Add_Executable(${exeName} ${file})
+  Add_Executable(${exeName} ${file} ${CPP_FILES} ${H_FILES})
 	Set_Target_Properties (
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}

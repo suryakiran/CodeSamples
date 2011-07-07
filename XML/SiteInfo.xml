@@ -15,4 +15,12 @@
     <Address>http://content.icicidirect.com/findsymbolchart.asp</Address>
     <QueryField>Symbol</QueryField>
   </Site>
+  <Site Name="Money Control Codes" Type="Get">
+    <Address>http://www.moneycontrol.com/stocks/cptmarket/compsearchnew.php</Address>
+    <QueryField>companyname</QueryField>
+    <PostFields>
+      <PostField Name="fname" Value="price"/>
+      <PostField Name="searchtype" Value="new"/>
+    </PostFields>
+  </Site>
 </SiteInfo>
