@@ -6,6 +6,39 @@
 using namespace std;
 namespace fs = boost::filesystem;
 
+map<string, string>
+getAttributes (Node::Ptr parent, const AutoDelete<DynamicContext>& context, const Result& result)
+{
+  map<string, string> attrs;
+  Sequence attributes = parent->dmAttributes(context, result.get())->toSequence(context);
+
+  for (size_t i = 0; i < attributes.getLength(); ++i) {
+    const Node* attrNode = dynamic_cast<const Node*>(attributes.item(i).get());
+    attrs[UTF8(attrNode->dmNodeName(context)->getName())] = 
+      UTF8(attrNode->dmStringValue(context));
+  }
+
+  return attrs;
+}
+
+map<string, string>
+getChildren (Node::Ptr parent, const AutoDelete<DynamicContext>& context, const Result& result)
+{
+  map<string, string> rv;
+
+  Sequence children = parent->dmChildren (context, result.get())->toSequence(context);
+
+  for (size_t i = 0; i < children.getLength(); ++i) {
+    const Node* childNode = dynamic_cast<const Node*>(children.item(i).get());
+    if (string(UTF8(childNode->dmNodeKind())) == string(UTF8(Node::element_string))) {
+      rv[UTF8(childNode->dmNodeName(context)->getName())] =
+        UTF8(childNode->dmStringValue(context));
+    }
+  }
+
+  return rv;
+}
+
 int main (int argc, char** argv)
 {
   Args args = ParseArgs(argc, argv)();
@@ -19,8 +52,6 @@ int main (int argc, char** argv)
 
   if (!seq.isEmpty() && seq.first()->isNode()) {
     context->setContextItem(seq.first());
-    context->setContextPosition(1);
-    context->setContextSize(1);
   }
 
   Result result = query->execute(context);
@@ -29,16 +60,10 @@ int main (int argc, char** argv)
   while (item = result->next(context)) {
     const Node* node = dynamic_cast<const Node*>(item.get());
     if (node) {
-      cout << UTF8(node->dmStringValue(context)) << endl;
-      Result attributes = node->dmParent(context)->dmAttributes(context, result.get());
-      Item::Ptr attrItem;
-      int i (0);
-      while (attrItem = attributes->next(context)) {
-        ++i;
-        cout << '\t' << i << '\t' << UTF8(attrItem->asString(context)) << endl;
-      }
+      Node::Ptr parent (node->dmParent(context));
+      map<string, string> attrs = getAttributes (parent, context, result);
+      map<string, string> children = getChildren (parent, context, result);
     }
   }
-
   return 0;
 }
