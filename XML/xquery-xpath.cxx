@@ -1,43 +1,16 @@
 #include <iostream>
 #include <ParseArgs.hxx>
 #include <boost/filesystem.hpp>
-#include <xqilla/xqilla-simple.hpp>
-#include <Node.h>
+#include <xercesc/dom/DOM.hpp>
+#include <xqilla/xqilla-dom3.hpp>
 
 using namespace std;
 namespace fs = boost::filesystem;
 
-map<string, string>
-getAttributes (Node::Ptr parent, const AutoDelete<DynamicContext>& context, const Result& result)
+ostream& operator<< (ostream& p_os, const XMLCh* p_char)
 {
-  map<string, string> attrs;
-  Sequence attributes = parent->dmAttributes(context, result.get())->toSequence(context);
-
-  for (size_t i = 0; i < attributes.getLength(); ++i) {
-    const Node* attrNode = dynamic_cast<const Node*>(attributes.item(i).get());
-    attrs[UTF8(attrNode->dmNodeName(context)->getName())] = 
-      UTF8(attrNode->dmStringValue(context));
-  }
-
-  return attrs;
-}
-
-map<string, string>
-getChildren (Node::Ptr parent, const AutoDelete<DynamicContext>& context, const Result& result)
-{
-  map<string, string> rv;
-
-  Sequence children = parent->dmChildren (context, result.get())->toSequence(context);
-
-  for (size_t i = 0; i < children.getLength(); ++i) {
-    const Node* childNode = dynamic_cast<const Node*>(children.item(i).get());
-    if (string(UTF8(childNode->dmNodeKind())) == string(UTF8(Node::element_string))) {
-      rv[UTF8(childNode->dmNodeName(context)->getName())] =
-        UTF8(childNode->dmStringValue(context));
-    }
-  }
-
-  return rv;
+  p_os << UTF8(p_char);
+  return p_os;
 }
 
 int main (int argc, char** argv)
@@ -46,20 +19,52 @@ int main (int argc, char** argv)
   fs::path siteInfoFile (args["cur_src_dir"]);
   siteInfoFile /= "SiteInfo.xml";
 
-  XQilla xqilla;
-  AutoDelete<XQQuery> query (xqilla.parse(X("/SiteInfo/Site/@Name")));
-  AutoDelete<DynamicContext> context (query->createDynamicContext());
-  Sequence seq = context->resolveDocument(X(siteInfoFile.string().c_str()));
+  XQillaPlatformUtils::initialize();
 
-  if (!seq.isEmpty() && seq.first()->isNode()) {
-    context->setContextItem(seq.first());
+  xercesc::DOMImplementation* impl = 
+    xercesc::DOMImplementationRegistry::getDOMImplementation(X("XPath2 3.0"));
+
+  try {
+
+    AutoRelease<xercesc::DOMLSParser> parser (impl->createLSParser (xercesc::DOMImplementationLS::MODE_SYNCHRONOUS, 0));
+    parser->getDomConfig()->setParameter(xercesc::XMLUni::fgDOMNamespaces, true);
+    parser->getDomConfig()->setParameter(xercesc::XMLUni::fgXercesSchema, true);
+    parser->getDomConfig()->setParameter(xercesc::XMLUni::fgDOMValidateIfSchema, true);
+
+    xercesc::DOMDocument* document = parser->parseURI (siteInfoFile.string().c_str());
+
+    AutoRelease<xercesc::DOMXPathExpression> expression 
+      (document->createExpression (X("/SiteInfo/Site/@Name"), 0));
+
+    AutoRelease<xercesc::DOMXPathResult> result 
+      (expression->evaluate(document, xercesc::DOMXPathResult::ITERATOR_RESULT_TYPE, 0));
+
+    while (result->iterateNext()) {
+      xercesc::DOMNode* node = result->getNodeValue();
+
+      if (node) {
+
+        if (node->getNodeType() == xercesc::DOMNode::ATTRIBUTE_NODE) {
+          xercesc::DOMAttr* attrNode = dynamic_cast<xercesc::DOMAttr*> (node);
+          xercesc::DOMElement* elem = attrNode->getOwnerElement();
+          cout << elem->getAttributeNode(X("Type"))->getValue() << endl;
+        }
+
+#if 0
+        if (nodeMap) {
+          cout << "Node Map Present" << endl;
+        } else {
+          cout << "Node Map Absent" << endl;
+        }
+#endif
+      }
+    }
+
+  } catch (XQillaException& e) {
+    cout << "Exception: " << e.getString() << endl;
   }
 
-  Result result = query->execute(context);
+  XQillaPlatformUtils::terminate();
 
-  Item::Ptr item;
-  while (item = result->next(context)) {
-    Xqilla::Node node (item, context, result.get());
-  }
   return 0;
 }
