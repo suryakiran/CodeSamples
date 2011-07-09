@@ -1,4 +1,5 @@
 #include <Base.h>
+#include <boost/type_traits/add_const.hpp>
 
 %module{Test};
 
@@ -11,4 +12,19 @@
 
   void setString (const std::string& p_s);
   const std::string& getString () const;
+
+  const std::string& getName () const
+    %code {% 
+      RETVAL = const_cast<Base*>(THIS)->name(); 
+      %};
+
+  bool getBoolVar () const
+    %code {% 
+      RETVAL = const_cast<Base*>(THIS)->boolVar(); 
+      %};
+
+  std::vector<std::string> getVector () const
+    %code {%
+      RETVAL = const_cast<Base*>(THIS)->stringVecVar();
+      %};
 };

@@ -9,3 +9,9 @@
 %typemap{const std::string&}{parsed} {
   %cpp_type{%std::string%};
 };
+
+%typemap{bool}{simple};
+
+%typemap{std::vector<std::string>}{parsed} {
+  %cpp_type{%std::vector<std::string>%};
+};
