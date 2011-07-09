@@ -1,0 +1,12 @@
+#!@PERL_EXECUTABLE@ -w
+use strict;
+
+my $exe = "@CMAKE_CURRENT_BINARY_DIR@/PerlTest";
+
+my @args;
+
+push @args, "$exe";
+push @args, "--source-dir=\"@CMAKE_CURRENT_SOURCE_DIR@\"";
+push @args, "--binary-dir=\"@CMAKE_CURRENT_BINARY_DIR@\"";
+
+exec (join (' ', @args));

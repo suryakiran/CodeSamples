@@ -5,7 +5,7 @@ using namespace std;
 Derived::Derived()
   : Base(), m_d (19.5)
 {
-  cout << "-Derived Constructor" << endl;
+  cout << " Derived Constructor" << endl;
 }
 
 void
@@ -22,7 +22,7 @@ Derived::getDouble (void) const
 
 Derived::~Derived()
 {
-    cout << "-Derived Destructor" << endl;
+    cout << " Derived Destructor" << endl;
 }
 
 void
