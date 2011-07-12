@@ -13,6 +13,9 @@ class DLLPerlCppSrc Derived : public Base
     const double& getDouble (void) const;
 
     virtual void virtualFun (void);
+    virtual Derived* clone () {
+      return new Derived(*this);
+    }
 
     ~Derived ();
 

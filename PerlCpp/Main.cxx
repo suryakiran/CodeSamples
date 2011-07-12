@@ -3,6 +3,7 @@
 #include <CommandLineArgs.hxx>
 using namespace std;
 
+#include <boost/shared_ptr.hpp>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 using namespace po;
@@ -28,6 +29,30 @@ void clean_perl()
     perl_free(my_perl);
     PERL_SYS_TERM();
   }
+}
+
+void
+call_Perl_Base_Argument (Base* b)
+{
+
+  b->setString("----- Surya Kiran -----");
+
+  dSP;
+
+  ENTER;
+  SAVETMPS;
+  PUSHMARK (SP);
+
+  SV* sv = newSV(0);
+  XPUSHs (sv_setref_pv(sv, "Test::Base", (void*)b));
+  PUTBACK;
+
+  int count = call_pv ("print_base", G_VOID);
+
+  SPAGAIN;
+  FREETMPS;
+  LEAVE;
+  PUTBACK;
 }
 
 void
@@ -105,12 +130,15 @@ int main (int argc, char** argv, char** env)
   p /= "test";
   cla.add(p);
 
+  boost::shared_ptr<Base> b(new Derived);
   perl_parse (my_perl, xs_init, cla.count(), cla(), NULL); 
-  call_PerlSubs();
+  //call_PerlSubs();
+  call_Perl_Base_Argument(b->clone());
 
   //Derived* d = new Derived();
   //cout << d->getDouble() << endl;
   //delete d;
+  //
 
   clean_perl();
 }

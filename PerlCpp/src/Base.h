@@ -31,8 +31,13 @@ class DLLPerlCppSrc Base
     Accessor<StringVec> stringVecVar;   
     Accessor<bool> boolVar;
 
+    void printThis (const Base* p_basePtr);
+    virtual Base* clone () = 0;
+
   private:
     int m_i;
+
+  protected:
     std::string m_s;
 };
 
