@@ -4,6 +4,7 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <vector>
 
 typedef std::vector<std::string> StringVec;
 typedef std::pair<std::string, std::string> StringPair;
@@ -23,6 +24,12 @@ class DLLPerlCppSrc Base
     void setString (const std::string& p_s);
     const std::string& getString() const;
 
+    void addItem (const std::string& p_s);
+
+    const std::vector<std::string>& getVector () const {
+      return m_vs;
+    }
+
     virtual void virtualFun (void) = 0;
 
     virtual ~Base ();
@@ -31,9 +38,15 @@ class DLLPerlCppSrc Base
     Accessor<StringVec> stringVecVar;   
     Accessor<bool> boolVar;
 
+    void printThis (const Base* p_basePtr);
+    virtual Base* clone () = 0;
+
   private:
     int m_i;
+
+  protected:
     std::string m_s;
+    std::vector<std::string> m_vs;
 };
 
 #endif
