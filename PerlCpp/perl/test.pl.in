@@ -24,6 +24,12 @@ sub test_fun {
   return $x;
 }
 
+sub array_fun {
+  my $arr = @_;
+  print "Coming Here\n";
+  print join("\n", @$arr); 
+}
+
 sub func_return_array {
   my ($string) = @_;
 

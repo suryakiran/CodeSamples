@@ -3,6 +3,7 @@
 
 #include <PerlCppSrc.hxx>
 #include <string>
+#include <vector>
 
 class DLLPerlCppSrc Base
 {
@@ -15,6 +16,12 @@ class DLLPerlCppSrc Base
     void setString (const std::string& p_s);
     const std::string& getString() const;
 
+    void addItem (const std::string& p_s);
+
+    const std::vector<std::string>& getVector () const {
+      return m_vs;
+    }
+
     virtual void virtualFun (void) = 0;
 
     virtual ~Base ();
@@ -22,6 +29,7 @@ class DLLPerlCppSrc Base
   private:
     int m_i;
     std::string m_s;
+    std::vector<std::string> m_vs;
 };
 
 #endif

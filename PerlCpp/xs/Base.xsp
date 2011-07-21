@@ -11,4 +11,7 @@
 
   void setString (const std::string& p_s);
   const std::string& getString () const;
+
+  void addItem (const std::string& p_s);
+  const std::vector<std::string>& getVector() const;
 };

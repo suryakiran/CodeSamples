@@ -36,3 +36,9 @@ Base::~Base()
 {
     cout << "Base Destructor" << endl;
 }
+
+void
+Base::addItem (const string& p_s)
+{
+  m_vs.push_back(p_s);
+}

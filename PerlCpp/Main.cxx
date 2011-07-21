@@ -3,6 +3,8 @@
 #include <CommandLineArgs.hxx>
 using namespace std;
 
+#include<vector>
+#include<string>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 using namespace po;
@@ -33,17 +35,28 @@ void clean_perl()
 void
 call_PerlSubs (void)
 {
+  vector<string> vs;
+  vs.push_back ("Surya");
+  vs.push_back ("Kiran");
+  vs.push_back ("Gullapalli");
+
   dSP;
 
   ENTER;
   SAVETMPS;
   PUSHMARK (SP);
 
-  XPUSHs (sv_2mortal(newSVpv("Surya.Kiran.Gullapalli", 0)));
+  AV* av = newAV();
+  for (unsigned int i = 0; i < vs.size(); ++i) {
+    av_push(av, newSVpv(vs[i].c_str(), 0));
+  }
+
+  XPUSHs (sv_2mortal(newRV_noinc((SV*)av)));
   PUTBACK;
 
-  int count = call_pv ("test_fun", G_SCALAR);
+  int count = call_pv ("array_fun", G_SCALAR);
 
+#if 0
   if (count == 1) {
     SV* sv = POPs;
     Base* d(0);
@@ -56,6 +69,7 @@ call_PerlSubs (void)
 
     cout << "-- Returning a scalar" << endl;
   }
+#endif
 
   SPAGAIN;
 
