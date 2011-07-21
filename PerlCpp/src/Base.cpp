@@ -3,9 +3,13 @@
 using namespace std;
 
 Base::Base()
-  : m_i (19), m_s("Surya Kiran")
+  : m_i (19), m_s("Base"), name("Accessor Name"), boolVar(true)
 {
   cout << "Base Constructor" << endl;
+  StringVec& vec = stringVecVar();
+  vec.push_back ("Vector Item: 1");
+  vec.push_back ("Vector Item: 2");
+  vec.push_back ("Vector Item: 3");
 }
 
 void
@@ -34,7 +38,13 @@ Base::getString (void) const
 
 Base::~Base()
 {
-    cout << "Base Destructor" << endl;
+  cout << "Base Destructor" << endl;
+}
+
+void
+Base::printThis (const Base* p_basePtr)
+{
+  cout << p_basePtr->getString() << endl;
 }
 
 void

@@ -10,6 +10,8 @@
   %cpp_type{%std::string%};
 };
 
-%typemap{const std::vector<std::string>&}{parsed} {
+%typemap{bool}{simple};
+
+%typemap{std::vector<std::string>}{parsed} {
   %cpp_type{%std::vector<std::string>%};
 };

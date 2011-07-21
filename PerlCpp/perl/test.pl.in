@@ -13,13 +13,21 @@ BEGIN {
 
 use Test;
 
+sub print_base {
+  my ($base) = @_;
+  print $base->getString(), "\n";
+}
+
 sub test_fun {
   my $x = new Test::Derived;
-  $x->setInt(53);
+  $x->setInt(57);
   $x->virtualFun();
   $x->setDouble (23.45);
-  print "Integer: ", $x->getInt(), "\n";
-  print "Double: ", $x->getDouble(), "\n";
+  my $arr = $x->getVector();
+
+  foreach (@$arr) {
+    print $_, "\n";
+  }
 
   return $x;
 }

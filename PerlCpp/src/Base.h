@@ -1,9 +1,17 @@
 #ifndef Base_h_INCLUDED
 #define Base_h_INCLUDED
 
-#include <PerlCppSrc.hxx>
+#include <vector>
+#include <utility>
 #include <string>
 #include <vector>
+
+typedef std::vector<std::string> StringVec;
+typedef std::pair<std::string, std::string> StringPair;
+typedef std::vector<StringPair> StringPairVec;
+
+#include <PerlCppSrc.hxx>
+#include <Accessor.h>
 
 class DLLPerlCppSrc Base
 {
@@ -26,8 +34,17 @@ class DLLPerlCppSrc Base
 
     virtual ~Base ();
 
+    Accessor<std::string> name;
+    Accessor<StringVec> stringVecVar;   
+    Accessor<bool> boolVar;
+
+    void printThis (const Base* p_basePtr);
+    virtual Base* clone () = 0;
+
   private:
     int m_i;
+
+  protected:
     std::string m_s;
     std::vector<std::string> m_vs;
 };
