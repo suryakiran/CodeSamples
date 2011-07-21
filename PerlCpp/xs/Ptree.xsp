@@ -1,0 +1,44 @@
+#include <boost/property_tree/ptree.hpp>
+
+%module{Test};
+
+%name {Test::Interface} class ptree
+{
+  %name{new} ptree();
+
+  ptree* getChild (const std::string& path)
+    %code {%
+      const char* CLASS = "Test::Interface";
+      RETVAL = &(THIS->get_child(path));
+      %};
+
+  void setDouble(const std::string& key, double d)
+    %code {%
+      THIS->put(key, d);
+      %};
+
+  double getDouble(const std::string& key)
+    %code {%
+      RETVAL = THIS->get<double>(key);
+      %};
+
+  const std::string& getString(const std::string& key)
+    %code {%
+      RETVAL = THIS->get<std::string>(key);
+      %};
+
+  int getInteger(const std::string& key)
+    %code {%
+      RETVAL = THIS->get<int>(key);
+      %};
+
+  void setInteger(const std::string& key, int i)
+    %code {%
+      THIS->put(key, i);
+      %};
+
+  void setString(const std::string& key, const std::string& s)
+    %code {%
+      THIS->put(key, s);
+      %};
+};

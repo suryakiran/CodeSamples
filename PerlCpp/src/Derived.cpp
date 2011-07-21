@@ -5,7 +5,6 @@ using namespace std;
 Derived::Derived()
   : Base(), m_d (19.5)
 {
-  cout << "Derived Constructor" << endl;
   m_s = "Derived";
 }
 
@@ -23,7 +22,6 @@ Derived::getDouble (void) const
 
 Derived::~Derived()
 {
-  cout << "Derived Destructor" << endl;
 }
 
 void

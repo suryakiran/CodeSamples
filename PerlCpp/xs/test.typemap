@@ -1,3 +1,4 @@
 TYPEMAP
 Base* O_OBJECT
 Derived* O_OBJECT
+ptree* O_OBJECT

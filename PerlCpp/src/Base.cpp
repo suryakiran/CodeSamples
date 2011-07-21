@@ -5,7 +5,6 @@ using namespace std;
 Base::Base()
   : m_i (19), m_s("Base"), name("Accessor Name"), boolVar(true)
 {
-  cout << "Base Constructor" << endl;
   StringVec& vec = stringVecVar();
   vec.push_back ("Vector Item: 1");
   vec.push_back ("Vector Item: 2");
@@ -38,7 +37,6 @@ Base::getString (void) const
 
 Base::~Base()
 {
-  cout << "Base Destructor" << endl;
 }
 
 void

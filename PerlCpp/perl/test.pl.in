@@ -43,3 +43,21 @@ sub func_return_array {
 
   return split(/\./, $string);
 }
+
+sub test_interface {
+  my $iface = Test::Interface->new();
+
+  $iface->setDouble("Main.Value.Double", 5.0);
+  $iface->setInteger("Main.Value.Integer", 13);
+  $iface->setString("Main.Value.String", "Test Interface");
+
+  my ($child, $val);
+
+  $child = $iface->getChild("Main.Value");
+  $val = $child->getDouble("Double");
+  print $val, "\n";
+  $val = $child->getInteger("Integer");
+  print $val, "\n";
+  $val = $child->getString("String");
+  print $val, "\n";
+}

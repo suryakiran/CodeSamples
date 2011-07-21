@@ -2,6 +2,8 @@
 #include <string>
 
 #include <Test.hxx>
+#include <boost/property_tree/ptree.hpp>
+using namespace boost::property_tree;
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,5 +30,6 @@ extern "C" {
 
 MODULE = Test
 
-INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- --typemap=perlcpp.tsp Base.xsp
-INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- --typemap=perlcpp.tsp Derived.xsp
+INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- -t perlcpp.tsp Base.xsp
+INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- -t perlcpp.tsp Derived.xsp
+INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- -t perlcpp.tsp Ptree.xsp

@@ -36,7 +36,7 @@ void
 call_Perl_Base_Argument (Base* b)
 {
 
-  b->setString("----- Surya Kiran -----");
+  cout << "----- Perl Base Argument Test Begin -----" << endl;
 
   dSP;
 
@@ -54,6 +54,30 @@ call_Perl_Base_Argument (Base* b)
   FREETMPS;
   LEAVE;
   PUTBACK;
+
+  cout << "----- Perl Base Argument Test End -----" << endl;
+  cout << endl;
+}
+
+void Test_Interface(void)
+{
+  cout << "----- Perl Interface Test Begin -----" << endl;
+
+  dSP;
+
+  ENTER;
+  SAVETMPS;
+
+  PUSHMARK(SP);
+  PUTBACK;
+
+  int count = call_pv ("test_interface", G_VOID);
+
+  FREETMPS;
+  LEAVE;
+
+  cout << "----- Perl Interface Test End -----" << endl;
+  cout << endl;
 }
 
 void
@@ -147,6 +171,7 @@ int main (int argc, char** argv, char** env)
   perl_parse (my_perl, xs_init, cla.count(), cla(), NULL); 
   //call_PerlSubs();
   call_Perl_Base_Argument(b->clone());
+  Test_Interface();
 
   //Derived* d = new Derived();
   //cout << d->getDouble() << endl;
