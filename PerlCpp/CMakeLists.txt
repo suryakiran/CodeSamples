@@ -3,6 +3,9 @@ Project (PerlCpp)
 Set (PerlCppSrcLib "PerlCppSrc")
 Set (PerlCppSrcExtnLib "Test")
 
+Set (PERL_C_MODULES Encode HTML::Parser B IO Socket)
+Find_Perl_C_Modules(${PERL_C_MODULES})
+
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${CMAKE_CURRENT_BINARY_DIR}/src
@@ -16,7 +19,8 @@ Add_Subdirectory (xs)
 Set (PERL_XSI_FILE ${CMAKE_CURRENT_BINARY_DIR}/perlxsi.c)
 Add_Custom_Command (
   OUTPUT ${PERL_XSI_FILE}
-  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit -- -o ${PERL_XSI_FILE} Test
+  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit -- -o ${PERL_XSI_FILE}
+  Test ${PERL_C_MODULES}
   )
 
 Include_Directories (
@@ -27,6 +31,7 @@ Include_Directories (
 File (GLOB CXX_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 File (GLOB HXX_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.hxx)
 Add_Executable (PerlTest ${CXX_FILES} ${HXX_FILES} ${PERL_XSI_FILE})
+Perl_Xsi_Depends (PerlTest ${PERL_C_MODULES})
 Target_Link_Libraries (
   PerlTest
   ${PerlCppSrcLib}

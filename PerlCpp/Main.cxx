@@ -59,6 +59,27 @@ call_Perl_Base_Argument (Base* b)
   cout << endl;
 }
 
+void Test_Download(void)
+{
+  cout << "----- Perl Download Test Begin -----" << endl;
+
+  dSP;
+
+  ENTER;
+  SAVETMPS;
+
+  PUSHMARK(SP);
+  PUTBACK;
+
+  int count = call_pv ("test_download", G_VOID | G_NOARGS);
+
+  FREETMPS;
+  LEAVE;
+
+  cout << "----- Perl Download Test End -----" << endl;
+  cout << endl;
+}
+
 void Test_Interface(void)
 {
   cout << "----- Perl Interface Test Begin -----" << endl;
@@ -172,6 +193,7 @@ int main (int argc, char** argv, char** env)
   //call_PerlSubs();
   call_Perl_Base_Argument(b->clone());
   Test_Interface();
+  Test_Download();
 
   //Derived* d = new Derived();
   //cout << d->getDouble() << endl;

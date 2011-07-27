@@ -2,8 +2,10 @@
 #
 use strict;
 use warnings;
+use diagnostics;
 
 use File::Spec::Functions;
+use WWW::Mechanize;
 
 BEGIN {
   unshift @INC, catfile("@CMAKE_CURRENT_BINARY_DIR@", "xs");
@@ -60,4 +62,12 @@ sub test_interface {
   print $val, "\n";
   $val = $child->getString("String");
   print $val, "\n";
+}
+
+sub test_download {
+  my $mech = WWW::Mechanize->new (autocheck=>1);
+		$mech->get(
+      'http://www.glasbergen.com/wp-content/gallery/cartoons/toon451.gif',
+      ':content_file' => "randy.gif"
+    );
 }

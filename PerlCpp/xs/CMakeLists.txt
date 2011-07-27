@@ -52,11 +52,6 @@ Add_Library (
   SHARED ${XS_CPP_FILES}
   )
 
-Set_Source_Files_Properties (
-  ${XS_CPP_FILES}
-  PROPERTIES GENERATED TRUE
-  )
-
 Target_Link_Libraries (
   ${PerlCppSrcExtnLib} ${PERL_LIBRARY} ${PerlCppSrcLib}
   )
