@@ -63,6 +63,8 @@ int main (void)
   DOMLSSerializer* ser = impl->createLSSerializer();
   DOMConfiguration* serializerConfig=ser->getDomConfig();
   serializerConfig->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
+  serializerConfig->setParameter(XMLUni::fgDOMWRTXercesPrettyPrint, false);
+  serializerConfig->setParameter(XMLUni::fgDOMXMLDeclaration, true);
 
   DOMErrorHandler *myErrorHandler = new DOMPrintErrorHandler();
   serializerConfig->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler);
@@ -72,7 +74,7 @@ int main (void)
   XMLFormatTarget *myFormTarget=new StdOutFormatTarget(); //("/home/suki/xerces-test.xml");
   output->setByteStream (myFormTarget);
 
-  ser->write (element, output);
+  ser->write (doc, output);
   output->release();
   ser->release();
   delete myFormTarget;
