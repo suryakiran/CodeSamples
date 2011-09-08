@@ -1,7 +1,7 @@
 Project (CodeSamples)
 
 CMake_Minimum_Required (VERSION 2.8.4)
-Include (${CMAKE_SOURCE_DIR}/CMake/Dirs.cmake)
+Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
 If (UNIX)
 	Add_Definitions ("-DUNIX")
@@ -18,6 +18,7 @@ Include (${CMAKE_MODULE_PATH}/Perl.cmake)
 Include (${CMAKE_MODULE_PATH}/Macros.cmake)
 Include (${CMAKE_MODULE_PATH}/Targets.cmake)
 Include (${CMAKE_MODULE_PATH}/Compiler.cmake)
+Include (${CMAKE_MODULE_PATH}/Xerces.cmake)
 
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
@@ -53,6 +54,7 @@ Add_Subdirectory (Perl)
 Add_Subdirectory (PerlCpp)
 Add_Subdirectory (XML)
 Add_Subdirectory (Mpl)
+Add_Subdirectory (Xerces)
 
 Set (GvimInFile ${CMAKE_CONFIG_DIR}/gviminit.vim.in)
 Set (GvimOutFile ${CMAKE_BINARY_DIR}/gviminit.vim)
