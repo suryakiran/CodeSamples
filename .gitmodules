@@ -1,6 +1,9 @@
 [submodule "CMake"]
 	path = CMake
-	url = git@github.com:suryakiran/CMakeScripts.git
+	url = git@github.com:suryakiran/CMakeScripts
 [submodule "PerlModules"]
 	path = PerlModules
 	url = git@github.com:suryakiran/PerlModules.git
+[submodule "Global"]
+	path = Global
+	url = git@github.com:suryakiran/Global
