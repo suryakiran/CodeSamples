@@ -5,6 +5,9 @@ use File::Spec::Functions;
 use File::Basename;
 use strict;
 
+use constant true => 1;
+use constant false => 0;
+
 BEGIN {
   unshift @INC, "@CMAKE_SOURCE_DIR@/PerlModules";
 }
@@ -12,7 +15,21 @@ BEGIN {
 use Gdb;
 use App;
 
-my $current_exe_file = "@CURRENT_EXE_FILE@";
+my $debugBuild = false;
+my $buildType = "@CMAKE_BUILD_TYPE@";
+my $gitBranchName = "@GIT_CURRENT_BRANCH_NAME@";
+
+if ($buildType =~ /^Debug$/) {
+  $debugBuild = true;
+}
+
+my $current_exe_file ;
+
+if ($debugBuild) {
+  $current_exe_file = "@INSTALL_PREFIX_Debug@/$gitBranchName/bin/@exeName@";
+} else {
+  $current_exe_file = "@INSTALL_PREFIX_Release@/bin/@exeName@";
+}
 
 my ($debugApplication);
 
