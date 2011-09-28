@@ -24,7 +24,14 @@ struct Slot
 {
   Slot() { }
 
-  void voidSlot () { cout << "Slot::voidSlot" << endl; }
+  virtual void voidSlot () { cout << "Slot::voidSlot" << endl; }
+};
+
+struct SlotDerived : public Slot
+{
+  SlotDerived() { }
+
+  virtual void voidSlot () { cout << "SlotDerived::voidSlot" << endl; }
 };
 
 int main (void)
@@ -32,7 +39,7 @@ int main (void)
   cout << "--------------------------------" << endl;
 
   Signal sig;
-  Slot slot;
+  Slot* slot = new SlotDerived();
   sig.signal<Signal::VoidSignal>().connect(MEM_FUN_OBJ_PTR (Slot,voidSlot,slot,0));
 
   sig.emitSignal<Signal::VoidSignal>();
