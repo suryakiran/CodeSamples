@@ -32,7 +32,12 @@ Find_Package (
   COMPONENTS date_time program_options filesystem system
   )
 
-Include_Directories (${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
+Include_Directories (
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${Boost_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/Global/Include
+  )
+
 Link_Directories    (${Boost_LIBRARY_DIRS})
 
 Set (ParseArgsLib "parse_args")
