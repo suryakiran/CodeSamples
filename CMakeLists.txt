@@ -2,9 +2,14 @@ Project (CodeSamples)
 
 CMake_Minimum_Required (VERSION 2.8.4)
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
-Include_Cmake_Module(Perl)
 
 Include_Cmake_Module(Perl)
+Check_Perl_Modules (
+  Template
+  XML::Simple
+  File::Find::Rule
+  )
+
 Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
