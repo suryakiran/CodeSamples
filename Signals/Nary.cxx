@@ -3,8 +3,8 @@
 #include <typeinfo>
 using namespace std;
 
-#include <SignalBase.h>
 #include <Signals/BoostSlots.hxx>
+#include <Signals/Signals.hxx>
 
 #include <boost/typeof/typeof.hpp>
 
