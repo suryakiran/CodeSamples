@@ -1,30 +1,39 @@
 #include <iostream>
 #include <algorithm>
-#include <Signals/Signals.hxx>
+#include <typeinfo>
+using namespace std;
+
+#include <SignalBase.h>
 #include <Signals/BoostSlots.hxx>
+
 #include <boost/typeof/typeof.hpp>
+
 #include <boost/function_types/function_arity.hpp>
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/add_pointer.hpp>
-using namespace std;
 namespace bfun = boost::function_types;
 
-class Signal : public SignalBase
-{
-  public:
+#include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/add_pointer.hpp>
+
+class Signal;
+
+namespace signal {
+  namespace id {
     struct VoidSignal;
+  }
 
-    typedef fusion::map <
-      fusion::pair <VoidSignal, BOOST_SIGNAL(void())>
-      > SignalsMap;
-#include <Signals/SignalMacros.hxx>
+  template <>
+    struct types <Signal> 
+    {
+      typedef fusion::map <
+        fusion::pair <id::VoidSignal, BOOST_SIGNAL(void())>
+        > type;
+    };
+}
 
-  public:
-    Signal() { 
-      fusion::for_each(m_signals, initialize());
-    }
+class Signal : public SignalBase <Signal>
+{
 };
 
 struct Slot 
@@ -38,7 +47,7 @@ struct Slot
 struct SlotDerived : public Slot
 {
   SlotDerived() { 
-    cout << typeid (BOOST_TYPEOF(this)).name() << endl;
+    cout << "Slot Derived" << endl;
   }
 
   virtual void voidSlot () { cout << "SlotDerived::voidSlot" << endl; }
@@ -50,16 +59,8 @@ int main (void)
 
   Signal sig;
   Slot* slot = new SlotDerived();
-  sig.signal<Signal::VoidSignal>().connect(MEM_FUN_OBJ_PTR (Slot,voidSlot,slot,0));
-
-  sig.emitSignal<Signal::VoidSignal>();
-  typedef BOOST_TYPEOF (slot) slotType;
-  cout << typeid(slotType).name() << endl;
-  typedef BOOST_TYPEOF (&Slot::argSlot) funcType;
-  cout << bfun::function_arity<funcType>::value << endl;
-  typedef boost::mpl::at_c<bfun::parameter_types<funcType>, 0>::type arg0Type;
-  typedef boost::add_pointer<arg0Type>::type arg0pType;
-  cout << boost::is_same<arg0pType, slotType>::value << endl;
+  sig.signal<signal::id::VoidSignal>().connect(MEM_FUN_OBJ_PTR (Slot,voidSlot,slot,0));
+  sig.emitSignal<signal::id::VoidSignal>();
 
   cout << "--------------------------------" << endl;
 }
