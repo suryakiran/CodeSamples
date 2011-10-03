@@ -4,7 +4,7 @@
 using namespace std;
 
 #include <Signals/BoostSlots.hxx>
-#include <Signals/Signals.hxx>
+#include <Signals/SignalBase.hxx>
 
 #include <boost/typeof/typeof.hpp>
 
@@ -15,6 +15,24 @@ namespace bfun = boost::function_types;
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/add_pointer.hpp>
+
+#define SLOT(class,func,obj)\
+  MEM_FUN_OBJ_PTR(class,func,obj,0)
+
+template <class SlotClass, class Func, int NumArgs>
+struct slot
+{
+  slot(SlotClass* p_slotObj)
+  {
+  }
+
+  slot (SlotClass& p_slotObj)
+  {
+  }
+  private:
+    SlotClass* m_slot;
+    Func m_func;
+};
 
 class Signal;
 
@@ -36,21 +54,21 @@ class Signal : public SignalBase <Signal>
 {
 };
 
-struct Slot 
+struct MySlot 
 {
-  Slot() { }
+  MySlot() { }
 
-  virtual void voidSlot () { cout << "Slot::voidSlot" << endl; }
+  virtual void voidSlot () { cout << "MySlot::voidSlot" << endl; }
   virtual void argSlot(int) { }
 };
 
-struct SlotDerived : public Slot
+struct MySlotDerived : public MySlot
 {
-  SlotDerived() { 
-    cout << "Slot Derived" << endl;
+  MySlotDerived() { 
+    cout << "MySlot Derived" << endl;
   }
 
-  virtual void voidSlot () { cout << "SlotDerived::voidSlot" << endl; }
+  virtual void voidSlot () { cout << "MySlotDerived::voidSlot" << endl; }
 };
 
 int main (void)
@@ -58,8 +76,9 @@ int main (void)
   cout << "--------------------------------" << endl;
 
   Signal sig;
-  Slot* slot = new SlotDerived();
-  sig.signal<signal::id::VoidSignal>().connect(MEM_FUN_OBJ_PTR (Slot,voidSlot,slot,0));
+  MySlot* slot = new MySlotDerived();
+  sig.signal<signal::id::VoidSignal>().connect(MEM_FUN_OBJ_PTR (MySlot,voidSlot,slot,0));
+  //sig.signal<signal::id::VoidSignal>().connect(SLOT(MySlot, voidSlot, slot));
   sig.emitSignal<signal::id::VoidSignal>();
 
   cout << "--------------------------------" << endl;
