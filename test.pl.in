@@ -3,6 +3,7 @@
 use Getopt::Long;
 use File::Spec::Functions;
 use File::Basename;
+use Env qw/@PATH @LD_LIBRARY_PATH/;
 use strict;
 
 use constant true => 1;
@@ -30,6 +31,8 @@ if ($debugBuild) {
 } else {
   $current_exe_file = "@INSTALL_PREFIX_Release@/bin/@exeName@";
 }
+
+unshift (@LD_LIBRARY_PATH, "@Boost_LIBRARY_DIRS@");
 
 my ($debugApplication);
 

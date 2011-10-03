@@ -22,7 +22,7 @@ EndIf (NOT CMAKE_BUILD_TYPE)
 Set(Boost_ADDITIONAL_VERSIONS "1.47")
 Find_Package (
   Boost
-  COMPONENTS date_time program_options filesystem system
+  COMPONENTS date_time program_options filesystem system thread
   )
 
 Include_Directories (
@@ -63,6 +63,7 @@ OPTION (BUILD_SAMPLES_MPL "Build MPL Samples" FALSE)
 OPTION (BUILD_SAMPLES_XERCES "Build Xerces Samples" FALSE)
 OPTION (BUILD_SAMPLES_ZORBA "Build Zorba Samples" FALSE)
 OPTION (BUILD_SAMPLES_SIGNALS "Build Signals Samples" FALSE)
+OPTION (BUILD_SAMPLES_THREADS "Build Threads Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -84,6 +85,7 @@ Add_Subdirectory_If (BUILD_SAMPLES_MPL Mpl)
 Add_Subdirectory_If (BUILD_SAMPLES_XERCES Xerces)
 Add_Subdirectory_If (BUILD_SAMPLES_ZORBA Zorba)
 Add_Subdirectory_If (BUILD_SAMPLES_SIGNALS Signals)
+Add_Subdirectory_If (BUILD_SAMPLES_THREADS Threads)
 
 Find_File (
   PERL_IN_FILE
