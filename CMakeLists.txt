@@ -14,6 +14,7 @@ Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
 Include_Cmake_Module(Zorba)
+Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer)
 
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
@@ -63,6 +64,7 @@ OPTION (BUILD_SAMPLES_MPL "Build MPL Samples" FALSE)
 OPTION (BUILD_SAMPLES_XERCES "Build Xerces Samples" FALSE)
 OPTION (BUILD_SAMPLES_ZORBA "Build Zorba Samples" FALSE)
 OPTION (BUILD_SAMPLES_SIGNALS "Build Signals Samples" FALSE)
+OPTION (BUILD_SAMPLES_OSG "Build OSG Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -84,6 +86,7 @@ Add_Subdirectory_If (BUILD_SAMPLES_MPL Mpl)
 Add_Subdirectory_If (BUILD_SAMPLES_XERCES Xerces)
 Add_Subdirectory_If (BUILD_SAMPLES_ZORBA Zorba)
 Add_Subdirectory_If (BUILD_SAMPLES_SIGNALS Signals)
+Add_Subdirectory_If (BUILD_SAMPLES_OSG OpenSceneGraph)
 
 Find_File (
   PERL_IN_FILE
