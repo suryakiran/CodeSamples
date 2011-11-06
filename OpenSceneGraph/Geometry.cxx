@@ -174,6 +174,7 @@ int main()
 
    osg::Vec3 pyramidTwoPosition(15,0,0);
    pyramidTwoXForm->setPosition( pyramidTwoPosition ); 
+   pyramidTwoXForm->setScale (osg::Vec3(1.0, 0.5, 0.25));
 
    //The final step is to set up and enter a simulation loop.
 

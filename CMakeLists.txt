@@ -14,7 +14,7 @@ Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
 Include_Cmake_Module(Zorba)
-Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer)
+Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer osgGA)
 
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
