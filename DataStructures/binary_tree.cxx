@@ -7,24 +7,15 @@ int main (void)
 {
   cout << boolalpha;
   bst b;
-  b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3;
+  //b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3;
+  b += 10, 7, 9, 8, 13, 11, 12;
   b.print();
 
-  cout << "8th Min: " << b.findMin(8) << endl;
-  cout << "Minimum: " << b.findMin() << endl;
-  cout << "Maximum: " << b.findMax() << endl;
-  cout << "Searching 24: " << b.find(24) << endl;
-  cout << "Searching 35: " << b.find(35) << endl;
-
+  cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
   b.remove (25);
   b.remove (5);
   b.remove (35);
   b.remove (4);
   b.print();
 
-  cout << "Tree is balanced: " << b.isBalanced() << endl;
-  cout << "Minimum: " << b.findMin() << endl;
-  cout << "Maximum: " << b.findMax() << endl;
-  cout << "Searching 24: " << b.find(24) << endl;
-  cout << "Searching 35: " << b.find(35) << endl;
 }

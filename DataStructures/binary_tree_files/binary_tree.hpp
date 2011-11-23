@@ -29,6 +29,7 @@ class bst
     int findMin (node* root, int k);
     int height (node* root);
     bool isBalanced (node* root);
+    bool isMirrorImage (node* left, node* right);
 
   public:
     bst();
@@ -42,6 +43,11 @@ class bst
     bst& operator, (int val)
     {
       return insert(val);
+    }
+
+    bool isMirrorImage()
+    {
+      return isMirrorImage(m_root->left, m_root->right);
     }
 
     pair<int, int> range (int);

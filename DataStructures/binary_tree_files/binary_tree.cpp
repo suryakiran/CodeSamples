@@ -196,3 +196,17 @@ int bst::numChildren(node* root)
 
   return (1 + numChildren(root->left) + numChildren(root->right));
 }
+
+bool bst::isMirrorImage (node* leftNode, node* rightNode)
+{
+  if (!leftNode && !rightNode)
+    return true ;
+  else if (leftNode && rightNode)
+  {
+    return isMirrorImage (leftNode->left, rightNode->right) &&
+           isMirrorImage (leftNode->right, rightNode->left)
+           ;
+  }
+  else
+    return false;
+}
