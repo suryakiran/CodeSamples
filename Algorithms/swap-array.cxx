@@ -8,9 +8,9 @@ int main (void)
 
   printContainer ("Before Swap:", a);
 
-  for (int i = 1; i <= n; ++i)
+  for (int i = 1; i < n; ++i)
   {
-    for (int j = i; j <= n; ++j)
+    for (int j = i; j < n; ++j)
     {
       swap (a[j], a[n+j]);
     }
