@@ -20,10 +20,13 @@ namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
 
 template <class Container>
-void printContainer (const std::string& p_message, const Container& p_container, char p_delim=',')
+void printContainer (const std::string& p_message, const Container& p_container, char p_delim=',', bool p_printSize = true)
 {
 	typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter ;
-	cout << p_message << endl ;
+	cout << p_message ;
+  if (p_printSize)
+    cout << boost::format (" (Size: %1%)") % boost::size(p_container) ;
+  cout << endl;
 	Iter beginIter (boost::begin(p_container)), endIter (boost::end(p_container)) ;
 	for (Iter iter = beginIter; iter != endIter; ++iter) 
 	{
