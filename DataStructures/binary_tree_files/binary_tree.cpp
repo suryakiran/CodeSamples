@@ -132,3 +132,31 @@ void bst::remove (int val, node* root)
     remove (val, root->right);
   }
 }
+
+int bst::findMin (node* root, int k)
+{
+  int n (numChildren (root->left));
+  cout << "N: " << n << endl;
+
+  if (n == k-1) {
+    return root->m_value;
+  } else if (n >= k) {
+    return findMin (root->left, k);
+  } else {
+    return findMin (root->right, k - n - 1);
+  }
+}
+
+int bst::findMin(int k)
+{
+  return (findMin (m_root, k));
+}
+
+int bst::numChildren(node* root)
+{
+  if (!root) {
+    return 0;
+  }
+
+  return (1 + numChildren(root->left) + numChildren(root->right));
+}

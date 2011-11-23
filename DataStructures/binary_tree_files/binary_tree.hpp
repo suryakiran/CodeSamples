@@ -1,6 +1,7 @@
 #ifndef binary_tree_hpp
 #define binary_tree_hpp 1
 
+#include <cstdio>
 #include <iostream>
 using namespace std;
 
@@ -24,6 +25,8 @@ class bst
     bool find (int val, node* root);
     void printTree (node* root);
     void remove (int, node*);
+    int numChildren (node* root);
+    int findMin (node* root, int k);
 
   public:
     bst();
@@ -45,6 +48,7 @@ class bst
     bool find (int val);
     void print();
     int findMin ();
+    int findMin (int) ;
     int findMax() ;
     void remove (int val);
 };

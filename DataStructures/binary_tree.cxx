@@ -10,6 +10,7 @@ int main (void)
   b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3;
   b.print();
 
+  cout << "8th Min: " << b.findMin(8) << endl;
   cout << "Minimum: " << b.findMin() << endl;
   cout << "Maximum: " << b.findMax() << endl;
   cout << "Searching 24: " << b.find(24) << endl;
