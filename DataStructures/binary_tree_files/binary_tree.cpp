@@ -1,5 +1,6 @@
 #include <binary_tree.hpp>
 #include <limits>
+#include <cstdlib>
 
 bst::bst()
 {
@@ -131,6 +132,41 @@ void bst::remove (int val, node* root)
     m_lastVisited = root;
     remove (val, root->right);
   }
+}
+
+int bst::height ()
+{
+  return height (m_root);
+}
+
+int bst::height(node* root)
+{
+  if (!root)
+    return 0;
+
+  return 1 + max(height(root->left), height(root->right));
+}
+
+bool bst::isBalanced()
+{
+  return isBalanced(m_root);
+}
+
+bool bst::isBalanced (node* root)
+{
+  if (!root)
+  {
+    return true;
+  }
+
+  int hl = height(root->left);
+  int hr = height(root->right);
+
+  cout << '(' << hl << ',' << hr << ')' << endl;
+
+  if ((abs (hl - hr) <= 1) && isBalanced (root->left) && isBalanced (root->right))
+    return true;
+  return false;
 }
 
 int bst::findMin (node* root, int k)

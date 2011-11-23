@@ -27,6 +27,8 @@ class bst
     void remove (int, node*);
     int numChildren (node* root);
     int findMin (node* root, int k);
+    int height (node* root);
+    bool isBalanced (node* root);
 
   public:
     bst();
@@ -51,6 +53,8 @@ class bst
     int findMin (int) ;
     int findMax() ;
     void remove (int val);
+    bool isBalanced();
+    int height();
 };
 
 #endif
