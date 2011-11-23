@@ -21,6 +21,7 @@ int main (void)
   b.remove (4);
   b.print();
 
+  cout << "Tree is balanced: " << b.isBalanced() << endl;
   cout << "Minimum: " << b.findMin() << endl;
   cout << "Maximum: " << b.findMax() << endl;
   cout << "Searching 24: " << b.find(24) << endl;

@@ -24,6 +24,8 @@ class bst
     bool find (int val, node* root);
     void printTree (node* root);
     void remove (int, node*);
+    int height (node* root);
+    bool isBalanced (node* root);
 
   public:
     bst();
@@ -47,6 +49,8 @@ class bst
     int findMin ();
     int findMax() ;
     void remove (int val);
+    bool isBalanced();
+    int height();
 };
 
 #endif
