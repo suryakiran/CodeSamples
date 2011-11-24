@@ -1,9 +1,7 @@
 #ifndef binary_tree_hpp
 #define binary_tree_hpp 1
 
-#include <cstdio>
-#include <iostream>
-using namespace std;
+#include <std.hxx>
 
 class bst
 {
@@ -18,18 +16,34 @@ class bst
       int m_value;
       node* left;
       node* right;
+
+      ~node()
+      {
+        cout << "Node Destructor" << endl;
+      }
     };
 
-    node* m_root;
-    node* m_lastVisited;
-    bool find (int val, node* root);
-    void printTree (node* root);
-    void remove (int, node*);
-    int numChildren (node* root);
-    int findMin (node* root, int k);
-    int height (node* root);
-    bool isBalanced (node* root);
-    bool isMirrorImage (node* left, node* right);
+    typedef node* nodep;
+
+    typedef enum {
+      LeftToRight = 0,
+      RightToLeft
+    } Direction;
+
+    nodep m_root;
+    nodep m_lastVisited;
+    bool find (int val, nodep root);
+    void printTree (nodep root);
+    void remove (int, nodep);
+    int numChildren (nodep root);
+    int findMin (nodep root, int k);
+    int height (nodep root);
+    bool isBalanced (nodep root);
+    bool isMirrorImage (nodep left, nodep right);
+    void traverseZigZag (nodep root, Direction d);
+    void traverseLevel (nodep root);
+
+    stack<nodep> l2r, r2l; 
 
   public:
     bst();
@@ -48,6 +62,20 @@ class bst
     bool isMirrorImage()
     {
       return isMirrorImage(m_root->left, m_root->right);
+    }
+
+    void traverseZigZag()
+    {
+      if (!m_root) 
+        return;
+
+      l2r.push (m_root);
+      traverseZigZag (m_root, LeftToRight);
+    }
+
+    void traverseLevel()
+    {
+      traverseLevel(m_root);
     }
 
     pair<int, int> range (int);
