@@ -5,7 +5,7 @@
 
 class bst
 {
-  private:
+  public:
     struct node
     {
       node(int v)
@@ -23,27 +23,30 @@ class bst
       }
     };
 
-    typedef node* nodep;
-
+  private:
     typedef enum {
       LeftToRight = 0,
       RightToLeft
     } Direction;
 
-    nodep m_root;
-    nodep m_lastVisited;
-    bool find (int val, nodep root);
-    void printTree (nodep root);
-    void remove (int, nodep);
-    int numChildren (nodep root);
-    int findMin (nodep root, int k);
-    int height (nodep root);
-    bool isBalanced (nodep root);
-    bool isMirrorImage (nodep left, nodep right);
-    void traverseZigZag (nodep root, Direction d);
-    void traverseLevel (nodep root);
+    node* m_root;
+    node* m_lastVisited;
+    bool find (int val, node* root);
+    void printTree (node* root);
+    void remove (int, node*);
+    int numChildren (node* root);
+    int findMin (node* root, int k);
+    int height (node* root);
+    bool isBalanced (node* root);
+    bool isMirrorImage (node* left, node* right);
+    void traverseZigZag (node* root, Direction d);
+    void traverseLevel (node* root);
+    node* commonAncestor (node* root, int p, int q);
+    void morrisTraverse (node* root);
 
-    stack<nodep> l2r, r2l; 
+    void sumLeftRight (node *root);
+
+    stack<node*> l2r, r2l; 
 
   public:
     bst();
@@ -73,9 +76,28 @@ class bst
       traverseZigZag (m_root, LeftToRight);
     }
 
+    void morrisTraverse()
+    {
+      morrisTraverse (m_root);
+    }
+
     void traverseLevel()
     {
       traverseLevel(m_root);
+    }
+
+    int commonAncestor (int p, int q)
+    {
+      node* n = commonAncestor (m_root, p, q);
+      if (n)
+        return n->m_value;
+      else
+        return numeric_limits<int>::max();
+    }
+
+    void sumLeftRight ()
+    {
+      sumLeftRight (m_root);
     }
 
     pair<int, int> range (int);

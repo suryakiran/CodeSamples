@@ -7,7 +7,7 @@ int main (void)
 {
   cout << boolalpha;
   bst b;
-  b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3;
+  b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3, 6;
 
   /*
   cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
@@ -17,6 +17,9 @@ int main (void)
   b.remove (4);
   b.print();
   */
-  b.traverseZigZag();
-
+  b.print();
+//  b.traverseZigZag();
+  b.sumLeftRight();
+  b.print();
+  cout << "Common Ancestor of 24, 25: " << b.commonAncestor (24, 25) << endl;
 }

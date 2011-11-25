@@ -1,6 +1,26 @@
 #include <binary_tree.hpp>
 
+namespace {
+  int sumNodes (bst::node* n)
+  {
+    if (!n)
+      return 0;
+
+    int sum(0);
+    sum += n->m_value;
+    sum += sumNodes (n->left);
+    sum += sumNodes (n->right);
+
+    return sum;
+  }
+
+  void modifyRoot (bst::node* root)
+  {
+  }
+}
+
 bst::bst()
+  :m_root (0)
 {
 }
 
@@ -35,7 +55,7 @@ bool bst::find (int val)
   return find (val, m_root);
 }
 
-bool bst::find (int val, nodep root)
+bool bst::find (int val, node* root)
 {
   if (!root)
     return false;
@@ -57,7 +77,7 @@ void bst::print ()
   cout << endl;
 }
 
-void bst::printTree(nodep root)
+void bst::printTree(node* root)
 {
   if (!root) {
     return ;
@@ -70,14 +90,14 @@ void bst::printTree(nodep root)
 
 int bst::findMin()
 {
-  nodep cur;
+  node* cur;
   for (cur = m_root; cur && cur->left; cur = cur->left);
   return cur->m_value;
 }
 
 int bst::findMax()
 {
-  nodep cur;
+  node* cur;
   for (cur = m_root; cur && cur->right; cur = cur->right);
   return cur->m_value;
 }
@@ -95,7 +115,7 @@ bst::range (int val)
   r.second = numeric_limits<int>::max();
 }
 
-void bst::remove (int val, nodep root)
+void bst::remove (int val, node* root)
 {
   if (!root) {
     return;
@@ -104,8 +124,8 @@ void bst::remove (int val, nodep root)
   if (root->m_value == val) {
     if (root->left && root->right) 
     {
-      nodep cur;
-      nodep parent;
+      node* cur;
+      node* parent;
       for (cur = root->right; cur && cur->left; parent = cur, cur = cur->left);
       root->m_value = cur->m_value;
       delete cur;
@@ -113,7 +133,7 @@ void bst::remove (int val, nodep root)
     }
     else 
     {
-      nodep child = NULL;
+      node* child = NULL;
       if (root->left || root->right)
         child = root->left ? root->left : root->right;
       if (val < m_lastVisited->m_value) 
@@ -137,7 +157,7 @@ int bst::height ()
   return height (m_root);
 }
 
-int bst::height(nodep root)
+int bst::height(node* root)
 {
   if (!root)
     return 0;
@@ -150,7 +170,7 @@ bool bst::isBalanced()
   return isBalanced(m_root);
 }
 
-bool bst::isBalanced (nodep root)
+bool bst::isBalanced (node* root)
 {
   if (!root)
   {
@@ -167,7 +187,7 @@ bool bst::isBalanced (nodep root)
   return false;
 }
 
-int bst::findMin (nodep root, int k)
+int bst::findMin (node* root, int k)
 {
   int n (numChildren (root->left));
   cout << "N: " << n << endl;
@@ -186,7 +206,7 @@ int bst::findMin(int k)
   return (findMin (m_root, k));
 }
 
-int bst::numChildren(nodep root)
+int bst::numChildren(node* root)
 {
   if (!root) {
     return 0;
@@ -195,7 +215,7 @@ int bst::numChildren(nodep root)
   return (1 + numChildren(root->left) + numChildren(root->right));
 }
 
-bool bst::isMirrorImage (nodep leftNode, nodep rightNode)
+bool bst::isMirrorImage (node* leftNode, node* rightNode)
 {
   if (!leftNode && !rightNode)
     return true ;
@@ -209,26 +229,28 @@ bool bst::isMirrorImage (nodep leftNode, nodep rightNode)
     return false;
 }
 
-void bst::traverseZigZag (nodep root, Direction d)
+void bst::traverseZigZag (node* root, Direction d)
 {
-  stack<nodep>& curStack = (d == LeftToRight) ? l2r : r2l; 
-  stack<nodep>& childrenStack = (d == LeftToRight) ? r2l : l2r;
+  stack<node*>& curStack = (d == LeftToRight) ? l2r : r2l; 
+  stack<node*>& childrenStack = (d == LeftToRight) ? r2l : l2r;
 
   while (!curStack.empty())
   {
+    node* n = curStack.top();
+    cout << n->m_value << endl;
     switch (d)
     {
       case LeftToRight:
-        if (root->right)
-          childrenStack.push (root->right);
-        if (root->left)
-          childrenStack.push (root->left);
+        if (n->left)
+          childrenStack.push (n->left);
+        if (n->right)
+          childrenStack.push (n->right);
         break;
       case RightToLeft:
-        if (root->left)
-          childrenStack.push (root->left);
-        if (root->right)
-          childrenStack.push (root->right);
+        if (n->right)
+          childrenStack.push (n->right);
+        if (n->left)
+          childrenStack.push (n->left);
         break;
       default:
         break;
@@ -236,16 +258,110 @@ void bst::traverseZigZag (nodep root, Direction d)
     curStack.pop();
   }
 
-  cout << root->m_value << endl;
-
   while (!childrenStack.empty())
   {
-    Direction newDir = static_cast<Direction>(~d);
+    Direction newDir = (d == LeftToRight) ? RightToLeft : LeftToRight;
     traverseZigZag (childrenStack.top(), newDir);
-    childrenStack.pop();
   }
 }
 
-void bst::traverseLevel (nodep root)
+void bst::traverseLevel (node* root)
 {
 }
+
+bst::node* bst::commonAncestor (node* root, int p,  int q)
+{
+  if (!root)
+    return 0;
+
+  if (root->m_value == p || root->m_value == q) {
+    return root;
+  }
+
+  node* l = commonAncestor (root->left, p, q);
+  node* r = commonAncestor (root->right, p, q);
+
+  if (l && r)
+  {
+    return root;
+  }
+  else if (l)
+    return l;
+  else if (r)
+    return r;
+  return (node*)0;
+}
+
+void bst::morrisTraverse (node* root)
+{
+  node* p;
+  node* pre;
+
+  if (!root) 
+    return;
+
+  for (p = root; p != 0;)
+  {
+    if (!p->left)
+    {
+      cout << p->m_value << ',';
+      p = p->right;
+      continue; 
+    }
+
+    for (pre = p->left; pre->right != 0 && pre->right != p; pre = pre->right);
+
+    if (!pre->right)
+    {
+      pre->right = p;
+      p = p->left; 
+      continue;
+    }
+    else
+    {
+      pre->right = 0;
+      cout << p->m_value << ',';
+      p = p->right;
+      continue;
+    }
+  }
+
+  cout << endl;
+}
+
+void bst::sumLeftRight (node* root)
+{
+  if (!root) {
+    return;
+  }
+
+  int sum(0);
+  if (!root->left && !root->right) {
+    root->m_value = 0;
+  }
+
+  else {
+    sum += sumNodes (root->left);
+    sum += sumNodes (root->right);
+    root->m_value = sum;
+  }
+  sumLeftRight (root->left);
+  sumLeftRight (root->right);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
