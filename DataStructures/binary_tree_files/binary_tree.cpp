@@ -1,8 +1,26 @@
 #include <binary_tree.hpp>
-#include <limits>
-#include <cstdlib>
+
+namespace {
+  int sumNodes (bst::node* n)
+  {
+    if (!n)
+      return 0;
+
+    int sum(0);
+    sum += n->m_value;
+    sum += sumNodes (n->left);
+    sum += sumNodes (n->right);
+
+    return sum;
+  }
+
+  void modifyRoot (bst::node* root)
+  {
+  }
+}
 
 bst::bst()
+  :m_root (0)
 {
 }
 
@@ -211,17 +229,139 @@ bool bst::isMirrorImage (node* leftNode, node* rightNode)
     return false;
 }
 
-bool bst::isBST (node* root)
+void bst::traverseZigZag (node* root, Direction d)
+{
+  stack<node*>& curStack = (d == LeftToRight) ? l2r : r2l; 
+  stack<node*>& childrenStack = (d == LeftToRight) ? r2l : l2r;
+
+  while (!curStack.empty())
+  {
+    node* n = curStack.top();
+    cout << n->m_value << endl;
+    switch (d)
+    {
+      case LeftToRight:
+        if (n->left)
+          childrenStack.push (n->left);
+        if (n->right)
+          childrenStack.push (n->right);
+        break;
+      case RightToLeft:
+        if (n->right)
+          childrenStack.push (n->right);
+        if (n->left)
+          childrenStack.push (n->left);
+        break;
+      default:
+        break;
+    }
+    curStack.pop();
+  }
+
+  while (!childrenStack.empty())
+  {
+    Direction newDir = (d == LeftToRight) ? RightToLeft : LeftToRight;
+    traverseZigZag (childrenStack.top(), newDir);
+  }
+}
+
+void bst::traverseLevel (node* root)
+{
+}
+
+bst::node* bst::commonAncestor (node* root, int p,  int q)
 {
   if (!root)
-    return true;
+    return 0;
 
-  bool leftIsBst (true), rightIsBst (true);
-  if (root->left)
-    bool leftIsBst = (root->left->m_value < root->m_value) && (isBST (root->left));
+  if (root->m_value == p || root->m_value == q) {
+    return root;
+  }
 
-  if (root->right)
-    bool rightIsBst = (root->right->m_value > root->m_value) && (isBST (root->right));
+  node* l = commonAncestor (root->left, p, q);
+  node* r = commonAncestor (root->right, p, q);
 
-  return (leftIsBst && rightIsBst);
+  if (l && r)
+  {
+    return root;
+  }
+  else if (l)
+    return l;
+  else if (r)
+    return r;
+  return (node*)0;
 }
+
+void bst::morrisTraverse (node* root)
+{
+  node* p;
+  node* pre;
+
+  if (!root) 
+    return;
+
+  for (p = root; p != 0;)
+  {
+    if (!p->left)
+    {
+      cout << p->m_value << ',';
+      p = p->right;
+      continue; 
+    }
+
+    for (pre = p->left; pre->right != 0 && pre->right != p; pre = pre->right);
+
+    if (!pre->right)
+    {
+      pre->right = p;
+      p = p->left; 
+      continue;
+    }
+    else
+    {
+      pre->right = 0;
+      cout << p->m_value << ',';
+      p = p->right;
+      continue;
+    }
+  }
+
+  cout << endl;
+}
+
+void bst::sumLeftRight (node* root)
+{
+  if (!root) {
+    return;
+  }
+
+  int sum(0);
+  if (!root->left && !root->right) {
+    root->m_value = 0;
+  }
+
+  else {
+    sum += sumNodes (root->left);
+    sum += sumNodes (root->right);
+    root->m_value = sum;
+  }
+  sumLeftRight (root->left);
+  sumLeftRight (root->right);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

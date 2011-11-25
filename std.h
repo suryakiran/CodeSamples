@@ -8,5 +8,10 @@
 #include <utility>
 #include <algorithm>
 #include <numeric>
+#include <limits>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <stack>
 
 using namespace std;

@@ -14,6 +14,11 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <stack>
+#include <limits>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 using namespace std ;
 

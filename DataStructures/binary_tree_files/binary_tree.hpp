@@ -1,13 +1,11 @@
 #ifndef binary_tree_hpp
 #define binary_tree_hpp 1
 
-#include <cstdio>
-#include <iostream>
-using namespace std;
+#include <std.hxx>
 
 class bst
 {
-  private:
+  public:
     struct node
     {
       node(int v)
@@ -18,7 +16,18 @@ class bst
       int m_value;
       node* left;
       node* right;
+
+      ~node()
+      {
+        cout << "Node Destructor" << endl;
+      }
     };
+
+  private:
+    typedef enum {
+      LeftToRight = 0,
+      RightToLeft
+    } Direction;
 
     node* m_root;
     node* m_lastVisited;
@@ -30,6 +39,14 @@ class bst
     int height (node* root);
     bool isBalanced (node* root);
     bool isMirrorImage (node* left, node* right);
+    void traverseZigZag (node* root, Direction d);
+    void traverseLevel (node* root);
+    node* commonAncestor (node* root, int p, int q);
+    void morrisTraverse (node* root);
+
+    void sumLeftRight (node *root);
+
+    stack<node*> l2r, r2l; 
 
     bool isBST (node* root);
 
@@ -55,6 +72,39 @@ class bst
     bool isMirrorImage()
     {
       return isMirrorImage(m_root->left, m_root->right);
+    }
+
+    void traverseZigZag()
+    {
+      if (!m_root) 
+        return;
+
+      l2r.push (m_root);
+      traverseZigZag (m_root, LeftToRight);
+    }
+
+    void morrisTraverse()
+    {
+      morrisTraverse (m_root);
+    }
+
+    void traverseLevel()
+    {
+      traverseLevel(m_root);
+    }
+
+    int commonAncestor (int p, int q)
+    {
+      node* n = commonAncestor (m_root, p, q);
+      if (n)
+        return n->m_value;
+      else
+        return numeric_limits<int>::max();
+    }
+
+    void sumLeftRight ()
+    {
+      sumLeftRight (m_root);
     }
 
     pair<int, int> range (int);

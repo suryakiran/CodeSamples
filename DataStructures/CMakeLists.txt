@@ -11,9 +11,16 @@ ForEach (file ${SOURCES})
   String (CONFIGURE ${dir_tmpl} dir @ONLY)
   File (GLOB CPP_FILES ${dir}/*.cpp)
   File (GLOB H_FILES ${dir}/*.h)
+  File (GLOB HPP_FILES ${dir}/*.hpp)
   Set (ProjectName "DSA Tests ${exeName}")
   Set (exeName dsa-${exeName})
-  Add_Executable(${exeName} ${file} ${CPP_FILES} ${H_FILES})
+  Add_Executable(${exeName} ${file} ${CPP_FILES} ${H_FILES} ${HPP_FILES})
+  If (HPP_FILES)
+    Add_Dependencies (${exeName} ${HPP_FILES})
+  EndIf (HPP_FILES)
+  If (H_FILES)
+    Add_Dependencies (${exeName} ${H_FILES})
+  EndIf (H_FILES)
 	Set_Target_Properties (
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
