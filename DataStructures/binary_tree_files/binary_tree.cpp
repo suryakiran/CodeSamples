@@ -210,3 +210,18 @@ bool bst::isMirrorImage (node* leftNode, node* rightNode)
   else
     return false;
 }
+
+bool bst::isBST (node* root)
+{
+  if (!root)
+    return true;
+
+  bool leftIsBst (true), rightIsBst (true);
+  if (root->left)
+    bool leftIsBst = (root->left->m_value < root->m_value) && (isBST (root->left));
+
+  if (root->right)
+    bool rightIsBst = (root->right->m_value > root->m_value) && (isBST (root->right));
+
+  return (leftIsBst && rightIsBst);
+}

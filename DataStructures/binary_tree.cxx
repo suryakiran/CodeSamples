@@ -11,6 +11,7 @@ int main (void)
   b += 10, 7, 9, 8, 13, 11, 12;
   b.print();
 
+  cout << "Is Binary Search Tree: " << b.isBST() << endl;
   cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
   b.remove (25);
   b.remove (5);

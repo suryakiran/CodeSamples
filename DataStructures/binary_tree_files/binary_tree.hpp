@@ -31,6 +31,8 @@ class bst
     bool isBalanced (node* root);
     bool isMirrorImage (node* left, node* right);
 
+    bool isBST (node* root);
+
   public:
     bst();
     ~bst();
@@ -43,6 +45,11 @@ class bst
     bst& operator, (int val)
     {
       return insert(val);
+    }
+
+    bool isBST()
+    {
+      return isBST (m_root);
     }
 
     bool isMirrorImage()
