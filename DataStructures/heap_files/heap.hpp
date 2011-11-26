@@ -1,12 +1,9 @@
 #ifndef heap_hpp
 #define heap_hpp 1
 
-#include <vector>
+#include <std.hxx>
 #include <boost/type_traits/add_const.hpp>
 #include <boost/type_traits/add_reference.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/lambda/bind.hpp>
-using namespace boost::lambda;
 
 template <class T>
 class heap
@@ -45,19 +42,65 @@ class heap
 
     void removeMin ()
     {
+      value_type tmp = *(m_container.rbegin());
+      m_container[0] = tmp;
+      m_container.pop_back();
+      if (!m_container.empty()) {
+        percolate_down (0);
+      }
+    }
+
+    const_reference getMin() const
+    {
+      return m_container[0];
     }
 
     void print ()
     {
-      for_each (m_container.begin(), m_container.end(), cout << _1 << ", ") ;
-      cout << endl;
+      printContainer ("Current Heap:", m_container);
+    }
+
+    size_t size()
+    {
+      return m_container.size();
+    }
+
+    bool empty ()
+    {
+      return m_container.empty();
     }
 
   private:
     void build_heap()
     {
-      int h (height());
-      int level (h-1);
+      size_t s (m_container.size());
+      for (size_t i = s/2; i > 0; i--)
+      {
+        size_t ci (i-1);
+        percolate_down (ci);
+      }
+    }
+
+    void percolate_down(size_t p_idx)
+    {
+      size_t idx, child;
+      container& c = m_container;
+
+      value_type tmp (c[p_idx]);
+
+      for (idx = p_idx; idx < c.size()/2; idx = child)
+      {
+        child = 2*idx + 1;
+        if (child != (c.size()-1) && c[child + 1] < c[child]) {
+          child ++;
+        }
+        if (c[child] < tmp) {
+          c[idx] = c[child];
+        }
+        else break;
+      }
+
+      c[idx] = tmp;
     }
 
     void modify_heap ()
@@ -66,20 +109,8 @@ class heap
 
     int height()
     {
-      if (m_container.empty())
-        return 0;
-
-      int s (m_container.size());
-      int cumulative(0), h(1);
-
-      while (1)
-      {
-        cumulative |= (1 << h);
-        cout << cumulative << endl;
-        h++;
-        if (cumulative >= (s-1))
-          break;
-      }
+      int s (m_container.size()), h(0);
+      while (s) { s = s >> h++; }
 
       cout << "Height: " << h << endl;
       return h;
