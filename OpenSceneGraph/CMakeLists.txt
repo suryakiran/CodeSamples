@@ -1,5 +1,6 @@
 Project(OSG)
 
+Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer)
 Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
