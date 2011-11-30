@@ -10,6 +10,7 @@
 #include <map>
 #include <utility>
 #include <algorithm>
+#include <numeric>
 #include <memory>
 #include <sstream>
 #include <fstream>
