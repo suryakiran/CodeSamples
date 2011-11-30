@@ -9,6 +9,7 @@
 #include <boost/assign/std/list.hpp>
 #include <boost/assign/list_inserter.hpp>
 #include <boost/iterator/zip_iterator.hpp>
+#include <boost/preprocessor/cat.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
