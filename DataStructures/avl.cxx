@@ -9,8 +9,7 @@ int main (void)
     .insert(30).insert(15).insert(4)
     .insert(24).insert(26).insert(35)
     .insert(1) .insert(14).insert(3)
-    .insert(6).insert(16);
+    .insert(6).insert(16).insert (17);
 
-  cout << t.size() << endl;
-  cout << t.height() << endl;
+  t.print();
 }

@@ -14,6 +14,7 @@ class avl
     avl& insert (int);
     void remove (int);
     bool find (int);
+    void print () const ;
 
     int size () const;
     bool isAvl() const;

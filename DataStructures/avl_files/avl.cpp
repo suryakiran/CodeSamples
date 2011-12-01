@@ -1,16 +1,20 @@
 #include <avl.hpp>
 
+typedef enum {
+  Left = 0,
+  Right = 1
+} Direction;
+
 struct avl_node
 {
   avl_node* m_left;
   avl_node* m_right;
-  avl_node* m_parent;
 
   int m_height;
   int m_val;
 
   avl_node(int p_val)
-    : m_left(0), m_right(0), m_parent(0),
+    : m_left(0), m_right(0),
       m_height(0), m_val(p_val)
   {
   }
@@ -20,13 +24,64 @@ namespace {
 
   int height (avl_node* root)
   {
-    if (!root) {
-      return 0;
-    }
-
-    return 1 + max(height(root->m_left), height(root->m_right));
+    return root ? root->m_height : -1;
   }
 
+  void singleRotateChild (Direction d, avl_node*& k2)
+  {
+    cout << "Single Rotation Needed " << k2->m_val << endl;
+    avl_node* k1;
+    switch (d)
+    {
+      case Left:
+        k1 = k2->m_left;
+        k2->m_left = k1->m_right;
+        k1->m_right = k2;
+        k2->m_height = 1 + max (height(k2->m_right), height(k2->m_left));
+        k1->m_height = 1 + max (height(k1->m_left), k2->m_height); 
+        k2 = k1;
+        break;
+      case Right:
+        k1 = k2->m_right;
+        k2->m_right = k1->m_left;
+        k1->m_left = k2;
+        k2->m_height = 1 + max (height(k2->m_right), height(k2->m_left));
+        k1->m_height = 1 + max (height(k1->m_left), k2->m_height); 
+        k2 = k1;
+        break;
+      default:
+        break;
+    }
+  }
+
+  void doubleRotateChild (Direction d, avl_node*& root)
+  {
+    switch (d) 
+    {
+      case Left:
+        singleRotateChild (Right, root->m_left);
+        singleRotateChild (Left, root);
+        break;
+      case Right:
+        singleRotateChild (Left, root->m_right);
+        singleRotateChild (Right, root);
+        break;
+      default:
+          break;
+    }
+  }
+
+  void print (avl_node* root)
+  {
+    if (!root) {
+      return;
+    }
+
+    print (root->m_left);
+    cout << boost::format ("(%1%, %2%)") % root->m_val % root->m_height << endl;
+    print (root->m_right);
+  }
+  
   int size (avl_node* root)
   {
     int sum (0);
@@ -39,31 +94,32 @@ namespace {
     return sum;
   }
 
-  void insert (avl_node* root, int val)
+  void insert (avl_node*& root, int val)
   {
     if (!root) {
       root = new avl_node (val);
-    }
-
-    if (root->m_val == val) {
-      return;
     } else if (val < root->m_val) {
-      if (root->m_left) {
-        insert (root->m_left, val);
-      } else {
-        avl_node* node = new avl_node (val);
-        root->m_left = node;
-        node->m_parent = root;
+      insert (root->m_left, val);
+      if (height (root->m_left) - height(root->m_right) == 2) {
+        if (val < root->m_left->m_val) {
+          singleRotateChild (Left, root);
+        } else {
+          doubleRotateChild (Left, root);
+        }
+      }
+    } else if (val > root->m_val) {
+      insert (root->m_right, val);
+      if (height (root->m_right) - height(root->m_left) == 2) {
+        if (val > root->m_right->m_val) {
+          singleRotateChild (Right, root);
+        } else {
+          doubleRotateChild (Right, root);
+        }
       }
     } else {
-      if (root->m_right) {
-        insert (root->m_right, val);
-      } else {
-        avl_node* node = new avl_node (val);
-        root->m_right = node;
-        node->m_parent = root;
-      }
+      return;
     }
+    root->m_height = max(height(root->m_left), height (root->m_right)) + 1;
   }
 
   bool find (avl_node* root, int val)
@@ -127,4 +183,15 @@ bool avl::isAvl() const
 int avl::height () const
 {
   return 1 + max (::height(m_root->m_left), ::height(m_root->m_right));
+}
+
+void avl::print () const
+{
+  if (!m_root) {
+    return ;
+  }
+
+  ::print (m_root->m_left);
+  cout << boost::format ("(%1%, %2%)") % m_root->m_val % m_root->m_height << endl;
+  ::print (m_root->m_right);
 }
