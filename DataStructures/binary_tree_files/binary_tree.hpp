@@ -54,6 +54,8 @@ class bst
     bst();
     ~bst();
 
+    void toLinkedList();
+
     bst& operator += (int val)
     {
       return insert(val);

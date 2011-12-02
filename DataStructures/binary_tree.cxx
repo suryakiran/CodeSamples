@@ -19,7 +19,8 @@ int main (void)
   */
   b.print();
 //  b.traverseZigZag();
-  b.sumLeftRight();
-  b.print();
-  cout << "Common Ancestor of 24, 25: " << b.commonAncestor (24, 25) << endl;
+//  b.sumLeftRight();
+ // b.print();
+ // cout << "Common Ancestor of 24, 25: " << b.commonAncestor (24, 25) << endl;
+ b.toLinkedList();
 }
