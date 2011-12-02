@@ -5,6 +5,14 @@
 
 struct avl_node;
 
+typedef enum {
+  PreOrder = 0,
+  InOrder,
+  PostOrder,
+  LevelOrder,
+  ZigZagOrder
+} TraverseType;
+
 class avl
 {
   public:
@@ -19,6 +27,8 @@ class avl
     int size () const;
     bool isAvl() const;
     int height () const;
+
+    void traverse (TraverseType t) const;
 
   private:
     avl_node *m_root;

@@ -11,5 +11,5 @@ int main (void)
     .insert(1) .insert(14).insert(3)
     .insert(6).insert(16).insert (17);
 
-  t.print();
+  t.traverse(ZigZagOrder);
 }

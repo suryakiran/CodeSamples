@@ -5,6 +5,11 @@ typedef enum {
   Right = 1
 } Direction;
 
+typedef enum {
+  LeftToRight = 0,
+  RightToLeft
+} TraverseDirection;
+
 struct avl_node
 {
   avl_node* m_left;
@@ -25,6 +30,82 @@ namespace {
   int height (avl_node* root)
   {
     return root ? root->m_height : -1;
+  }
+
+  void traverseZigZagOrder (stack<avl_node*>& curStack, stack<avl_node*>& childStack, TraverseDirection d)
+  {
+    while (!curStack.empty())
+    {
+      avl_node* node = curStack.top();
+      cout << boost::format ("(%1%, %2%)") % node->m_val % node->m_height << endl;
+      switch (d)
+      {
+        case LeftToRight:
+          if (node->m_left) {
+            childStack.push (node->m_left);
+          }
+          if (node->m_right) {
+            childStack.push (node->m_right);
+          }
+          break;
+        case RightToLeft:
+          if (node->m_right) {
+            childStack.push (node->m_right);
+          }
+          if (node->m_left) {
+            childStack.push (node->m_left);
+          }
+          break;
+        default:
+          break;
+      }
+      curStack.pop();
+    }
+
+    if (!childStack.empty()) {
+      d = (d == LeftToRight) ? RightToLeft : LeftToRight;
+      traverseZigZagOrder (childStack, curStack, d);
+    }
+  }
+
+  void traverseZigZagOrder (avl_node* root)
+  {
+    if (!root) {
+      return;
+    }
+
+    stack <avl_node*> s;
+    stack <avl_node*> cs;
+    s.push (root);
+
+    traverseZigZagOrder (s, cs, RightToLeft);
+  }
+
+  void traverseLevelOrder (avl_node* root)
+  {
+    if (!root) {
+      return;
+    }
+
+    queue<avl_node*> q;
+    q.push (root);
+
+    while (!q.empty())
+    {
+      avl_node* node = q.front();
+
+      if (node->m_left) {
+        q.push (node->m_left);
+      }
+
+      if (node->m_right) {
+        q.push (node->m_right);
+      }
+
+      cout << boost::format ("(%1%, %2%)") % node->m_val % node->m_height << endl;
+
+      q.pop();
+    }
   }
 
   void singleRotateChild (Direction d, avl_node*& k2)
@@ -56,6 +137,7 @@ namespace {
 
   void doubleRotateChild (Direction d, avl_node*& root)
   {
+    cout << "Double Rotation Needed " << root->m_val << endl;
     switch (d) 
     {
       case Left:
@@ -194,4 +276,24 @@ void avl::print () const
   ::print (m_root->m_left);
   cout << boost::format ("(%1%, %2%)") % m_root->m_val % m_root->m_height << endl;
   ::print (m_root->m_right);
+}
+
+void avl::traverse (TraverseType t) const
+{
+  switch (t)
+  {
+    case InOrder:
+      print();
+      break;
+    case PreOrder:
+      break;
+    case PostOrder:
+      break;
+    case LevelOrder:
+      ::traverseLevelOrder(m_root);
+      break;
+    case ZigZagOrder:
+      ::traverseZigZagOrder (m_root);
+      break;
+  }
 }
