@@ -37,7 +37,7 @@ class heap
     void add (const_reference p_item)
     {
       m_container.push_back (p_item);
-      modify_heap();
+      percolate_up();
     }
 
     void removeMin ()
@@ -103,18 +103,21 @@ class heap
       c[idx] = tmp;
     }
 
-    void modify_heap ()
+    void percolate_up ()
     {
       container& c = m_container;
       size_t child (c.size() - 1);
       size_t parent ((child - 1) / 2);
       value_type tmp (c[child]);
 
-      for (child = (c.size()-1); parent > 0 && tmp < c[parent]; parent = (child - 1)/2)
+      for (child = (c.size()-1); tmp < c[parent]; child = parent, parent = (child - 1)/2)
       {
         c[child] = c[parent];
+        if (parent == 0) {
+          break;
+        }
       }
-      c[parent] = tmp;
+      c[child] = tmp;
       percolate_down (parent);
     }
 

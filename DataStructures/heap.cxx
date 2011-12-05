@@ -6,10 +6,8 @@ int main (void)
   vi += 9, 8, 10, 15, 7, 22, 25, 30 ;
   heap<int> h (vi);
   h.print();
-  h.add (4);
+  h.add (6);
   h.print();
-//  h.add (11);
-//  h.print();
-//  h.add (5);
-//  h.print();
+  h.add (1);
+  h.print();
 }
