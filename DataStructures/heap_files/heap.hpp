@@ -105,6 +105,17 @@ class heap
 
     void modify_heap ()
     {
+      container& c = m_container;
+      size_t child (c.size() - 1);
+      size_t parent ((child - 1) / 2);
+      value_type tmp (c[child]);
+
+      for (child = (c.size()-1); parent > 0 && tmp < c[parent]; parent = (child - 1)/2)
+      {
+        c[child] = c[parent];
+      }
+      c[parent] = tmp;
+      percolate_down (parent);
     }
 
     int height()

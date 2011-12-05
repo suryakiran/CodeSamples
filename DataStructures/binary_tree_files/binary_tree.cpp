@@ -1,14 +1,16 @@
 #include <binary_tree.hpp>
 
+typedef bst::node* Node;
+
 namespace {
 
-  void toDoublyLinkedList (bst::node* root, bst::node*& prev, bst::node*& head)
+  void toLinkedList (Node root, Node& prev, Node& head)
   {
     if (!root) {
-      return;
+      return ;
     }
 
-    toDoublyLinkedList (root->left, prev, head);
+    toLinkedList (root->left, prev, head);
     root->left = prev;
 
     if (prev) {
@@ -17,12 +19,12 @@ namespace {
       head = root;
     }
 
-    bst::node* right = root->right;
+    Node right (root->right);
+
     head->left = root;
     root->right = head;
-    prev = root;
 
-    toDoublyLinkedList (right, prev, head);
+    toLinkedList (right, prev, head);
   }
 
   void traverseLevelOrder (bst::node* root)
@@ -52,7 +54,7 @@ namespace {
     }
   }
 
-  int sumNodes (bst::node* n)
+  int sumNodes (Node n)
   {
     if (!n)
       return 0;
@@ -65,7 +67,7 @@ namespace {
     return sum;
   }
 
-  void modifyRoot (bst::node* root)
+  void modifyRoot (Node root)
   {
   }
 
@@ -117,7 +119,7 @@ bool bst::find (int val)
   return find (val, m_root);
 }
 
-bool bst::find (int val, node* root)
+bool bst::find (int val, Node root)
 {
   if (!root)
     return false;
@@ -139,7 +141,7 @@ void bst::print ()
   cout << endl;
 }
 
-void bst::printTree(node* root)
+void bst::printTree(Node root)
 {
   if (!root) {
     return ;
@@ -152,14 +154,14 @@ void bst::printTree(node* root)
 
 int bst::findMin()
 {
-  node* cur;
+  Node cur;
   for (cur = m_root; cur && cur->left; cur = cur->left);
   return cur->m_value;
 }
 
 int bst::findMax()
 {
-  node* cur;
+  Node cur;
   for (cur = m_root; cur && cur->right; cur = cur->right);
   return cur->m_value;
 }
@@ -177,7 +179,7 @@ bst::range (int val)
   r.second = numeric_limits<int>::max();
 }
 
-void bst::remove (int val, node*& root)
+void bst::remove (int val, Node& root)
 {
   if (!root) {
     return;
@@ -191,7 +193,7 @@ void bst::remove (int val, node*& root)
     root->m_value = ::findMin (root->right)->m_value;
     remove (root->m_value, root->right);
   } else {
-    node* old = root;
+    Node old = root;
     root = root->left ? root->left : root->right;
     delete old;
   }
@@ -202,7 +204,7 @@ int bst::height ()
   return height (m_root);
 }
 
-int bst::height(node* root)
+int bst::height(Node root)
 {
   if (!root)
     return 0;
@@ -215,7 +217,7 @@ bool bst::isBalanced()
   return isBalanced(m_root);
 }
 
-bool bst::isBalanced (node* root)
+bool bst::isBalanced (Node root)
 {
   if (!root)
   {
@@ -232,7 +234,7 @@ bool bst::isBalanced (node* root)
   return false;
 }
 
-int bst::findMin (node* root, int k)
+int bst::findMin (Node root, int k)
 {
   int n (numChildren (root->left));
   cout << "N: " << n << endl;
@@ -251,7 +253,7 @@ int bst::findMin(int k)
   return (findMin (m_root, k));
 }
 
-int bst::numChildren(node* root)
+int bst::numChildren(Node root)
 {
   if (!root) {
     return 0;
@@ -260,7 +262,7 @@ int bst::numChildren(node* root)
   return (1 + numChildren(root->left) + numChildren(root->right));
 }
 
-bool bst::isMirrorImage (node* leftNode, node* rightNode)
+bool bst::isMirrorImage (Node leftNode, Node rightNode)
 {
   if (!leftNode && !rightNode)
     return true ;
@@ -274,14 +276,14 @@ bool bst::isMirrorImage (node* leftNode, node* rightNode)
     return false;
 }
 
-void bst::traverseZigZag (node* root, Direction d)
+void bst::traverseZigZag (Node root, Direction d)
 {
-  stack<node*>& curStack = (d == LeftToRight) ? l2r : r2l; 
-  stack<node*>& childrenStack = (d == LeftToRight) ? r2l : l2r;
+  stack<Node>& curStack = (d == LeftToRight) ? l2r : r2l; 
+  stack<Node>& childrenStack = (d == LeftToRight) ? r2l : l2r;
 
   while (!curStack.empty())
   {
-    node* n = curStack.top();
+    Node n = curStack.top();
     cout << n->m_value << endl;
     switch (d)
     {
@@ -310,11 +312,11 @@ void bst::traverseZigZag (node* root, Direction d)
   }
 }
 
-void bst::traverseLevel (node* root)
+void bst::traverseLevel (Node root)
 {
 }
 
-bst::node* bst::commonAncestor (node* root, int p,  int q)
+Node bst::commonAncestor (Node root, int p,  int q)
 {
   if (!root)
     return 0;
@@ -323,8 +325,8 @@ bst::node* bst::commonAncestor (node* root, int p,  int q)
     return root;
   }
 
-  node* l = commonAncestor (root->left, p, q);
-  node* r = commonAncestor (root->right, p, q);
+  Node l = commonAncestor (root->left, p, q);
+  Node r = commonAncestor (root->right, p, q);
 
   if (l && r)
   {
@@ -334,13 +336,13 @@ bst::node* bst::commonAncestor (node* root, int p,  int q)
     return l;
   else if (r)
     return r;
-  return (node*)0;
+  return (Node)0;
 }
 
-void bst::morrisTraverse (node* root)
+void bst::morrisTraverse (Node root)
 {
-  node* p;
-  node* pre;
+  Node p;
+  Node pre;
 
   if (!root) 
     return;
@@ -374,7 +376,7 @@ void bst::morrisTraverse (node* root)
   cout << endl;
 }
 
-void bst::sumLeftRight (node* root)
+void bst::sumLeftRight (Node root)
 {
   if (!root) {
     return;
@@ -394,16 +396,18 @@ void bst::sumLeftRight (node* root)
   sumLeftRight (root->right);
 }
 
-void bst::convertToLinkedList ()
+void bst::toLinkedList ()
 {
-  bst::node* prev = 0;
-  bst::node* head = 0;
-  toDoublyLinkedList (m_root, prev, head);
+  if (!m_root) {
+    return;
+  }
 
-  bst::node* slow = head;
-  bst::node* fast = head;
+  Node prev(0), head(0);
+  ::toLinkedList (m_root, prev, head);
 
-  while (slow && fast)
+  Node fast(head), slow(head);
+
+  while (fast && slow)
   {
     cout << slow->m_value << endl;
 
@@ -411,8 +415,8 @@ void bst::convertToLinkedList ()
       fast = fast->right->right;
     }
     slow = slow->right;
-    
-    if (slow == fast) {
+
+    if (fast == slow) {
       break;
     }
   }
