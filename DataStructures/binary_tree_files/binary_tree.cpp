@@ -1,6 +1,57 @@
 #include <binary_tree.hpp>
 
 namespace {
+
+  void toDoublyLinkedList (bst::node* root, bst::node*& prev, bst::node*& head)
+  {
+    if (!root) {
+      return;
+    }
+
+    toDoublyLinkedList (root->left, prev, head);
+    root->left = prev;
+
+    if (prev) {
+      prev->right = root;
+    } else {
+      head = root;
+    }
+
+    bst::node* right = root->right;
+    head->left = root;
+    root->right = head;
+    prev = root;
+
+    toDoublyLinkedList (right, prev, head);
+  }
+
+  void traverseLevelOrder (bst::node* root)
+  {
+    if (!root) {
+      return;
+    }
+
+    queue<bst::node*> q;
+    q.push (root);
+
+    while (!q.empty())
+    {
+      bst::node* node = q.front();
+
+      if (node->left) {
+        q.push (node->left);
+      }
+
+      if (node->right) {
+        q.push (node->right);
+      }
+
+      cout << node->m_value << endl;
+
+      q.pop();
+    }
+  }
+
   int sumNodes (bst::node* n)
   {
     if (!n)
@@ -16,6 +67,17 @@ namespace {
 
   void modifyRoot (bst::node* root)
   {
+  }
+
+  bst::node* findMin (bst::node*& root)
+  {
+    if (!root) {
+      return 0;
+    } else if (!root->left) {
+      return root;
+    } else {
+      findMin (root->left);
+    }
   }
 }
 
@@ -115,40 +177,23 @@ bst::range (int val)
   r.second = numeric_limits<int>::max();
 }
 
-void bst::remove (int val, node* root)
+void bst::remove (int val, node*& root)
 {
   if (!root) {
     return;
   }
 
-  if (root->m_value == val) {
-    if (root->left && root->right) 
-    {
-      node* cur;
-      node* parent;
-      for (cur = root->right; cur && cur->left; parent = cur, cur = cur->left);
-      root->m_value = cur->m_value;
-      delete cur;
-      parent->left = NULL;
-    }
-    else 
-    {
-      node* child = NULL;
-      if (root->left || root->right)
-        child = root->left ? root->left : root->right;
-      if (val < m_lastVisited->m_value) 
-        m_lastVisited->left = child;
-      else 
-        m_lastVisited->right = child;
-      delete root;
-    }
-  }
-  else if (val < root->m_value) {
-    m_lastVisited = root;
+  if (val < root->m_value) {
     remove (val, root->left);
-  } else  {
-    m_lastVisited = root;
+  } else if (val > root->m_value) {
     remove (val, root->right);
+  } else if (root->left && root->right){
+    root->m_value = ::findMin (root->right)->m_value;
+    remove (root->m_value, root->right);
+  } else {
+    node* old = root;
+    root = root->left ? root->left : root->right;
+    delete old;
   }
 }
 
@@ -349,19 +394,26 @@ void bst::sumLeftRight (node* root)
   sumLeftRight (root->right);
 }
 
+void bst::convertToLinkedList ()
+{
+  bst::node* prev = 0;
+  bst::node* head = 0;
+  toDoublyLinkedList (m_root, prev, head);
 
+  bst::node* slow = head;
+  bst::node* fast = head;
 
+  while (slow && fast)
+  {
+    cout << slow->m_value << endl;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if (fast->right) {
+      fast = fast->right->right;
+    }
+    slow = slow->right;
+    
+    if (slow == fast) {
+      break;
+    }
+  }
+}

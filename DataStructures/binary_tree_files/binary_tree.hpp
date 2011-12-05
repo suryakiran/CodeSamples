@@ -16,11 +16,6 @@ class bst
       int m_value;
       node* left;
       node* right;
-
-      ~node()
-      {
-        cout << "Node Destructor" << endl;
-      }
     };
 
   private:
@@ -33,7 +28,7 @@ class bst
     node* m_lastVisited;
     bool find (int val, node* root);
     void printTree (node* root);
-    void remove (int, node*);
+    void remove (int, node*&);
     int numChildren (node* root);
     int findMin (node* root, int k);
     int height (node* root);
@@ -101,6 +96,8 @@ class bst
       else
         return numeric_limits<int>::max();
     }
+
+    void convertToLinkedList();
 
     void sumLeftRight ()
     {
