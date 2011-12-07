@@ -7,3 +7,6 @@
 [submodule "Global"]
 	path = Global
 	url = git@github.com:suryakiran/Global
+[submodule "KDtree"]
+	path = KDtree
+	url = git://git.debian.org/git/libkdtree/libkdtree.git
