@@ -33,11 +33,22 @@ using namespace std ;
   typedef mapName::iterator   BOOST_PP_CAT (mapName, Iter);   \
   typedef mapName::const_iterator BOOST_PP_CAT(mapName, IterC)
 
+#define DEFINE_VEC(key, vecName)                              \
+  typedef std::vector<key> vecName;                           \
+  typedef vecName::value_type BOOST_PP_CAT (vecName, Value);  \
+  typedef vecName::iterator   BOOST_PP_CAT (vecName, Iter);   \
+  typedef vecName::const_iterator BOOST_PP_CAT(vecName, IterC)
+
 namespace stl {
   DEFINE_MAP(std::string, std::string, StringMap);
   DEFINE_MAP(int, int, IntMap);
   DEFINE_MAP(int, std::string, IntStringMap);
   DEFINE_MAP(std::string, int, StringIntMap);
+
+  DEFINE_VEC(std::string, StringVector);
+  DEFINE_VEC(int, IntVector);
+  DEFINE_VEC(double, DoubleVector);
+  DEFINE_VEC(float, FloatVector);
 }
 
 #endif

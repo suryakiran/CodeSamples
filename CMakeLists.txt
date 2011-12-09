@@ -66,6 +66,7 @@ OPTION (BUILD_SAMPLES_SIGNALS "Build Signals Samples" FALSE)
 OPTION (BUILD_SAMPLES_OSG "Build OSG Samples" FALSE)
 OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
 OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
+OPTION (BUILD_KDTREE "Build KDtree" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -90,6 +91,7 @@ Add_Subdirectory_If (BUILD_SAMPLES_SIGNALS Signals)
 Add_Subdirectory_If (BUILD_SAMPLES_OSG OpenSceneGraph)
 Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
 Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
+Add_Subdirectory_If (BUILD_KDTREE KDtree)
 
 Find_File (
   PERL_IN_FILE
