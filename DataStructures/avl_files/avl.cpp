@@ -27,6 +27,56 @@ struct avl_node
 
 namespace {
 
+  int fileNum (0);
+
+  string dotNode (avl_node* node, int nodeNum)
+  {
+    return 
+    (boost::format ("node%1% [label=<\n\
+        <TABLE>\n\
+        <TR>\n\
+        <TD bgcolor=\"green\" colspan=\"2\" port=\"left\"></TD>\n\
+        <TD bgcolor=\"white\" colspan=\"10\" port=\"center\">%2%</TD>\n\
+        <TD bgcolor=\"red\" colspan=\"2\" port=\"right\"></TD>\n\
+        </TR>\n\
+        </TABLE>\n\
+        >]") % nodeNum % node->m_val).str();
+  }
+
+  template <class T>
+  void toDot (const string& p_fileName, const T& label, avl_node* root)
+  {
+    fstream fout ;
+    fout.open (p_fileName.c_str(), ios_base::out);
+    fout << "digraph \"\" {" << endl;
+    fout << "node [shape=plaintext];" << endl;
+    fout << boost::format ("\tlabel=\"%1%\"") % label << endl;
+    queue < pair <avl_node*, int> > nodes;
+    nodes.push (make_pair (root, 0));
+
+    int i(0);
+    while (!nodes.empty())
+    {
+      pair<avl_node*, int>& node = nodes.front();
+      fout << dotNode (node.first, node.second) << endl;
+
+      if (node.first->m_left) {
+        nodes.push (make_pair (node.first->m_left, ++i));
+        fout << boost::format ("node%1%:left -> node%2%:center") % node.second % i << endl;
+      }
+
+      if (node.first->m_right) {
+        nodes.push (make_pair (node.first->m_right, ++i));
+        fout << boost::format ("node%1%:right -> node%2%:center") % node.second % i << endl;
+      }
+
+      nodes.pop();
+    }
+
+    fout << "}" << endl;
+    fout.close();
+  }
+
   int height (avl_node* root)
   {
     return root ? root->m_height : -1;
@@ -176,26 +226,45 @@ namespace {
     return sum;
   }
 
-  void insert (avl_node*& root, int val)
+  void insert (avl_node*& root, int val, avl_node* p_root)
   {
     if (!root) {
       root = new avl_node (val);
     } else if (val < root->m_val) {
-      insert (root->m_left, val);
+      insert (root->m_left, val, p_root);
       if (height (root->m_left) - height(root->m_right) == 2) {
         if (val < root->m_left->m_val) {
+          fileNum++;
+          string beforeFileName = (boost::format ("before-single-rotate-%1%.gv") % fileNum).str();
+          string afterFileName = (boost::format ("after-single-rotate-%1%.gv") % fileNum).str();
+          ::toDot (beforeFileName, boost::format ("Rotate Left (Inserting %1%)") % val, p_root);
           singleRotateChild (Left, root);
+          ::toDot (afterFileName, boost::format ("Rotate Left (Inserted %1%)") % val, p_root);
         } else {
+          fileNum++;
+          string beforeFileName = (boost::format ("before-double-rotate-%1%.gv") % fileNum).str();
+          string afterFileName = (boost::format ("after-double-rotate-%1%.gv") % fileNum).str();
+          ::toDot (beforeFileName, boost::format ("Double Rotate Left (Inserting %1%)") % val, p_root);
           doubleRotateChild (Left, root);
+          ::toDot (afterFileName, boost::format ("Double Rotate Left (Inserted %1%)") % val, p_root);
         }
       }
     } else if (val > root->m_val) {
-      insert (root->m_right, val);
+      insert (root->m_right, val, p_root);
       if (height (root->m_right) - height(root->m_left) == 2) {
         if (val > root->m_right->m_val) {
+          fileNum++;
+          string beforeFileName = (boost::format ("before-single-rotate-%1%.gv") % fileNum).str();
+          string afterFileName = (boost::format ("after-single-rotate-%1%.gv") % fileNum).str();
+          ::toDot (beforeFileName, boost::format ("Rotate Right (Inserting %1%)") % val, p_root);
           singleRotateChild (Right, root);
+          ::toDot (afterFileName, boost::format ("Rotate Right (Inserted %1%)") % val, p_root);
         } else {
+          string beforeFileName = (boost::format ("before-double-rotate-%1%.gv") % fileNum).str();
+          string afterFileName = (boost::format ("after-double-rotate-%1%.gv") % fileNum).str();
+          ::toDot (beforeFileName, boost::format ("Double Rotate Right (Inserting %1%)") % val, p_root);
           doubleRotateChild (Right, root);
+          ::toDot (afterFileName, boost::format ("Double Rotate Right (Inserted %1%)") % val, p_root);
         }
       }
     } else {
@@ -233,7 +302,7 @@ avl& avl::insert (int p_val)
     m_root = new avl_node(p_val);
     m_root->m_val = p_val;
   } else {
-    ::insert (m_root, p_val);
+    ::insert (m_root, p_val, m_root);
   }
 
   return *this;
