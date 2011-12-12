@@ -421,3 +421,49 @@ void bst::toLinkedList ()
     }
   }
 }
+
+void bst::printToDot (const string& p_fileName) const
+{
+
+  if (!m_root) {
+    return;
+  }
+
+  queue < pair<Node, int> > nodes;
+  nodes.push (make_pair(m_root, 0));
+
+  fstream fout ;
+  fout.open (p_fileName.c_str(), ios_base::out);
+
+  fout << "digraph \"\" {" << endl;
+  fout << "node [shape=\"record\" height=0.05];" << endl;
+
+  int i (0);
+  while (!nodes.empty()) {
+    pair <Node, int>& current = nodes.front();
+    Node& curNode = current.first;
+    int parentNum (current.second);
+
+    fout << boost::format ("node%1%[label=\"<f0>|<f1>%2%|<f2>\"];") 
+      % parentNum
+      % curNode->m_value 
+      << endl;
+
+    if (curNode->left) {
+      nodes.push (make_pair(curNode->left, ++i)) ;
+      fout << boost::format ("\"node%1%\":f0 -> \"node%2%\":f1;")
+        % parentNum % i << endl;
+    }
+
+    if (curNode->right) {
+      nodes.push (make_pair(curNode->right, ++i));
+      fout << boost::format ("\"node%1%\":f2 -> \"node%2%\":f1;")
+        % parentNum % i << endl;
+    }
+
+    nodes.pop();
+  }
+
+  fout << "}";
+  fout.close();
+}

@@ -71,6 +71,8 @@ class bst
       return isMirrorImage(m_root->left, m_root->right);
     }
 
+    void printToDot(const string& p_fileName) const;
+
     void traverseZigZag()
     {
       if (!m_root) 
