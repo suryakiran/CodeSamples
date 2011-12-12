@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for f in `ls -1 *.gv`
+do
+  svg_name=$PWD/`basename $f .gv`.svg
+  dot $f -Tsvg -o $svg_name
+done

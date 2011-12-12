@@ -100,6 +100,11 @@ Find_File (
     ${CMAKE_SOURCE_DIR}
   )
 
+Configure_Executable_File (
+  ${CMAKE_SOURCE_DIR}/Config/dot2svg
+  ${CMAKE_BINARY_DIR}/dot2svg
+  )
+
 Cmake_List_To_Perl_Args (AdditionalGvimSearchDirs -d ${IncludeDirectories})
 Cmake_List_To_Perl_Args (ProjectModules -p ${PROJECT_MODULES})
 
