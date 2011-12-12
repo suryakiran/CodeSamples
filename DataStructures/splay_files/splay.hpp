@@ -1,32 +1,23 @@
 #ifndef splay_hpp
 #define splay_hpp 1
 
-#include <iostream>
-using namespace std;
+#include <std.hxx>
+
+struct splay_node;
 
 class splay
 {
   private:
-    struct node
-    {
-      node(int v)
-        : m_value(v), left(0), right(0)
-      {
-      }
+    splay_node* m_root;
+    splay_node* m_null;
+    bool find (int val, splay_node*& root);
+    void printTree (splay_node* root);
+    void remove (int, splay_node*);
+    void rotateRight(splay_node*);
+    void rotateLeft(splay_node*);
+    bool splayNode (splay_node*);
 
-      int m_value;
-      node* left;
-      node* right;
-      node* parent;
-    };
-
-    node* m_root;
-    node* m_lastVisited;
-    bool find (int val, node* root);
-    void printTree (node* root);
-    void remove (int, node*);
-    void rotateRight(node*);
-    void rotateLeft(node*);
+    int m_fileNum;
 
   public:
     splay();
@@ -46,7 +37,7 @@ class splay
 
     splay& insert (int val);
     bool find (int val);
-    void print();
+    void print(const string& p_label);
     int findMin ();
     int findMax() ;
     void remove (int val);
