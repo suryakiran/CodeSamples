@@ -16,6 +16,7 @@
 #include <boost/range.hpp>
 
 using boost::format ;
+typedef boost::format fmt;
 using namespace boost::assign ;
 
 namespace str = boost::algorithm ;
@@ -27,7 +28,7 @@ void printContainer (const Format& p_message, const Container& p_container, char
 	typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter ;
 	cout << p_message ;
   if (p_printSize)
-    cout << boost::format (" (Size: %1%)") % boost::size(p_container) ;
+    cout << fmt (" (Size: %1%)") % boost::size(p_container) ;
   cout << endl;
 	Iter beginIter (boost::begin(p_container)), endIter (boost::end(p_container)) ;
 	for (Iter iter = beginIter; iter != endIter; ++iter) 

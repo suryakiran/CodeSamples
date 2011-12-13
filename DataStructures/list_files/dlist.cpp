@@ -31,7 +31,7 @@ void
 dlist::print ()
 {
   m_fileNum++;
-  string fileName ((boost::format ("dlist-%1%.gv") % m_fileNum).str());
+  string fileName ((fmt ("dlist-%1%.gv") % m_fileNum).str());
 
   int i (0);
   map<Node, int> m;
@@ -44,22 +44,19 @@ dlist::print ()
   fout << "rankdir=LR;" << endl;
   fout << "node [shape=box];" << endl;
 
-  i = 0;
   for (Node p = m_head; p; p = p->m_next)
   {
     int curNodeNum (m[p]);
-    fout << boost::format("node%1% [label=\"%2%\"];") % curNodeNum % p->m_val << endl;
+    fout << fmt("node%1% [label=\"%2%\"];") % curNodeNum % p->m_val << endl;
     if (p->m_next) {
       int nextNodeNum (m[p->m_next]);
-      fout << boost::format("node%1%->node%2%;") % curNodeNum % nextNodeNum << endl;
+      fout << fmt("node%1%->node%2%;") % curNodeNum % nextNodeNum << endl;
     }
 
     if (p->m_prev) {
       int prevNodeNum (m[p->m_prev]);
-      fout << boost::format("node%1%->node%2%;") % curNodeNum % prevNodeNum << endl;
+      fout << fmt("node%1%->node%2%;") % curNodeNum % prevNodeNum << endl;
     }
-
-    i++;
   }
 
   fout << "}" << endl;
