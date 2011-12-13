@@ -32,11 +32,25 @@ dlist::print ()
 {
   m_fileNum++;
   string fileName ((boost::format ("dlist-%1%.gv") % m_fileNum).str());
+
+  fstream fout ;
+  fout.open (fileName.c_str(), ios_base::out);
+  fout << "digraph \"\" {" << endl;
+  fout << "rankdir=LR;" << endl;
+  fout << "node [shape=box];" << endl;
+
+  int i(0);
   for (Node p = m_head; p; p = p->m_next)
   {
-    cout << p->m_val << ',';
+    fout << boost::format("node%1% [label=\"%2%\"];") % i % p->m_val << endl;
+    if (p->m_next) {
+      fout << boost::format("node%1%->node%2%;") % i % (i+1) << endl;
+    }
+    i++;
   }
-  cout << endl;
+
+  fout << "}" << endl;
+  fout.close();
 }
 
 void dlist::reverse()
