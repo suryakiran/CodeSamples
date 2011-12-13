@@ -1,18 +1,19 @@
-#include <slist.hpp>
+#include <dlist.hpp>
 
-struct slist_node
+struct dlist_node
 {
-  slist_node(int p_val)
-    : m_val (p_val), m_next(0) { }
+  dlist_node(int p_val)
+    : m_val (p_val), m_next(0), m_prev(0) { }
 
   int m_val;
   Node m_next;
+  Node m_prev;
 };
 
 void
-slist::push (int i)
+dlist::push (int i)
 {
-  Node n = new slist_node (i);
+  Node n = new dlist_node (i);
 
   if (!m_head) {
     m_head = n;
@@ -22,14 +23,15 @@ slist::push (int i)
     Node p;
     for (p = m_head; p && p->m_next; p = p->m_next);
     p->m_next = n;
+    n->m_prev = p;
   }
 }
 
 void 
-slist::print ()
+dlist::print ()
 {
   m_fileNum++;
-  string fileName ((boost::format ("slist-%1%.gv") % m_fileNum).str());
+  string fileName ((boost::format ("dlist-%1%.gv") % m_fileNum).str());
   for (Node p = m_head; p; p = p->m_next)
   {
     cout << p->m_val << ',';
@@ -37,7 +39,7 @@ slist::print ()
   cout << endl;
 }
 
-void slist::reverse()
+void dlist::reverse()
 {
   Node p,q,r;
 
@@ -49,6 +51,8 @@ void slist::reverse()
   {
     r = q->m_next;
     q->m_next = m_head;
+    q->m_prev = r;
+    m_head->m_prev = q;
     m_head = q;
     q = r;
   }
