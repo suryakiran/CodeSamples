@@ -33,19 +33,32 @@ dlist::print ()
   m_fileNum++;
   string fileName ((boost::format ("dlist-%1%.gv") % m_fileNum).str());
 
+  int i (0);
+  map<Node, int> m;
+  for (Node p = m_head; p; p = p->m_next)
+    m[p] = ++i;
+
   fstream fout ;
   fout.open (fileName.c_str(), ios_base::out);
   fout << "digraph \"\" {" << endl;
   fout << "rankdir=LR;" << endl;
   fout << "node [shape=box];" << endl;
 
-  int i(0);
+  i = 0;
   for (Node p = m_head; p; p = p->m_next)
   {
-    fout << boost::format("node%1% [label=\"%2%\"];") % i % p->m_val << endl;
+    int curNodeNum (m[p]);
+    fout << boost::format("node%1% [label=\"%2%\"];") % curNodeNum % p->m_val << endl;
     if (p->m_next) {
-      fout << boost::format("node%1%->node%2%;") % i % (i+1) << endl;
+      int nextNodeNum (m[p->m_next]);
+      fout << boost::format("node%1%->node%2%;") % curNodeNum % nextNodeNum << endl;
     }
+
+    if (p->m_prev) {
+      int prevNodeNum (m[p->m_prev]);
+      fout << boost::format("node%1%->node%2%;") % curNodeNum % prevNodeNum << endl;
+    }
+
     i++;
   }
 
