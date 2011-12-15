@@ -32,6 +32,10 @@ class splay
       return insert(val);
     }
 
+    size_t size() const {
+      return m_numItems;
+    }
+
     splay& operator, (int val)
     {
       return insert(val);
