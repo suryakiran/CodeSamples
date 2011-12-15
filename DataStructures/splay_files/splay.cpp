@@ -210,19 +210,22 @@ splay& splay::insert (int val)
 
 bool splay::find (int val)
 {
-  return find (val, m_root);
+  return find (val, m_root, m_null);
 }
 
-bool splay::find (int val, NodeRef root)
+bool splay::find (int val, NodeRef root, NodeRef parent)
 {
   if (!root) {
+    if (parent) {
+      splayNode (parent);
+    }
     return false;
   }
 
   if (val < root->m_val) {
-    return find(val, root->m_left);
+    return find(val, root->m_left, root);
   } else if (val > root->m_val) {
-    return find (val, root->m_right) ;
+    return find (val, root->m_right, root) ;
   }
 
   else 

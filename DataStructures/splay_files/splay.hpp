@@ -12,7 +12,7 @@ class splay
 {
   private:
     Node m_root, m_null;
-    bool find (int val, NodeRef root);
+    bool find (int val, NodeRef root, NodeRef parent);
     void printTree (Node root);
     void remove (int, Node);
     void rotateRight(Node);
