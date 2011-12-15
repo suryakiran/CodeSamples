@@ -14,10 +14,9 @@ class splay
     Node m_root, m_null;
     bool find (int val, NodeRef root, NodeRef parent);
     void printTree (Node root);
-    void remove (int, Node);
+    pair<bool, Node> remove (int, Node root, Node parent);
     void rotateRight(Node);
     void rotateLeft(Node);
-//    bool splayNode (Node);
     void splayNode (Node);
 
     int m_fileNum;
@@ -46,9 +45,9 @@ class splay
     splay& insert (int val);
     bool find (int val);
     void print(const string& p_label);
-    int findMin ();
-    int findMax() ;
-    void remove (int val);
+    pair<int, Node> findMin ();
+    pair<int, Node> findMax() ;
+    bool remove (int val);
 };
 
 #endif

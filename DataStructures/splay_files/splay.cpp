@@ -21,6 +21,20 @@ struct splay_node
 
 namespace {
 
+  pair<int, Node> findMin (Node root)
+  {
+    Node r;
+    for (r = root; r->m_left; r = r->m_left);
+    return make_pair (r->m_val, r);
+  }
+
+  pair<int, Node> findMax (Node root)
+  {
+    Node r;
+    for (r = root; r->m_right; r = r->m_right);
+    return make_pair (r->m_val, r);
+  }
+
   template <class NodeType>
     void splayNode (
         Direction d,
@@ -249,16 +263,25 @@ void splay::printTree(Node root)
 {
 }
 
-int splay::findMin()
+pair<int, Node> splay::findMin()
 {
+  return ::findMin (m_root);
 }
 
-int splay::findMax()
+pair<int, Node> splay::findMax()
 {
+  return ::findMax (m_root);
 }
 
-void splay::remove (int val)
+bool splay::remove (int val)
 {
+  pair <bool, Node> r = remove(val, m_root, m_null);
+
+  if (r.second) {
+    splayNode (r.second);
+  }
+
+  return r.first;
 }
 
 pair<int, int>
@@ -271,8 +294,49 @@ splay::range (int val)
   return r;
 }
 
-void splay::remove (int val, Node root)
+pair <bool, Node>
+splay::remove (int val, Node root, Node parent)
 {
+  if (!root) {
+    return make_pair (false, parent);
+  }
+
+  if (val < root->m_val) {
+    return remove (val, root->m_left, root);
+  } else if (val > root->m_val) {
+    return remove (val, root->m_right, root);
+  }
+
+  else {
+    if (root->m_left && root->m_right) {
+      pair<int, Node> min = ::findMin (root->m_right);
+      root->m_val = min.first;
+      remove (root->m_val, root->m_right, root);
+      return make_pair(true, parent);
+    } else if (root->m_left) {
+      if (parent->m_left == root) {
+        parent->m_left = root->m_left;
+      } else {
+        parent->m_right = root->m_left;
+      }
+      return make_pair (true, parent);
+    } else if (root->m_right) {
+      if (parent->m_left == root) {
+        parent->m_left = root->m_right;
+      } else {
+        parent->m_right = root->m_right;
+      }
+      return make_pair (true, parent);
+    } else {
+      if (parent->m_left == root) {
+        parent->m_left = NULL;
+      } else {
+        parent->m_right = NULL;
+      }
+      return make_pair (true, parent);
+    }
+    delete root;
+  }
 }
 
 void splay::splayNode (Node p_node)
