@@ -9,10 +9,11 @@ int main (void)
   bst b;
   b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3, 6;
 
-  b.printToDot ("current-tree.dot");
+  b.printToDot ("current-tree.gv");
 
-  cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
+  b.printSiblingNodes (6);
   /*
+  cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
   b.remove (25);
   b.remove (5);
   b.remove (35);

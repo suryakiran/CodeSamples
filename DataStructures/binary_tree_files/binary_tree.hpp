@@ -50,6 +50,7 @@ class bst
     ~bst();
 
     void toLinkedList();
+    void printSiblingNodes (int);
 
     bst& operator += (int val)
     {

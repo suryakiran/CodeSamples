@@ -444,20 +444,20 @@ void bst::printToDot (const string& p_fileName) const
     Node& curNode = current.first;
     int parentNum (current.second);
 
-    fout << boost::format ("node%1%[label=\"<f0>|<f1>%2%|<f2>\"];") 
+    fout << fmt ("node%1%[label=\"<f0>|<f1>%2%|<f2>\"];") 
       % parentNum
       % curNode->m_value 
       << endl;
 
     if (curNode->left) {
       nodes.push (make_pair(curNode->left, ++i)) ;
-      fout << boost::format ("\"node%1%\":f0 -> \"node%2%\":f1;")
+      fout << fmt ("\"node%1%\":f0 -> \"node%2%\":f1;")
         % parentNum % i << endl;
     }
 
     if (curNode->right) {
       nodes.push (make_pair(curNode->right, ++i));
-      fout << boost::format ("\"node%1%\":f2 -> \"node%2%\":f1;")
+      fout << fmt ("\"node%1%\":f2 -> \"node%2%\":f1;")
         % parentNum % i << endl;
     }
 
@@ -466,4 +466,20 @@ void bst::printToDot (const string& p_fileName) const
 
   fout << "}";
   fout.close();
+}
+
+void bst::printSiblingNodes (int val)
+{
+  if (!m_root) {
+    return;
+  }
+
+  Node n, p;
+
+  n = m_root;
+  p = m_root;
+
+  if (val == m_root) {
+    return;
+  }
 }
