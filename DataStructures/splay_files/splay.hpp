@@ -5,19 +5,23 @@
 
 struct splay_node;
 
+typedef boost::add_pointer<splay_node>::type  Node;
+typedef boost::add_reference <Node>::type NodeRef;
+
 class splay
 {
   private:
-    splay_node* m_root;
-    splay_node* m_null;
-    bool find (int val, splay_node*& root);
-    void printTree (splay_node* root);
-    void remove (int, splay_node*);
-    void rotateRight(splay_node*);
-    void rotateLeft(splay_node*);
-    bool splayNode (splay_node*);
+    Node m_root, m_null;
+    bool find (int val, NodeRef root);
+    void printTree (Node root);
+    void remove (int, Node);
+    void rotateRight(Node);
+    void rotateLeft(Node);
+//    bool splayNode (Node);
+    void splayNode (Node);
 
     int m_fileNum;
+    size_t m_numItems;
 
   public:
     splay();

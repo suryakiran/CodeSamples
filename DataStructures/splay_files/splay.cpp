@@ -14,81 +14,107 @@ struct splay_node
   }
 
   int m_val;
-  splay_node* m_left;
-  splay_node* m_right;
-  splay_node* m_parent;
+  Node m_left;
+  Node m_right;
+  Node m_parent;
 };
 
 namespace {
 
-  splay_node* splayNode (Direction d, splay_node* node, splay_node* root)
-  {
-    splay_node* parent (node->m_parent);
-    splay_node* grandparent (parent->m_parent);
-    splay_node* leftChild (node->m_left);
-    splay_node* rightChild (node->m_right);
-    switch (d)
+  template <class NodeType>
+    void splayNode (
+        Direction d,
+        NodeType p_node,
+        typename boost::add_reference<NodeType>::type p_root
+        )
     {
-      case Right:
-        parent->m_left = rightChild;
-        node->m_right = parent;
-        if (grandparent) {
-          if (parent == grandparent->m_right) {
-            grandparent->m_right = node;
-          } else {
-            grandparent->m_left = node;
-          }
-        }
-        node->m_parent = grandparent;
-        parent->m_parent = node;
-        if (rightChild) {
-          rightChild->m_parent = parent;
-        }
-        break;
-      case Left:
-        parent->m_right = leftChild;
-        node->m_left = parent;
-        if (grandparent) {
-          if (parent == grandparent->m_left) {
-            grandparent->m_left = node;
-          } else {
-            grandparent->m_right = node;
-          }
-        }
-        node->m_parent = grandparent;
-        parent->m_parent = node;
-        if (leftChild) {
-          leftChild->m_parent = parent;
-        }
-        break;
-      default:
-        break;
-    }
+      typedef NodeType _NodePtr;
+      typedef typename boost::remove_pointer <NodeType>::type _Node;
 
-    if (parent == root) {
-      return node;
-    } else {
-      return root;
+      bool leftChild (true);
+      bool changeRoot (false);
+
+      _NodePtr parent = p_node->m_parent;
+      _NodePtr rightPtr = p_node->m_right;
+      _NodePtr leftPtr = p_node->m_left;
+      _NodePtr grandParent = parent->m_parent;
+
+      if (grandParent == p_root) {
+        changeRoot = true;
+      }
+
+      if (grandParent) {
+        if (parent == grandParent->m_right) {
+          leftChild = false;
+        }
+      }
+
+      switch (d)
+      {
+        case Left:
+          p_node->m_parent = parent->m_parent;
+          p_node->m_left = parent;
+
+          if (leftPtr) {
+            leftPtr->m_parent = parent;
+          }
+
+          parent->m_right = leftPtr;
+          parent->m_parent = p_node;
+          p_node->m_parent = grandParent;
+          break;
+        case Right:
+          p_node->m_parent = parent->m_parent;
+          p_node->m_right = parent;
+
+          if (rightPtr) {
+            rightPtr->m_parent = parent;
+          }
+
+          parent->m_left = rightPtr;
+          parent->m_parent = p_node;
+          p_node->m_parent = grandParent;
+          break;
+        default:
+          break;
+      }
+
+      if (grandParent) {
+        if (leftChild) {
+          grandParent->m_left = p_node;
+        } else {
+          grandParent->m_right = p_node;
+        }
+        if (changeRoot) {
+          p_root = grandParent;
+        }
+      } else {
+        p_root = p_node;
+      }
     }
-  }
 
   template <class NodeType>
-  NodeType*& insert (const int& p_val, NodeType*& p_root, NodeType*& p_parent)
-  {
-    if (!p_root) {
-      p_root = new NodeType(p_val);
-      p_root->m_parent = p_parent;
-      return p_root;
-    }
+    void
+    insert (
+        const int& p_val, 
+        typename boost::add_reference<NodeType>::type p_root, 
+        typename boost::add_reference<NodeType>::type p_parent
+        )
+    {
+      typedef typename boost::remove_pointer<NodeType>::type _Node;
+      if (!p_root) {
+        p_root = new _Node (p_val);
+        p_root->m_parent = p_parent;
+      }
 
-    else if (p_val < p_root->m_val) {
-      return insert (p_val, p_root->m_left, p_root);
-    }
+      else if (p_val < p_root->m_val) {
+        insert<NodeType> (p_val, p_root->m_left, p_root);
+      }
 
-    else if (p_val > p_root->m_val) {
-      return insert (p_val, p_root->m_right, p_root);
+      else if (p_val > p_root->m_val) {
+        insert<NodeType> (p_val, p_root->m_right, p_root);
+      }
     }
-  }
 
   struct toString
   {
@@ -122,7 +148,8 @@ namespace {
   }
 
   template <class StringType, class LabelType, class NodeType>
-  void toDot (const StringType& p_fileName, const LabelType& p_label, const NodeType& p_root)
+  void toDot (const StringType& p_fileName, const LabelType& p_label, const NodeType& p_root,
+      size_t p_numItems)
   {
     fstream fout ;
     fout.open (toString()(p_fileName).c_str(), ios_base::out);
@@ -130,13 +157,13 @@ namespace {
     fout << "\tnode [shape=plaintext];" << endl;
     fout << boost::format ("\tlabel=\"%1%\"") % p_label << endl;
 
-    queue < pair<NodeType, int> >  nodes;
+    queue < pair<NodeType, size_t> >  nodes;
 
-    int i(0);
+    size_t i(0);
     nodes.push (make_pair (p_root, 0));
     while (!nodes.empty())
     {
-      pair<NodeType, int>& node = nodes.front();
+      pair<NodeType, size_t>& node = nodes.front();
       fout << dotBinaryNode (node.first, node.second);
 
       if (node.first->m_left) {
@@ -151,6 +178,11 @@ namespace {
           % node.second % i << endl;
       }
 
+      if (i > p_numItems + 1) {
+        cout << "***** ERROR: Bailing Out *****" << endl;
+        break;
+      }
+
       nodes.pop();
     }
     fout << "}";
@@ -159,7 +191,7 @@ namespace {
 }
 
 splay::splay()
-  :m_root(0), m_null(0), m_fileNum (0)
+  :m_root(0), m_null(0), m_fileNum (0), m_numItems(0)
 {
 }
 
@@ -169,7 +201,8 @@ splay::~splay()
 
 splay& splay::insert (int val)
 {
-  ::insert (val, m_root, m_null);
+  ::insert<Node> (val, m_root, m_null);
+  ++m_numItems;
   return *this;
 }
 
@@ -178,7 +211,7 @@ bool splay::find (int val)
   return find (val, m_root);
 }
 
-bool splay::find (int val, splay_node*& root)
+bool splay::find (int val, NodeRef root)
 {
   if (!root) {
     return false;
@@ -204,10 +237,10 @@ void splay::print (const string& p_label)
   }
 
   m_fileNum++;
-  toDot (boost::format ("splay-%1%.gv") % m_fileNum, p_label, m_root);
+  toDot (boost::format ("splay-%1%.gv") % m_fileNum, p_label, m_root, m_numItems);
 }
 
-void splay::printTree(splay_node* root)
+void splay::printTree(Node root)
 {
 }
 
@@ -233,18 +266,57 @@ splay::range (int val)
   return r;
 }
 
-void splay::remove (int val, splay_node* root)
+void splay::remove (int val, Node root)
 {
 }
 
-bool splay::splayNode (splay_node* node)
+void splay::splayNode (Node p_node)
+{
+  if (p_node == m_root) {
+    return;
+  }
+
+  Node parent (p_node->m_parent);
+
+  if (parent == m_root) {
+    if (p_node == m_root->m_left) {
+      ::splayNode<Node> (Right, p_node, m_root);
+    } else {
+      ::splayNode<Node> (Left, p_node, m_root);
+    }
+  } else {
+    Node grandParent = parent->m_parent;
+
+    if (grandParent->m_left == parent) {
+      if (p_node == parent->m_left) {
+        ::splayNode <Node> (Right, p_node, m_root);
+        ::splayNode <Node> (Right, p_node, m_root);
+      } else { 
+        ::splayNode <Node> (Left, p_node, m_root);
+        ::splayNode <Node> (Right, p_node, m_root);
+      }
+    } else {
+      if (p_node == parent->m_right) {
+        ::splayNode <Node> (Left, p_node, m_root);
+        ::splayNode <Node> (Left, p_node, m_root);
+      } else { 
+        ::splayNode <Node> (Right, p_node, m_root);
+        ::splayNode <Node> (Left, p_node, m_root);
+      }
+    }
+  }
+  splayNode (p_node);
+}
+
+#if 0
+bool splay::splayNode (Node node)
 {
   if (node == m_root) {
     return false;
   }
 
-  splay_node* parent (node->m_parent);
-  splay_node* grandParent (parent->m_parent);
+  Node parent (node->m_parent);
+  Node grandParent (parent->m_parent);
 
   if (parent == m_root) { //node is child of root
     if (node == m_root->m_left) {
@@ -280,3 +352,4 @@ bool splay::splayNode (splay_node* node)
 
   splayNode (node);
 }
+#endif
