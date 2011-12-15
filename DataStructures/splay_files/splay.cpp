@@ -94,7 +94,7 @@ namespace {
     }
 
   template <class NodeType>
-    void
+    NodeType
     insert (
         const int& p_val, 
         typename boost::add_reference<NodeType>::type p_root, 
@@ -105,14 +105,15 @@ namespace {
       if (!p_root) {
         p_root = new _Node (p_val);
         p_root->m_parent = p_parent;
+        return p_root;
       }
 
       else if (p_val < p_root->m_val) {
-        insert<NodeType> (p_val, p_root->m_left, p_root);
+        return insert<NodeType> (p_val, p_root->m_left, p_root);
       }
 
       else if (p_val > p_root->m_val) {
-        insert<NodeType> (p_val, p_root->m_right, p_root);
+        return insert<NodeType> (p_val, p_root->m_right, p_root);
       }
     }
 
@@ -201,7 +202,8 @@ splay::~splay()
 
 splay& splay::insert (int val)
 {
-  ::insert<Node> (val, m_root, m_null);
+  Node node = ::insert<Node> (val, m_root, m_null);
+  splayNode (node);
   ++m_numItems;
   return *this;
 }
