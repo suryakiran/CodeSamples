@@ -5,6 +5,11 @@ struct slist_node
   slist_node(int p_val)
     : m_val (p_val), m_next(0) { }
 
+  ~slist_node() {
+    cout << "Deleting: " << m_val << endl;
+    delete m_next;
+  }
+
   int m_val;
   Node m_next;
 };
@@ -51,5 +56,12 @@ void slist::reverse()
     q->m_next = m_head;
     m_head = q;
     q = r;
+  }
+}
+
+slist::~slist()
+{
+  if (m_head) {
+    delete m_head;
   }
 }

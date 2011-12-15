@@ -1,12 +1,9 @@
-#include <dlist.hpp>
+#include <slist.hpp>
 
 int main (void)
 {
-  dlist d;
+  slist s;
   for (int i = 0; i < 10; ++i) {
-    d.push(i);
+    s.push(i);
   }
-  d.print();
-  d.reverse();
-  d.print();
 }

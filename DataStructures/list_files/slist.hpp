@@ -14,6 +14,8 @@ class slist
     {
     }
 
+    ~slist();
+
     void push (int i);
     void print ();
     void reverse();
