@@ -11,7 +11,7 @@ namespace {
 
 		const IntTriplet& it = vti[0] ;
 
-		copy (vti.begin(), vti.end(), ostream_iterator<IntTriplet> (cout, "\n")) ;
+//		copy (vti.begin(), vti.end(), ostream_iterator<IntTriplet> (cout, "\n")) ;
 
 		cout << it << endl ;
 	}

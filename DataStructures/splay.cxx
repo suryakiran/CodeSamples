@@ -14,4 +14,7 @@ int main (void)
 
   res = b.remove (19);
   b.print ((fmt ("Removed 19 (%1%)") % (res ? "found" : "not found")).str());
+
+  res = b.find (38);
+  b.print ((fmt ("Search 38 (%1%)") % (res ? "found" : "not found")).str());
 }
