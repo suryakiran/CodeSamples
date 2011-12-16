@@ -19,7 +19,7 @@ If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
 
-Set(Boost_ADDITIONAL_VERSIONS "1.47")
+Set(Boost_ADDITIONAL_VERSIONS "1.48")
 Find_Package (
   Boost
   COMPONENTS date_time program_options filesystem system
@@ -42,6 +42,10 @@ Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)
     Add_Subdirectory (${p_dirName})
   EndIf (${p_varName})
 EndMacro (ADD_SUBDIRECTORY_IF)
+
+If (CMAKE_COMPILER_IS_GNUCXX)
+  Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
 OPTION (BUILD_SAMPLES_FUSION "Build Fusion Samples" FALSE)
