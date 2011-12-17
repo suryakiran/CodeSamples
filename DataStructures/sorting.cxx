@@ -70,22 +70,16 @@ void bubble_sort (stl::IntVector& v)
   size_t sz (v.size());
   size_t pass (0);
 
-  while (1)
+  for (size_t i = 0; i < sz; ++i)
   {
-    bool sd (false);
-    for (size_t j = 1; j < sz - pass; ++j)
+    for (size_t j = sz-1; j >= i+1; --j)
     {
       if (v[j] < v[j-1]) {
-        sd = true;
-        swap(v[j-1], v[j]);
+        swap (v[j], v[j-1]);
       }
     }
-    printContainer (fmt("Pass: %1%") % pass, v);
-    if (!sd) {
-      break;
-    }
-    pass++;
-  };
+    printContainer (fmt("Pass: %1%") % i, v);
+  }
 }
 
 size_t min_idx (stl::IntVector& v, size_t beg, size_t end)
@@ -120,6 +114,6 @@ int main (void)
 
 //  insertion_sort (vi);
 //  merge_sort (vi, 0, vi.size()-1);
-//  bubble_sort (vi);
-  selection_sort (vi);
+  bubble_sort (vi);
+//  selection_sort (vi);
 }
