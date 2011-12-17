@@ -65,11 +65,40 @@ void merge_sort (stl::IntVector& v, size_t beg, size_t end)
   }
 }
 
+void bubble_sort (stl::IntVector& v)
+{
+  size_t sz (v.size());
+  size_t pass (0);
+
+  while (1)
+  {
+    bool sd (false);
+    for (size_t j = 1; j < sz - pass; ++j)
+    {
+      if (v[j] < v[j-1]) {
+        sd = true;
+        swap(v[j-1], v[j]);
+      }
+    }
+    printContainer (fmt("Pass: %1%") % pass, v);
+    if (!sd) {
+      break;
+    }
+    pass++;
+  };
+}
+
+void selection_sort (stl::IntVector& v)
+{
+}
+
 int main (void)
 {
   stl::IntVector vi;
   vi += 10,5,18,3,17,2,9,1,0,11;
 
 //  insertion_sort (vi);
-  merge_sort (vi, 0, vi.size()-1);
+//  merge_sort (vi, 0, vi.size()-1);
+//  bubble_sort (vi);
+  selection_sort (vi);
 }
