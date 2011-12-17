@@ -88,8 +88,29 @@ void bubble_sort (stl::IntVector& v)
   };
 }
 
+size_t min_idx (stl::IntVector& v, size_t beg, size_t end)
+{
+  int min_val = numeric_limits<int>::max();
+  size_t mi ;
+  for (size_t i = beg; i <= end; ++i)
+  {
+    if (v[i] < min_val) {
+      min_val = v[i];
+      mi = i;
+    }
+  }
+
+  return mi;
+}
+
 void selection_sort (stl::IntVector& v)
 {
+  for (size_t i = 0; i < v.size(); ++i)
+  {
+    size_t mi = min_idx (v, i, v.size()-1); 
+    swap (v[i], v[mi]);
+    printContainer (fmt("Pass: %1%") % i, v);
+  }
 }
 
 int main (void)
