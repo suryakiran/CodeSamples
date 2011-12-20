@@ -85,6 +85,8 @@ class heap
 
       fout << "}" << endl;
       fout.close();
+
+      printContainer (p_label, m_container);
     }
 
     size_t size()
@@ -102,9 +104,8 @@ class heap
       container& c = m_container;
       size_t sz (c.size());
 
-      while (sz) 
+      while (--sz) 
       {
-        --sz;
         swap (c[0], c[sz]);
         percolate_down (0, sz);
       }
