@@ -2,6 +2,9 @@
 
 typedef bst::node* Node;
 
+fmt fileNameFmt ("tree-%1%.gv");
+int fileNum;
+
 namespace {
 
   void toLinkedList (Node root, Node& prev, Node& head)
@@ -23,6 +26,8 @@ namespace {
 
     head->left = root;
     root->right = head;
+
+    prev = root;
 
     toLinkedList (right, prev, head);
   }
@@ -47,8 +52,6 @@ namespace {
       if (node->right) {
         q.push (node->right);
       }
-
-      cout << node->m_value << endl;
 
       q.pop();
     }
@@ -86,6 +89,7 @@ namespace {
 bst::bst()
   :m_root (0)
 {
+  fileNum = 0;
 }
 
 bst::~bst()
@@ -134,11 +138,9 @@ bool bst::find (int val, Node root)
     return find(val, root->left);
 }
 
-void bst::print ()
+void bst::print () const
 {
-  cout << "Root: " << m_root->m_value << endl;
-  printTree (m_root);
-  cout << endl;
+  printToDot ((fileNameFmt % ++fileNum).str());
 }
 
 void bst::printTree(Node root)
@@ -284,7 +286,6 @@ void bst::traverseZigZag (Node root, Direction d)
   while (!curStack.empty())
   {
     Node n = curStack.top();
-    cout << n->m_value << endl;
     switch (d)
     {
       case LeftToRight:
@@ -468,6 +469,7 @@ void bst::printToDot (const string& p_fileName) const
   fout.close();
 }
 
+#if 0
 void bst::printSiblingNodes (int val)
 {
   if (!m_root) {
@@ -483,3 +485,4 @@ void bst::printSiblingNodes (int val)
     return;
   }
 }
+#endif
