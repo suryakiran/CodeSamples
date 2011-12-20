@@ -107,6 +107,23 @@ void selection_sort (stl::IntVector& v)
   }
 }
 
+void partition (stl::IntVector& v, size_t beg, size_t middle, size_t end)
+{
+  swap (v[middle], v[end]);
+  int pivot = v[end];
+  for (size_t i = beg, j = end-1;)
+  {
+    while ((v[i++] < pivot) && i < end) { }
+    while ((v[j--] > pivot) && j >= beg) { }
+  }
+}
+
+void quick_sort (stl::IntVector& v, size_t beg, size_t end)
+{
+  size_t middle = (beg+end) / 2;
+  partition (v, beg, middle, end);
+}
+
 int main (void)
 {
   stl::IntVector vi;
@@ -114,6 +131,7 @@ int main (void)
 
 //  insertion_sort (vi);
 //  merge_sort (vi, 0, vi.size()-1);
-  bubble_sort (vi);
+//  bubble_sort (vi);
 //  selection_sort (vi);
+  quick_sort (vi, 0, vi.size()-1);
 }
