@@ -113,7 +113,7 @@ class bst
 
     bst& insert (int val);
     bool find (int val);
-    void print();
+    void print() const;
     int findMin ();
     int findMin (int) ;
     int findMax() ;

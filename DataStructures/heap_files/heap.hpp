@@ -5,6 +5,8 @@
 #include <boost/type_traits/add_const.hpp>
 #include <boost/type_traits/add_reference.hpp>
 
+fmt fileNameFmt (fmt ("heap-%1%.gv"));
+
 template <class T>
 class heap
 {
@@ -22,14 +24,16 @@ class heap
 
   private:
     container m_container;
+    int m_fileNum;
 
   public:
     heap ()
+      : m_fileNum (0)
     {
     }
 
     heap (container_cref p_container) 
-      : m_container (p_container)
+      : m_container (p_container), m_fileNum(0)
     {
       build_heap();
     }
@@ -46,7 +50,7 @@ class heap
       m_container[0] = tmp;
       m_container.pop_back();
       if (!m_container.empty()) {
-        percolate_down (0);
+        percolate_down (0, m_container.size());
       }
     }
 
@@ -55,9 +59,34 @@ class heap
       return m_container[0];
     }
 
-    void print ()
+    void print (const string& p_label)
     {
-      printContainer ("Current Heap:", m_container);
+      fstream fout;
+      fout.open ((fileNameFmt % ++m_fileNum).str().c_str(), ios_base::out);
+      fout << "graph \"\" {" << endl;
+      fout << "rankdir=TB" << endl;
+      fout << fmt("label=\"%1%\"") % p_label << endl;
+      int count (0);
+      BOOST_FOREACH (int i, m_container)
+      {
+        fout << fmt("node%1% [label=%2%]") % count++ % i << endl;
+      }
+
+      for (size_t i = 0; i < m_container.size(); ++i)
+      {
+        if ((2*i + 1) < m_container.size()) {
+          fout << fmt("node%1% -- node%2%") % i % (2*i + 1) << endl;
+        }
+
+        if ((2*i + 2) < m_container.size()) {
+          fout << fmt("node%1% -- node%2%") % i % (2*i + 2) << endl;
+        }
+      }
+
+      fout << "}" << endl;
+      fout.close();
+
+      printContainer (p_label, m_container);
     }
 
     size_t size()
@@ -70,6 +99,18 @@ class heap
       return m_container.empty();
     }
 
+    void sort()
+    {
+      container& c = m_container;
+      size_t sz (c.size());
+
+      while (--sz) 
+      {
+        swap (c[0], c[sz]);
+        percolate_down (0, sz);
+      }
+    }
+
   private:
     void build_heap()
     {
@@ -77,21 +118,21 @@ class heap
       for (size_t i = s/2; i > 0; i--)
       {
         size_t ci (i-1);
-        percolate_down (ci);
+        percolate_down (ci, m_container.size());
       }
     }
 
-    void percolate_down(size_t p_idx)
+    void percolate_down(size_t p_idx, size_t p_size)
     {
       size_t idx, child;
       container& c = m_container;
 
       value_type tmp (c[p_idx]);
 
-      for (idx = p_idx; idx < c.size()/2; idx = child)
+      for (idx = p_idx; idx < p_size/2; idx = child)
       {
         child = 2*idx + 1;
-        if (child != (c.size()-1) && c[child + 1] < c[child]) {
+        if (child != (p_size-1) && c[child + 1] < c[child]) {
           child ++;
         }
         if (c[child] < tmp) {
@@ -118,7 +159,7 @@ class heap
         }
       }
       c[child] = tmp;
-      percolate_down (parent);
+      percolate_down (parent, c.size());
     }
 
     int height()

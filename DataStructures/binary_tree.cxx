@@ -9,9 +9,9 @@ int main (void)
   bst b;
   b += 10, 5, 25, 30, 15, 4, 24, 26, 35, 1, 14, 3, 6;
 
-  b.printToDot ("current-tree.gv");
+  b.print ();
 
-  b.printSiblingNodes (6);
+//  b.printSiblingNodes (6);
   /*
   cout << "Tree is mirror image: " << b.isMirrorImage() << endl;
   b.remove (25);
@@ -24,6 +24,6 @@ int main (void)
 //  b.traverseZigZag();
 //  b.sumLeftRight();
  // b.print();
- // cout << "Common Ancestor of 24, 25: " << b.commonAncestor (24, 25) << endl;
+ //cout << "Common Ancestor of 35, 26: " << b.commonAncestor (35, 26) << endl;
  b.toLinkedList();
 }
