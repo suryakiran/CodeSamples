@@ -5,9 +5,7 @@
 #include <boost/format.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/algorithm/string_regex.hpp>
-#include <boost/assign/std/vector.hpp>
-#include <boost/assign/std/list.hpp>
-#include <boost/assign/list_inserter.hpp>
+#include <boost/assign/std.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/preprocessor/cat.hpp>
 

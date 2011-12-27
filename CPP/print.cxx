@@ -7,6 +7,11 @@ int main (void)
   printContainer ("Vector", vi);
   cout << endl;
 
+  deque<int> di;
+  di += 1,2,3,4,5;
+  printContainer ("Deque", di);
+  cout << endl;
+
   stl::IntList vl;
   vl += 1,2,3,4,5,6,7,8,9,10;
   printContainer ("List", vl);
