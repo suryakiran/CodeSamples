@@ -39,6 +39,18 @@ using namespace std ;
   typedef vecName::iterator   BOOST_PP_CAT (vecName, Iter);   \
   typedef vecName::const_iterator BOOST_PP_CAT(vecName, IterC)
 
+#define DEFINE_LIST(key, listName)                              \
+  typedef std::list<key> listName;                              \
+  typedef listName::value_type BOOST_PP_CAT (listName, Value);  \
+  typedef listName::iterator   BOOST_PP_CAT (listName, Iter);   \
+  typedef listName::const_iterator BOOST_PP_CAT(listName, IterC)
+
+#define DEFINE_SET(key, setName)                              \
+  typedef std::set<key> setName;                              \
+  typedef setName::value_type BOOST_PP_CAT (setName, Value);  \
+  typedef setName::iterator   BOOST_PP_CAT (setName, Iter);   \
+  typedef setName::const_iterator BOOST_PP_CAT(setName, IterC)
+
 namespace stl {
   DEFINE_MAP(std::string, std::string, StringMap);
   DEFINE_MAP(int, int, IntMap);
@@ -49,6 +61,16 @@ namespace stl {
   DEFINE_VEC(int, IntVector);
   DEFINE_VEC(double, DoubleVector);
   DEFINE_VEC(float, FloatVector);
+
+  DEFINE_LIST(int, IntList);
+  DEFINE_LIST(float, FloatList);
+  DEFINE_LIST(double, DoubleList);
+  DEFINE_LIST(std::string, StringList);
+
+  DEFINE_SET(int, IntSet);
+  DEFINE_SET(float, FloatSet);
+  DEFINE_SET(double, DoubleSet);
+  DEFINE_SET(std::string, StringSet);
 }
 
 #endif
