@@ -71,6 +71,7 @@ OPTION (BUILD_SAMPLES_OSG "Build OSG Samples" FALSE)
 OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
 OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
 OPTION (BUILD_KDTREE "Build KDtree" FALSE)
+OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -96,6 +97,7 @@ Add_Subdirectory_If (BUILD_SAMPLES_OSG OpenSceneGraph)
 Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
 Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
 Add_Subdirectory_If (BUILD_KDTREE KDtree)
+Add_Subdirectory_If (BUILD_SAMPLES_OGL OpenGL)
 
 Find_File (
   PERL_IN_FILE
@@ -103,6 +105,20 @@ Find_File (
   PATHS
     ${CMAKE_SOURCE_DIR}
   )
+
+Find_File (
+  PL_FILE_SAMPLES_EXE
+    ProcessSamplesExeTemplate.pl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
+
+Find_File(
+  CMAKE_SAMPLES_TMPL
+    test.pl.tmpl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
 
 Configure_Executable_File (
   ${CMAKE_SOURCE_DIR}/Config/dot2svg
