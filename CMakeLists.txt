@@ -48,6 +48,11 @@ If (CMAKE_COMPILER_IS_GNUCXX)
   Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
+If (USE_QT)
+  Find_Package (Qt4 COMPONENTS QtCore QtGui)
+  Include (${QT_USE_FILE})
+EndIf (USE_QT)
+
 OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
 OPTION (BUILD_SAMPLES_FUSION "Build Fusion Samples" FALSE)
