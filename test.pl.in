@@ -14,8 +14,10 @@ BEGIN {
 
 use Gdb;
 use App;
+use Ldd;
 
 my $debugBuild = false;
+my $showLibDeps = false;
 my $buildType = "@CMAKE_BUILD_TYPE@";
 my $gitBranchName = "@GIT_CURRENT_BRANCH_NAME@";
 
@@ -35,6 +37,7 @@ my ($debugApplication);
 
 my $result = GetOptions (
     "debug|d" => \$debugApplication,
+    "ldd|l" => \$showLibDeps,
     );
 
 my %appArgs = (
@@ -43,6 +46,14 @@ my %appArgs = (
   cur_srcdir => "@CMAKE_CURRENT_SOURCE_DIR@",
   cur_bindir => "@CMAKE_CURRENT_BINARY_DIR@"
 );
+
+if ($showLibDeps) {
+  my $ldd = Ldd->new (
+    exe_file => "$current_exe_file"
+  );
+
+  $ldd->launch()
+}
 
 if ($debugApplication) {
   my $gdb = Gdb->new(
