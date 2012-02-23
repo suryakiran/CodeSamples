@@ -12,6 +12,7 @@ MainWindow::MainWindow (QWidget* p_parent)
   m_sig.connect (phx::bind (&MainWindow::updateProgress, this));
   connect(this, SIGNAL(updateProgressBar()), this, SLOT(updateProgress()));
   m_thread = boost::thread (phx::bind (&MainWindow::createThread, this));
+  cout << fmt("Constructor: %1%") % boost::this_thread::get_id() << endl;
 }
 
 MainWindow::~MainWindow() 
@@ -30,7 +31,8 @@ MainWindow::createThread ()
 {
   while(1) 
   { 
-    boost::system_time timeout (boost::get_system_time() + boost::posix_time::milliseconds (800));
+    cout << fmt("Create Thread: %1%") % boost::this_thread::get_id() << endl;
+    boost::system_time timeout (boost::get_system_time() + boost::posix_time::milliseconds (80));
     boost::thread::sleep (timeout);
     Q_EMIT updateProgressBar();
     //m_sig();
@@ -45,6 +47,7 @@ MainWindow::createThread ()
 void 
 MainWindow::updateProgress()
 {
+  cout << fmt("Update Progress: %1%") % boost::this_thread::get_id() << endl;
   if (++fraction >= 100) {
     boost::mutex::scoped_lock lock (mutex);
     m_endThread = true;
