@@ -14,7 +14,8 @@ struct do_nothing_b
   {
     for(int i = 0; i < 5; ++i) {
       cout << fmt ("Do Nothing B: %1%") % i << endl;
-      sleep(1);
+	  boost::system_time timeout (boost::get_system_time() + boost::posix_time::milliseconds (1000));
+	  boost::thread::sleep (timeout);
     }
   }
 };
@@ -30,7 +31,8 @@ struct do_nothing_a
       if (i == 2) {
         thread_b.interrupt();
       }
-      sleep (1);
+	  boost::system_time timeout (boost::get_system_time() + boost::posix_time::milliseconds (1000));
+	  boost::thread::sleep (timeout);
     }
   }
 };
@@ -40,6 +42,7 @@ int main (void)
   id_main = boost::this_thread::get_id();
   do_nothing_a a;
   thread_a = boost::thread (a);
-  sleep(2);
+  boost::system_time timeout (boost::get_system_time() + boost::posix_time::milliseconds (2000));
+  boost::thread::sleep (timeout);
   thread_a.join();
 }
