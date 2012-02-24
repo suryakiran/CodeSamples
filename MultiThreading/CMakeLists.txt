@@ -65,7 +65,7 @@ ForEach (file ${SOURCES})
 
   Target_Link_Libraries (
     ${exeName} ${CMAKE_THREAD_LIBS_INIT} ${Boost_THREAD_LIBRARY}
-    ${Boost_SIGNALS_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
     ${MOTIF_LIBRARIES} ${X11_X11_LIB} ${GTKMM_LIBRARIES}
     ${QT_QTCORE_LIBRARIES}
     ${QT_QTGUI_LIBRARIES}

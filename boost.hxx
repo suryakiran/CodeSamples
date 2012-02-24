@@ -8,6 +8,7 @@
 #include <boost/assign/std.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/preprocessor/cat.hpp>
+#include <boost/phoenix.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
@@ -19,6 +20,9 @@ using namespace boost::assign ;
 
 namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
+
+namespace phx = boost::phoenix;
+namespace pha = phx::arg_names;
 
 namespace detail {
   template <class Container, class IteratorCategory>
