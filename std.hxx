@@ -14,6 +14,7 @@
 #include <memory>
 #include <sstream>
 #include <fstream>
+#include <functional>
 #include <iomanip>
 #include <stack>
 #include <limits>
