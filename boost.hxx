@@ -9,6 +9,7 @@
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/phoenix.hpp>
+#include <boost/current_function.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>

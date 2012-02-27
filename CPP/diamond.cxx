@@ -2,52 +2,84 @@
 
 struct Top
 {
-  Top()
+  Top(int a)
   {
-    cout << "Top Constructor" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 
   virtual void fun()
   {
-    cout << "Function in Top" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
+
+  private:
+    Top()
+    {
+      cout << BOOST_CURRENT_FUNCTION << endl;
+    }
+
 };
 
 struct MiddleLeft : public virtual Top
 {
+#if 0
   MiddleLeft()
   {
-    cout << "MiddleLeft Constructor" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
+  }
+#endif
+
+  MiddleLeft(int a)
+    :Top(a)
+  {
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 
   virtual void fun()
   {
-    cout << "Function In MiddleLeft" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 };
 
 struct MiddleRight : public virtual Top
 {
+#if 0
   MiddleRight()
   {
-    cout << "MiddleRight Constructor" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
+  }
+#endif
+
+  MiddleRight(int a)
+    :Top(a)
+  {
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 
   virtual void fun()
   {
-    cout << "Function In MiddleRight" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 };
 
 struct Bottom : public MiddleLeft, public MiddleRight
 {
+#if 0
   Bottom()
   {
-    cout << "Bottom Constructor" << endl;
+    cout << BOOST_CURRENT_FUNCTION << endl;
+  }
+#endif
+
+  Bottom(int a)
+    :Top(a), MiddleLeft(a), MiddleRight(a)
+  {
+    cout << BOOST_CURRENT_FUNCTION << endl;
   }
 
   virtual void fun()
   {
+    cout << BOOST_CURRENT_FUNCTION << endl;
     MiddleRight::fun();
     MiddleLeft::fun();
   }
@@ -55,6 +87,5 @@ struct Bottom : public MiddleLeft, public MiddleRight
 
 int main (void)
 {
-  Bottom b;
-  b.fun();
+  Bottom b(2);
 }
