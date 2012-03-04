@@ -45,6 +45,9 @@ class bst
 
     bool isBST (node* root);
 
+    void traversePreOrder (node*);
+    void traversePostOrder (node*);
+
   public:
     bst();
     ~bst();
@@ -120,6 +123,14 @@ class bst
     void remove (int val);
     bool isBalanced();
     int height();
+
+    void traversePreOrder() {
+      traversePreOrder (m_root);
+    }
+
+    void traversePostOrder() {
+      traversePostOrder (m_root);
+    }
 };
 
 #endif

@@ -23,6 +23,19 @@ int reverse(int num)
   return newNum;
 }
 
+int reverse_new (int num)
+{
+  int rev_num (0);
+
+  while (num)
+  {
+    rev_num = rev_num * 10 + (num % 10);
+    num /= 10;
+  }
+
+  return rev_num;
+}
+
 char* toString (int num)
 {
   int numChars (1);
@@ -66,4 +79,7 @@ int main (void)
   cout << "Number: " << num << endl;
   //cout << "Reverse: " << reverse(num) << endl;
   cout << "To String: " << toString (num) << endl;
+  cout << reverse_new (1234567) << endl;
+  string s ("AAB");
+  int i = fromHex (s) ;
 }
