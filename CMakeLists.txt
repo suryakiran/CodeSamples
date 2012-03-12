@@ -8,6 +8,7 @@ Include_Cmake_Module(Perl)
 Check_Perl_Modules (
   Template
   XML::Simple
+  XML::Parser
   File::Find::Rule
   )
 
@@ -20,19 +21,11 @@ If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
 
-Set(Boost_ADDITIONAL_VERSIONS "1.49" "1.48" "1.47")
-Find_Package (
-  Boost
-  COMPONENTS date_time program_options filesystem system thread signals
-  )
-
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
-
-Link_Directories    (${Boost_LIBRARY_DIRS})
 
 Set (ParseArgsLib "parse_args")
 Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
@@ -47,11 +40,6 @@ EndMacro (ADD_SUBDIRECTORY_IF)
 If (CMAKE_COMPILER_IS_GNUCXX)
   Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
-
-If (USE_QT)
-  Find_Package (Qt4 COMPONENTS QtCore QtGui)
-  Include (${QT_USE_FILE})
-EndIf (USE_QT)
 
 OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
