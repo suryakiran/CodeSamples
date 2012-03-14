@@ -3,10 +3,12 @@ Project (CodeSamples)
 CMake_Minimum_Required (VERSION 2.8.4)
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
+Find_Package (PkgConfig)
 Include_Cmake_Module(Perl)
 Check_Perl_Modules (
   Template
   XML::Simple
+  XML::Parser
   File::Find::Rule
   )
 
@@ -19,19 +21,11 @@ If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
 
-Set(Boost_ADDITIONAL_VERSIONS "1.48" "1.47")
-Find_Package (
-  Boost
-  COMPONENTS date_time program_options filesystem system
-  )
-
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
-
-Link_Directories    (${Boost_LIBRARY_DIRS})
 
 Set (ParseArgsLib "parse_args")
 Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
@@ -47,6 +41,7 @@ If (CMAKE_COMPILER_IS_GNUCXX)
   Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
+OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
 OPTION (BUILD_SAMPLES_FUSION "Build Fusion Samples" FALSE)
 OPTION (BUILD_SAMPLES_FILE_READING "Build File Reading Samples" FALSE)
@@ -72,6 +67,8 @@ OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
 OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
 OPTION (BUILD_KDTREE "Build KDtree" FALSE)
 OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
+OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
+OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -98,10 +95,19 @@ Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
 Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
 Add_Subdirectory_If (BUILD_KDTREE KDtree)
 Add_Subdirectory_If (BUILD_SAMPLES_OGL OpenGL)
+Add_Subdirectory_If (BUILD_MT MultiThreading)
+Add_Subdirectory_If (BUILD_ASIO Asio)
 
 Find_File (
   PERL_IN_FILE
     test.pl.in
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+  )
+
+Find_File (
+  PERL_ALL_TESTS_IN_FILE
+    alltests.pl.in
   PATHS
     ${CMAKE_SOURCE_DIR}
   )

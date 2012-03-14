@@ -1,10 +1,11 @@
-Project(DSA)
+Project(GEOM)
 
 Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 
+Include_Directories (${CMAKE_CURRENT_SOURCE_DIR})
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 
-Set (DSATargets)
+Set (GEOMTargets)
 
 ForEach (file ${SOURCES})
 	Get_FileName_Component (exeName ${file} NAME_WE)
@@ -14,8 +15,8 @@ ForEach (file ${SOURCES})
   File (GLOB H_FILES ${dir}/*.h)
   File (GLOB HPP_FILES ${dir}/*.hpp)
 
-  Set (ProjectName "DSA Tests ${exeName}")
-  Set (exeName dsa-${exeName})
+  Set (ProjectName "GEOM Tests ${exeName}")
+  Set (exeName geo-${exeName})
 
   Include_Directories (${dir})
   Add_Executable(${exeName} ${file} ${CPP_FILES} ${H_FILES} ${HPP_FILES})
@@ -25,14 +26,10 @@ ForEach (file ${SOURCES})
 		PROJECT_LABEL ${ProjectName}
 		)
 
-  Target_Link_Libraries (
-    ${exeName} ${Boost_THREAD_LIBRARY}
-    )
-
-  List (APPEND DSATargets ${exeName})
+  List (APPEND GEOMTargets ${exeName})
   Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
   Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 
 EndForEach (file ${SOURCES})
 
-Add_Custom_Target (dsa DEPENDS ${DSATargets}) 
+Add_Custom_Target (geo DEPENDS ${GEOMTargets}) 
