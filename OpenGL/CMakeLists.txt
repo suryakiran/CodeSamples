@@ -34,6 +34,7 @@ ForEach (exeName ${Samples})
     -d _
     OUTPUT WindowName
     )
+
   Configure_File (
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cxx.in
     ${mainFile}
@@ -68,6 +69,6 @@ ForEach (exeName ${Samples})
     OUTPUT ${CMAKE_BINARY_DIR}/${exeName}
     ARGS -e ${exeName} -d ${OGL_MAIN_LIB_DIR}
     )
-EndForEach (file ${SOURCES})
+EndForEach (exeName ${SAMPLES})
 
 Add_Custom_Target (ogl DEPENDS ${OGLTargets}) 
