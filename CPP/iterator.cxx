@@ -1,4 +1,7 @@
 #include "triplet.hxx"
+#include "std.hxx"
+
+#include <boost/iterator/filter_iterator.hpp>
 
 namespace {
 	void printVector()
@@ -16,7 +19,24 @@ namespace {
 		cout << it << endl ;
 	}
 }
+
+struct isEven
+{
+  bool operator()(int i) const
+  {
+    return ((i % 2) == 0);
+  }
+};
+
 int main (void)
 {
-	printVector() ;
+  stl::IntVector vi;
+  vi += 1,2,3,4,5,6,7,8,9,10;
+  auto i = boost::make_filter_iterator (isEven(), vi.begin(), vi.end());
+
+  while (i != boost::make_filter_iterator (isEven(), vi.end()))
+  {
+    cout << *i << endl;
+    ++i;
+  }
 }
