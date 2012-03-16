@@ -1,3 +1,5 @@
+use WWW::Mechanize;
+
 sub func_noargs {
   print "This line is coming from perl script\n";
 }
@@ -16,5 +18,6 @@ sub func_2args_return {
 sub func_return_array {
   my ($string) = @_;
 
+  my $mech = WWW::Mechanize->new(autocheck=>1, noproxy=>1);
   return split(/\./, $string);
 }

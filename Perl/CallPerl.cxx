@@ -2,6 +2,7 @@
 #include <EXTERN.h>
 #include <perl.h>
 
+EXTERN_C void xs_init (pTHX);
 static PerlInterpreter* my_perl;
 
 void
@@ -33,12 +34,12 @@ call_PerlSubs (void)
 
 int main (int argc, char** argv, char** env)
 {
-  char* command_line[2] = {"", "/home/suki/Projects/SourceArea/CodeSamples/Perl/CallPerl_files/CallPerl.pl"};
+  char* command_line[2] = {"", "D:\\Projects\\SourceArea\\CodeSamples\\Perl\\CallPerl_files\\CallPerl.pl"};
   
   PERL_SYS_INIT3(&argc, &argv, &env);
   my_perl = perl_alloc();
   perl_construct (my_perl);
-  perl_parse (my_perl, NULL, 2, command_line, (char **)NULL);
+  perl_parse (my_perl, xs_init, 2, command_line, (char **)NULL);
   PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
   call_PerlSubs ();
 

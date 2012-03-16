@@ -7,13 +7,17 @@ File (GLOB C_FILES *.c)
 File (GLOB COMMON_FILES *.h)
 
 Include_Directories (${PERL_INCLUDE_PATH})
+Set (PERL_C_MODULES IO Fcntl B Socket Encode HTML::Parser Data::Dumper)
+Find_Perl_C_Modules (${PERL_C_MODULES})
 
 Set (PERL_XSI_FILE ${CMAKE_CURRENT_BINARY_DIR}/perlxsi.c)
 
 Add_Custom_Command (
   OUTPUT ${PERL_XSI_FILE}
-  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit -- Test
+  COMMAND ${PERL_EXECUTABLE} -MExtUtils::Embed -e xsinit -- ${PERL_C_MODULES}
   )
+Get_Property (PERL_C_MODULE_PATHS GLOBAL PROPERTY PERL_C_MODULE_PATHS) 
+Cmake_List_To_Perl_Args (PerlCModulePaths --lib-dir ${PERL_C_MODULE_PATHS})
 
 ForEach (cf ${CXX_FILES} ${C_FILES})
   Get_Filename_Component (exe_name ${cf} NAME_WE)
@@ -27,4 +31,16 @@ ForEach (cf ${CXX_FILES} ${C_FILES})
     COMPILE_DEFINITIONS "FILES_DIR=\"${dir}\""
     )
   Target_Link_Libraries (${exe_name} ${PERL_LIBRARY})
+  Perl_Xsi_Depends (${exe_name} ${PERL_C_MODULES})
+  If (WIN32)
+    Execute_Perl (
+      FILE 
+        ${PL_FILE_VCXPROJ_USER_FILE}
+      ARGS 
+        -o ${CMAKE_CURRENT_BINARY_DIR}/${exe_name}.vcxproj.user
+        -x ${CMAKE_VARIABLES_XML_OUT_FILE}
+        -e ${exe_name}
+        ${PerlCModulePaths}
+      )
+  EndIf (WIN32)
 EndForEach (cf)
