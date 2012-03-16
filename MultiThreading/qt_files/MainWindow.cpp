@@ -71,3 +71,14 @@ MainWindow::buttonClick()
   m_service->run();
   //label->setText (QString ("Value: %1").arg(progressBar->value()));
 }
+
+void 
+MainWindow::closeEvent(QCloseEvent* p_event)
+{
+  if (m_serviceStarted) {
+    m_service->stop();
+    m_endThread = true;
+    m_serviceStarted = false;
+  }
+  QMainWindow::closeEvent(p_event);
+}

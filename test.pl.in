@@ -49,12 +49,12 @@ my %appArgs = (
   cur_bindir => "@CMAKE_CURRENT_BINARY_DIR@"
 );
 
-if ($showLibDeps) {
+if ($showLibDeps) {;
   my $ldd = Ldd->new (
     exe_file => "$current_exe_file"
   );
 
-  $ldd->launch()
+  $ldd->launch();
 }
 
 if ($debugApplication) {

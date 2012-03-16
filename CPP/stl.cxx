@@ -1,5 +1,7 @@
 #include "std.hxx"
 
+typedef boost::shared_ptr <int> int_ptr;
+
 namespace 
 {
 	void transform_test (void)
@@ -18,10 +20,33 @@ namespace
 		transform (values, values + 5, values, bind2nd(divides<float>(), 4.0)) ;
 		printContainer("Values After Transform", values) ;
 	}
+
+  void stack_test()
+  {
+    stack <int_ptr> si;
+    si.push (int_ptr(new int(5)));
+    si.push (int_ptr(new int(4)));
+    si.push (int_ptr(new int(3)));
+    si.push (int_ptr(new int(2)));
+    si.push (int_ptr(new int(1)));
+    si.push (int_ptr(new int(0)));
+
+    cout << *(si.top()) << endl;
+    cout << si.top().use_count() << endl;
+
+    int_ptr ip = si.top();
+    *ip = 587;
+
+    cout << si.top().use_count() << endl;
+
+    cout << *(si.top()) << endl;
+
+  }
 }
 
 int main (void)
 {
 	cout << "Std Test" << endl ;
-	transform_test() ;
+	//transform_test() ;
+  stack_test();
 }

@@ -18,6 +18,9 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
     MainWindow (QWidget* p_parent = 0);
     ~MainWindow();
 
+  protected:
+    virtual void closeEvent (QCloseEvent*);
+
 Q_SIGNALS:
     void updateProgressBar();
 
