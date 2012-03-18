@@ -1,6 +1,4 @@
 #include "opengl.hxx"
-#include <cmath>
-using namespace std;
 
 GLuint torusDisplayList;
 
