@@ -5,25 +5,80 @@
 #include <boost/format.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/algorithm/string_regex.hpp>
-#include <boost/assign/std/vector.hpp>
-#include <boost/assign/std/list.hpp>
-#include <boost/assign/list_inserter.hpp>
+#include <boost/assign/std.hpp>
+#include <boost/iterator/zip_iterator.hpp>
+#include <boost/preprocessor/cat.hpp>
+#include <boost/phoenix.hpp>
+#include <boost/array.hpp>
+#include <boost/current_function.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/range.hpp>
+#include <boost/range/algorithm.hpp>
 
 using boost::format ;
+typedef boost::format fmt;
 using namespace boost::assign ;
 
 namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
 
+namespace phx = boost::phoenix;
+namespace pha = phx::arg_names;
+
+namespace detail {
+  template <class Container, class IteratorCategory>
+    struct size
+    {
+      size (const Container& p_container)
+        : m_container(p_container) { }
+
+      BOOST_DEDUCED_TYPENAME boost::range_difference<Container>::type
+        operator() () const { return m_container.size() ; }
+
+      private:
+      const Container& m_container;
+    };
+
+  template <class Container>
+    struct size <Container, std::random_access_iterator_tag>
+    {
+      size (const Container& p_container)
+        : m_container(p_container) { }
+
+      BOOST_DEDUCED_TYPENAME boost::range_difference<Container>::type
+        operator() () const { return boost::size (m_container) ; }
+
+      private:
+      const Container& m_container;
+    };
+}
+
 template <class Container>
-void printContainer (const std::string& p_message, const Container& p_container, char p_delim=',')
+typename boost::range_difference <Container>::type
+sizeFunc (const Container& p_container)
+{
+  typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter;
+  typedef BOOST_DEDUCED_TYPENAME std::iterator_traits<Iter>::iterator_category category;
+  return detail::size<Container, category> (p_container)();
+}
+
+template <class FirstType, class SecondType>
+ostream& operator<< (ostream& p_os, std::pair<FirstType, SecondType> p_pair)
+{
+  p_os << '[' << p_pair.first << ", " << p_pair.second << ']' ;
+  return p_os;
+}
+
+template <class Format, class Container>
+void printContainer (const Format& p_message, const Container& p_container, char p_delim=',', bool p_printSize = true)
 {
 	typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter ;
-	cout << p_message << endl ;
+	cout << p_message ;
+  if (p_printSize)
+    cout << fmt (" (Size: %1%)") % sizeFunc(p_container) ;
+  cout << endl;
 	Iter beginIter (boost::begin(p_container)), endIter (boost::end(p_container)) ;
 	for (Iter iter = beginIter; iter != endIter; ++iter) 
 	{

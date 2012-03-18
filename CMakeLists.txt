@@ -3,10 +3,12 @@ Project (CodeSamples)
 CMake_Minimum_Required (VERSION 2.8.4)
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
+Find_Package (PkgConfig)
 Include_Cmake_Module(Perl)
 Check_Perl_Modules (
   Template
   XML::Simple
+  XML::Parser
   File::Find::Rule
   )
 
@@ -23,19 +25,15 @@ If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
 
-Set(Boost_ADDITIONAL_VERSIONS "1.47")
-Find_Package (
-  Boost
-  COMPONENTS date_time program_options filesystem system
-  )
+If (WIN32)
+  Add_Definitions ("-D_USE_MATH_DEFINES")
+EndIf (WIN32)
 
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
-
-Link_Directories    (${Boost_LIBRARY_DIRS})
 
 Set (ParseArgsLib "parse_args")
 Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
@@ -47,6 +45,16 @@ Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)
   EndIf (${p_varName})
 EndMacro (ADD_SUBDIRECTORY_IF)
 
+If (CMAKE_COMPILER_IS_GNUCXX)
+  Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
+EndIf (CMAKE_COMPILER_IS_GNUCXX)
+
+If (WIN32)
+  Remove_Definitions("-DBOOST_ALL_DYN_LINK")
+  Add_Definitions ("-DBOOST_ALL_NO_LIB")
+EndIf (WIN32)
+
+OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
 OPTION (BUILD_SAMPLES_FUSION "Build Fusion Samples" FALSE)
 OPTION (BUILD_SAMPLES_FILE_READING "Build File Reading Samples" FALSE)
@@ -68,6 +76,13 @@ OPTION (BUILD_SAMPLES_XERCES "Build Xerces Samples" FALSE)
 OPTION (BUILD_SAMPLES_ZORBA "Build Zorba Samples" FALSE)
 OPTION (BUILD_SAMPLES_SIGNALS "Build Signals Samples" FALSE)
 OPTION (BUILD_SAMPLES_OSG "Build OSG Samples" FALSE)
+OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
+OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
+OPTION (BUILD_KDTREE "Build KDtree" FALSE)
+OPTION (BUILD_SAMPLES_OGL_QT "Build QtOpenGL Samples" FALSE)
+OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
+OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
+OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -90,12 +105,45 @@ Add_Subdirectory_If (BUILD_SAMPLES_XERCES Xerces)
 Add_Subdirectory_If (BUILD_SAMPLES_ZORBA Zorba)
 Add_Subdirectory_If (BUILD_SAMPLES_SIGNALS Signals)
 Add_Subdirectory_If (BUILD_SAMPLES_OSG OpenSceneGraph)
+Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
+Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
+Add_Subdirectory_If (BUILD_KDTREE KDtree)
+Add_Subdirectory_If (BUILD_SAMPLES_OGL_QT QtOpenGL)
+Add_Subdirectory_If (BUILD_SAMPLES_OGL OpenGL)
+Add_Subdirectory_If (BUILD_MT MultiThreading)
+Add_Subdirectory_If (BUILD_ASIO Asio)
 
 Find_File (
   PERL_IN_FILE
     test.pl.in
   PATHS
     ${CMAKE_SOURCE_DIR}
+  )
+
+Find_File (
+  PERL_ALL_TESTS_IN_FILE
+    alltests.pl.in
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+  )
+
+Find_File (
+  PL_FILE_SAMPLES_EXE
+    ProcessSamplesExeTemplate.pl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
+
+Find_File(
+  CMAKE_SAMPLES_TMPL
+    test.pl.tmpl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
+
+Configure_Executable_File (
+  ${CMAKE_SOURCE_DIR}/Config/dot2svg
+  ${CMAKE_BINARY_DIR}/dot2svg
   )
 
 Cmake_List_To_Perl_Args (AdditionalGvimSearchDirs -d ${IncludeDirectories})

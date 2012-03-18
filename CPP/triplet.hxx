@@ -1,7 +1,7 @@
 #ifndef TRIPLET_HXX
 #define TRIPLET_HXX 1
 
-#include "std.hxx"
+#include <std.hxx>
 
 namespace skg 
 {

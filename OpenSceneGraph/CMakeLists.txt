@@ -1,16 +1,15 @@
 Project(OSG)
 
+Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer)
 Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
-Include_Directories (${OPENSCENEGRAPH_INCLUDE_DIRS})
 
 Set (OSGTargets)
 
 ForEach (file ${SOURCES})
 	Get_FileName_Component (exeName ${file} NAME_WE)
   String (CONFIGURE ${dir_tmpl} dir @ONLY)
-  Include_Directories (${dir})
   File (GLOB CPP_FILES ${dir}/*.cpp)
   File (GLOB H_FILES ${dir}/*.h)
   Set (ProjectName "OSG Tests ${exeName}")
@@ -19,6 +18,7 @@ ForEach (file ${SOURCES})
 	Set_Target_Properties (
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
+    COMPILE_FLAGS -I${dir} -I${OPENSCENEGRAPH_INCLUDE_DIRS}
 		)
 
   Target_Link_Libraries (
