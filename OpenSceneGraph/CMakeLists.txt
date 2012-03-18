@@ -26,8 +26,20 @@ ForEach (file ${SOURCES})
     )
 
   List (APPEND OSGTargets ${exeName})
-  Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
-  Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  If (UNIX)
+    Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Else(UNIX)
+    Get_Filename_Component (OSG_BIN_PATH ${OSGVIEWER_EXE} PATH)
+    Execute_Perl (
+      FILE
+        ${PL_FILE_VCXPROJ_USER_FILE}
+      ARGS
+        -o ${CMAKE_CURRENT_BINARY_DIR}/${exeName}.vcxproj.user
+        -e ${exeName}
+        -x ${CMAKE_VARIABLES_XML_OUT_FILE}
+        --lib-dir ${OSG_BIN_PATH}
+        )
+  EndIf (UNIX)
 
 EndForEach (file ${SOURCES})
 
