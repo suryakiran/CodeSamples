@@ -39,15 +39,7 @@ ForEach (file ${SOURCES})
   IF (UNIX)
     Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
   Else (UNIX)
-    Execute_Perl (
-      FILE
-        ${PL_FILE_VCXPROJ_USER_FILE}
-      ARGS
-        -o ${CMAKE_CURRENT_BINARY_DIR}/${exeName}.vcxproj.user
-        -x ${CMAKE_VARIABLES_XML_OUT_FILE}
-        -e ${exeName}
-        --lib-dir ${GLUT_BIN_DIR}
-      )
+    Create_Vcxproj_User_File (${exeName} --lib-dir ${GLUT_BIN_DIR})
   EndIf (UNIX)
 
 EndForEach (file ${SOURCES})
