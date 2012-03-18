@@ -21,6 +21,10 @@ If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
 
+If (WIN32)
+  Add_Definitions ("-D_USE_MATH_DEFINES")
+EndIf (WIN32)
+
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${Boost_INCLUDE_DIRS}

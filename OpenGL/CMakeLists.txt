@@ -8,6 +8,7 @@ Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 
 Set (OGLTargets)
+Include_Directories (${GLUT_INCLUDE_DIR})
 
 ForEach (file ${SOURCES})
 	Get_FileName_Component (exeName ${file} NAME_WE)
@@ -32,8 +33,22 @@ ForEach (file ${SOURCES})
 		)
 
   List (APPEND OGLTargets ${exeName})
-  Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
-  Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Get_Filename_Component (GLUT_BIN_DIR ${GLUT_INCLUDE_DIR} PATH)
+  Set (GLUT_BIN_DIR ${GLUT_BIN_DIR}/bin)
+
+  IF (UNIX)
+    Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Else (UNIX)
+    Execute_Perl (
+      FILE
+        ${PL_FILE_VCXPROJ_USER_FILE}
+      ARGS
+        -o ${CMAKE_CURRENT_BINARY_DIR}/${exeName}.vcxproj.user
+        -x ${CMAKE_VARIABLES_XML_OUT_FILE}
+        -e ${exeName}
+        --lib-dir ${GLUT_BIN_DIR}
+      )
+  EndIf (UNIX)
 
 EndForEach (file ${SOURCES})
 

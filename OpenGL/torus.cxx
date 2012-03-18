@@ -1,6 +1,6 @@
-#include "std.hxx"
 #include "opengl.hxx"
 #include <cmath>
+using namespace std;
 
 GLuint torusDisplayList;
 
@@ -9,8 +9,7 @@ void display ()
   glClear (GL_COLOR_BUFFER_BIT);
   glColor3f (1.0, 1.0, 0.0);
   glCallList (torusDisplayList);
-  glFlush();
-//  glutSwapBuffers();
+  glutSwapBuffers();
 }
 
 void reshape (int w, int h)
@@ -72,7 +71,6 @@ void torus (int numc, int numt)
         double y = (1 + 0.1*cos (s * twopi / numc)) * sin (t * twopi / numt);
         double z = 0.1 * sin (s * twopi / numc);
         glVertex3d (x, y, z);
-        //cout << fmt ("(%1%, %2%, %3%)") % x % y % z << endl;
       }
     }
     glEnd();
@@ -93,7 +91,7 @@ int main (int argc, char** argv)
 {
   glutInit (&argc, argv);
   glutInitWindowSize (300, 300);
-  glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
   glutCreateWindow ("Torus");
   glutDisplayFunc (display);
   glutReshapeFunc (reshape);
