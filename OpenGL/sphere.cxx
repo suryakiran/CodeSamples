@@ -22,12 +22,20 @@ void init()
 {
   glClearColor (0.5, 0.0, 0.0, 1.0);
   glShadeModel (GL_SMOOTH);
-  GLfloat mat_specular [] = {1.0, 1.0, 1.0, 0.0};
-  GLfloat mat_diffuse [] = {0.8, 1.0, 1.0, 1.0};
-  GLfloat mat_shine [] = {50.0};
+  GLfloat mat_specular [] = {1.0, 1.0, 1.0, 1.0};
+  GLfloat mat_shine [] = {125.0};
+
+  GLfloat mat_diffuse [] = {0.1, 0.2, 0.5, 0.5};
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_diffuse);
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+
   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shine);
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+
+  GLfloat white_light [] = {1.0, 1.0, 1.0, 1.0};
+  glLightfv (GL_LIGHT0, GL_AMBIENT, white_light); 
+  glLightfv (GL_LIGHT0, GL_DIFFUSE, white_light); 
+
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_DEPTH_TEST);
