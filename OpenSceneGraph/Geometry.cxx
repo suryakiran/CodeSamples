@@ -179,8 +179,7 @@ int main()
    //The final step is to set up and enter a simulation loop.
 
    viewer.setSceneData( root );
-   //viewer.run();
-        
+   
    viewer.setCameraManipulator(new osgGA::TrackballManipulator());
    viewer.realize();
 
