@@ -18,7 +18,6 @@ ForEach (file ${SOURCES})
   File (GLOB H_FILES ${dir}/*.h)
   File (GLOB HPP_FILES ${dir}/*.hpp)
 
-  Set (ProjectName "OGL Tests ${exeName}")
   Set (exeName ogl-${exeName})
 
   Include_Directories (${dir})
@@ -27,10 +26,6 @@ ForEach (file ${SOURCES})
   Target_Link_Libraries (
     ${exeName} ${OPENGL_gl_LIBRARY} ${GLUT_glut_LIBRARY} ${OPENGL_glu_LIBRARY}
     )
-	Set_Target_Properties (
-		${exeName} PROPERTIES 
-		PROJECT_LABEL ${ProjectName}
-		)
 
   List (APPEND OGLTargets ${exeName})
   Get_Filename_Component (GLUT_BIN_DIR ${GLUT_INCLUDE_DIR} PATH)
@@ -40,8 +35,11 @@ ForEach (file ${SOURCES})
     Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
   Else (UNIX)
     Create_Vcxproj_User_File (${exeName} --lib-dir ${GLUT_BIN_DIR})
+    Set_Property (TARGET ${exeName} PROPERTY FOLDER "OpenGL Samples")
   EndIf (UNIX)
 
 EndForEach (file ${SOURCES})
 
-Add_Custom_Target (ogl DEPENDS ${OGLTargets}) 
+If (UNIX)
+  Add_Custom_Target (ogl DEPENDS ${OGLTargets}) 
+EndIf (UNIX)
