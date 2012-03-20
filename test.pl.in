@@ -21,9 +21,18 @@ my $debugBuild = false;
 my $showLibDeps = false;
 my $buildType = "@CMAKE_BUILD_TYPE@";
 my $gitBranchName = "@GIT_CURRENT_BRANCH_NAME@";
+my $osgLibPath = dirname("@OSG_LIBRARY@");
 
 if ($buildType =~ /^Debug$/) {
   $debugBuild = true;
+}
+
+if ($debugBuild) {
+  $osgLibPath = dirname("@OSG_LIBRARY_DEBUG@");
+}
+
+if ($osgLibPath) {
+  unshift @LD_LIBRARY_PATH, $osgLibPath;
 }
 
 my $current_exe_file ;
