@@ -1,7 +1,11 @@
 Project (CodeSamples)
 
 CMake_Minimum_Required (VERSION 2.8.4)
+
+Set (AppPrefix CodeSamples)
+
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
+Include (${CMAKE_SOURCE_DIR}/CodeSamples.cmake)
 
 Find_Package (PkgConfig)
 Include_Cmake_Module(Perl)
@@ -31,8 +35,9 @@ Include_Directories (
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
 
-Set (ParseArgsLib "parse_args")
+Set (ParseArgsLib "ParseArgs")
 Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
+Include_Directories (${DLL_UTILITIES_DIR})
 Add_Subdirectory (CommandLineArgs)
 
 Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)

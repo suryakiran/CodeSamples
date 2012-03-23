@@ -27,6 +27,10 @@
 
 using namespace std ;
 
+#ifdef WINDOWS
+#define strdup _strdup
+#endif
+
 #include "boost.hxx"
 
 #define DEFINE_MAP(key, value, mapName)                       \

@@ -1,7 +1,11 @@
-#include <std.h>
+#include "std.hxx"
+#include <ParseArgs.hxx>
+#include <boost/filesystem/path.hpp>
+
 #include <EXTERN.h>
 #include <perl.h>
 
+typedef char* charp;
 static PerlInterpreter* my_perl;
 
 void
@@ -33,7 +37,11 @@ call_PerlSubs (void)
 
 int main (int argc, char** argv, char** env)
 {
-  char* command_line[2] = {"", "/home/suki/Projects/SourceArea/CodeSamples/Perl/CallPerl_files/CallPerl.pl"};
+  Args args = ParseArgs (argc, argv)();
+  boost::filesystem::path p (args["cur_src_dir"]);
+  p /= "CallPerl_files/CallPerl.pl";
+  charp command_line[2] = {"", ""};
+  command_line[1] = strdup(p.make_preferred().string().c_str());
   
   PERL_SYS_INIT3(&argc, &argv, &env);
   my_perl = perl_alloc();
