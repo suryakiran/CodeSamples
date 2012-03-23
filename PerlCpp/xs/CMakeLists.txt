@@ -41,6 +41,7 @@ ForEach (xsf ${XS_FILES})
 EndForEach (xsf)
 
 Add_Custom_Target (xs DEPENDS ${XS_CPP_FILES})
+Set_Property (TARGET xs PROPERTY FOLDER "Perl CPP Samples")
 
 Set (LibName ${PerlCppSrcExtnLib})
 Set (LIBNAME ${LibName})
@@ -55,3 +56,4 @@ Add_Library (
 Target_Link_Libraries (
   ${PerlCppSrcExtnLib} ${PERL_LIBRARY} ${PerlCppSrcLib}
   )
+Set_Property (TARGET ${PerlCppSrcExtnLib} PROPERTY FOLDER "Perl CPP Samples")

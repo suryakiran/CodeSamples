@@ -1,6 +1,6 @@
-Project(Python)
+Project(Perl)
 
-Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exe_name@_files)
+Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 
 File (GLOB CXX_FILES *.cxx)
 File (GLOB C_FILES *.c)
@@ -16,15 +16,16 @@ Add_Custom_Command (
   )
 
 ForEach (cf ${CXX_FILES} ${C_FILES})
-  Get_Filename_Component (exe_name ${cf} NAME_WE)
+  Get_Filename_Component (exeName ${cf} NAME_WE)
   String (CONFIGURE ${dir_tmpl} dir @ONLY)
   Include_Directories (${dir})
   File (GLOB CPP_FILES ${dir}/*.cpp)
   File (GLOB H_FILES ${dir}/*.h)
-  Add_Executable (${exe_name} ${cf} ${CPP_FILES} ${H_FILES} ${COMMON_FILES}
+  Add_Executable (${exeName} ${cf} ${CPP_FILES} ${H_FILES} ${COMMON_FILES}
     ${PERL_XSI_FILE})
-  Set_Target_Properties (${exe_name} PROPERTIES 
+  Set_Target_Properties (${exeName} PROPERTIES 
     COMPILE_DEFINITIONS "FILES_DIR=\"${dir}\""
     )
-  Target_Link_Libraries (${exe_name} ${PERL_LIBRARY})
+  Target_Link_Libraries (${exeName} ${PERL_LIBRARY})
+  Set_Property (TARGET ${exeName} PROPERTY FOLDER "Perl Embed Samples")
 EndForEach (cf)
