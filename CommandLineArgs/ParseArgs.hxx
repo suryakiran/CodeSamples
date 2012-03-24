@@ -3,11 +3,11 @@
 
 #include <map>
 #include <string>
-using namespace std;
+#include <DllParseArgs.hxx>
 
 typedef std::map<std::string, std::string> Args;
 
-class ParseArgs
+class DLLParseArgs ParseArgs
 {
   public:
     ParseArgs (int argc, char** argv)

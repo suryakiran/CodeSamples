@@ -1,6 +1,6 @@
 Project(OSG)
 
-Find_Package (Zlib)
+Find_Package (ZLIB)
 Find_Package (OpenSceneGraph 3.0.1 REQUIRED osgDB osgUtil osgViewer osgGA)
 If (OPENSCENEGRAPH_FOUND)
   Find_Program (OSGVIEWER_EXE osgviewer)

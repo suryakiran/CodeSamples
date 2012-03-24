@@ -1,6 +1,10 @@
+#include <iostream>
 #include <ParseArgs.hxx>
 #include <boost/program_options.hpp>
 using namespace boost::program_options ;
+using namespace std;
+
+typedef char* charp;
 
 const Args&
 ParseArgs::operator() ()

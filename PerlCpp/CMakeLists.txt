@@ -41,6 +41,7 @@ Target_Link_Libraries (
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   )
+Set_Property (TARGET PerlTest PROPERTY FOLDER "Perl CPP Samples")
 
 File (GLOB IN_FILES ${CMAKE_CURRENT_SOURCE_DIR}/perl/*.in)
 
