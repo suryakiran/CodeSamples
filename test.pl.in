@@ -22,6 +22,8 @@ my $showLibDeps = false;
 my $buildType = "@CMAKE_BUILD_TYPE@";
 my $gitBranchName = "@GIT_CURRENT_BRANCH_NAME@";
 my $osgLibPath = dirname("@OSG_LIBRARY@");
+my $perlLibPath = dirname ("@PERL_LIBRARY@");
+my $libOutputPath = "@CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE@";
 
 if ($buildType =~ /^Debug$/) {
   $debugBuild = true;
@@ -29,6 +31,7 @@ if ($buildType =~ /^Debug$/) {
 
 if ($debugBuild) {
   $osgLibPath = dirname("@OSG_LIBRARY_DEBUG@");
+  $libOutputPath = "@CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG@";
 }
 
 if ($osgLibPath) {
@@ -37,6 +40,8 @@ if ($osgLibPath) {
 
 my $current_exe_file ;
 unshift @LD_LIBRARY_PATH, "@Boost_LIBRARY_DIRS@";
+unshift @LD_LIBRARY_PATH, "$perlLibPath";
+unshift @LD_LIBRARY_PATH, "$libOutputPath";
 
 if ($debugBuild) {
   $current_exe_file = "@INSTALL_PREFIX_Debug@/$gitBranchName/bin/@exeName@";
