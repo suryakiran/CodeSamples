@@ -40,7 +40,9 @@ int main (int argc, char** argv, char** env)
   Args args = ParseArgs (argc, argv)();
   boost::filesystem::path p (args["cur_src_dir"]);
   p /= "call_perl_files/call_perl.pl";
-  charp command_line[2] = {strdup(""), strdup("")};
+
+  charp command_line[2];
+  command_line[0] = strdup("");
   command_line[1] = strdup(p.make_preferred().string().c_str());
   
   PERL_SYS_INIT3(&argc, &argv, &env);
