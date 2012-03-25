@@ -1,5 +1,5 @@
+#include <std.hxx>
 #include "triplet.hxx"
-#include "std.hxx"
 
 #include <boost/iterator/filter_iterator.hpp>
 

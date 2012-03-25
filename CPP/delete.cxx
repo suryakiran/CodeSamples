@@ -1,4 +1,4 @@
-#include "std.hxx"
+#include <std.hxx>
 
 int main (void)
 {
