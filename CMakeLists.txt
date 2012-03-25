@@ -85,11 +85,15 @@ OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
 OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 
 Find_File (STD_HXX_FILE std.hxx ${CMAKE_SOURCE_DIR})
-List (APPEND INCLUDES ${Boost_INCLUDE_DIR})
 
 # SOURCES is a dummy variable. CMake on gcc doesn't do anything with Sources. 
 # Will have to revisit this, when working with pch files on windows
-Precompiled_Header (SOURCES INCLUDES pch ${STD_HXX_FILE})
+
+Precompiled_Header (
+  HEADER ${STD_HXX_FILE}
+  INCLUDES ${Boost_INCLUDE_DIR} 
+  TARGET_NAME pch 
+  )
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
