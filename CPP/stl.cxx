@@ -1,4 +1,4 @@
-#include "std.hxx"
+#include <std.hxx>
 
 typedef boost::shared_ptr <int> int_ptr;
 

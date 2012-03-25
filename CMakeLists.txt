@@ -30,7 +30,7 @@ If (WIN32)
 EndIf (WIN32)
 
 Include_Directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
@@ -84,6 +84,13 @@ OPTION (BUILD_SAMPLES_OGL_QT "Build QtOpenGL Samples" FALSE)
 OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
 OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
 OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
+
+Find_File (STD_HXX_FILE std.hxx ${CMAKE_SOURCE_DIR})
+List (APPEND INCLUDES ${Boost_INCLUDE_DIR})
+
+# SOURCES is a dummy variable. CMake on gcc doesn't do anything with Sources. 
+# Will have to revisit this, when working with pch files on windows
+Precompiled_Header (SOURCES INCLUDES pch ${STD_HXX_FILE})
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)

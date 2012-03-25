@@ -19,6 +19,7 @@ ForEach (file ${SOURCES})
 
   Include_Directories (${dir})
   Add_Executable(${exeName} ${file} ${CPP_FILES} ${H_FILES} ${HPP_FILES})
+  Add_Dependencies (${exeName} pch)
 
 	Set_Target_Properties (
 		${exeName} PROPERTIES 
