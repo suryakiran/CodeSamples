@@ -27,9 +27,8 @@ ForEach (file ${SOURCES})
 		)
 
   List (APPEND CPPTargets ${exeName})
-  Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
   Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 
 EndForEach (file ${SOURCES})
 
-Add_Custom_Target (cpp DEPENDS ${CPPTargets}) 
+CodeSamples_Directory_Target (cpp DEPENDS ${CPPTargets}) 

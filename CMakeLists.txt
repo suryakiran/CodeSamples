@@ -16,10 +16,13 @@ Check_Perl_Modules (
   File::Find::Rule
   )
 
-Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
 Include_Cmake_Module(Zorba)
+
+If (CMAKE_COMPILER_IS_GNUCXX)
+  Add_Compiler_Flags (COMMON -Winvalid-pch -Wall)
+EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
@@ -30,7 +33,7 @@ If (WIN32)
 EndIf (WIN32)
 
 Include_Directories (
-  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_BINARY_DIR}
   ${Boost_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
@@ -45,10 +48,6 @@ Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)
     Add_Subdirectory (${p_dirName})
   EndIf (${p_varName})
 EndMacro (ADD_SUBDIRECTORY_IF)
-
-If (CMAKE_COMPILER_IS_GNUCXX)
-  Set (CMAKE_CXX_FLAGS "-Wall")
-EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
 If (WIN32)
   Remove_Definitions("-DBOOST_ALL_DYN_LINK")

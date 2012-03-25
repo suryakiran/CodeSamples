@@ -1,4 +1,4 @@
-#include "std.hxx"
+#include <std.hxx>
 #include <boost/phoenix.hpp>
 namespace phx = boost::phoenix;
 
@@ -48,10 +48,6 @@ int main (void)
 {
   Test test;
   Temp temp;
-
-  typedef void (Test::*pf)();
-  pf = &Test::fun; 
-  test.pf();
 
   auto mf = mem_fun_ref (&Test::fun);
 
