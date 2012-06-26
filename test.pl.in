@@ -4,6 +4,7 @@ use Getopt::Long;
 use File::Spec::Functions;
 use File::Basename;
 use Env qw(@LD_LIBRARY_PATH @PATH);
+use List::MoreUtils qw/uniq/ ;
 use strict;
 
 use constant true => 1;
@@ -28,6 +29,10 @@ if ($buildType =~ /^Debug$/) {
 
 my $current_exe_file ;
 unshift @LD_LIBRARY_PATH, "@Boost_LIBRARY_DIRS@";
+my @qt_lib_dirs = (
+    @qt_lib_dirs@
+);
+unshift @LD_LIBRARY_PATH, uniq @qt_lib_dirs;
 
 if ($debugBuild) {
   $current_exe_file = "@INSTALL_PREFIX_Debug@/$gitBranchName/bin/@exeName@";
