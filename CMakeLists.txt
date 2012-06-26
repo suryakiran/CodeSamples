@@ -9,6 +9,7 @@ Check_Perl_Modules (
   Template
   XML::Simple
   XML::Parser
+  List::MoreUtils
   File::Find::Rule
   )
 
@@ -38,7 +39,7 @@ Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)
 EndMacro (ADD_SUBDIRECTORY_IF)
 
 If (CMAKE_COMPILER_IS_GNUCXX)
-  Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
+    Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
 OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
@@ -68,6 +69,8 @@ OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
 OPTION (BUILD_KDTREE "Build KDtree" FALSE)
 OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
 OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
+OPTION (BUILD_SAMPLES_GDB "Build GDB Samples" FALSE)
+OPTION (BUILD_SAMPLES_STREAMS "Build Stream Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -95,6 +98,8 @@ Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
 Add_Subdirectory_If (BUILD_KDTREE KDtree)
 Add_Subdirectory_If (BUILD_MT MultiThreading)
 Add_Subdirectory_If (BUILD_ASIO Asio)
+Add_Subdirectory_If (BUILD_SAMPLES_GDB Gdb)
+Add_Subdirectory_If (BUILD_SAMPLES_STREAMS Streams)
 
 Find_File (
   PERL_IN_FILE
