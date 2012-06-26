@@ -18,6 +18,7 @@ Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
 Include_Cmake_Module(Zorba)
 
+Find_Package (Poppler)
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
@@ -71,6 +72,7 @@ OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
 OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 OPTION (BUILD_SAMPLES_GDB "Build GDB Samples" FALSE)
 OPTION (BUILD_SAMPLES_STREAMS "Build Stream Samples" FALSE)
+OPTION (BUILD_SAMPLES_POPPLER "Build Poppler Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -100,6 +102,7 @@ Add_Subdirectory_If (BUILD_MT MultiThreading)
 Add_Subdirectory_If (BUILD_ASIO Asio)
 Add_Subdirectory_If (BUILD_SAMPLES_GDB Gdb)
 Add_Subdirectory_If (BUILD_SAMPLES_STREAMS Streams)
+Add_Subdirectory_If (BUILD_SAMPLES_POPPLER Poppler)
 
 Find_File (
   PERL_IN_FILE
