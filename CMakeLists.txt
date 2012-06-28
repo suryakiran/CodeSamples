@@ -46,8 +46,7 @@ If (CMAKE_COMPILER_IS_GNUCXX)
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
 If (WIN32)
-  Remove_Definitions("-DBOOST_ALL_DYN_LINK")
-  Add_Definitions ("-DBOOST_ALL_NO_LIB")
+  Add_Definitions("-DBOOST_ALL_DYN_LINK")
 EndIf (WIN32)
 
 OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)

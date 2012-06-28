@@ -25,6 +25,11 @@ ForEach (file ${SOURCES})
 		PROJECT_LABEL ${ProjectName}
 		)
 
+  Target_Link_Libraries (${exeName} 
+    ${Boost_PROGRAM_OPTIONS_LIBRARIES}
+    ${Boost_REGEX_LIBRARIES}
+    )
+
   List (APPEND CPPTargets ${exeName})
   Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
   Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
