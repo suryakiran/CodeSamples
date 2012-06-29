@@ -17,6 +17,6 @@ int main (int argc, char** argv)
   GetOpt<args::TestArgs> clOptions (argc, argv);
   clOptions.parseCommandLineOptions();
 
-  fs::path s = clOptions.getArgumentValue<args::CurrentSourceDir>();
-  cout << s << endl;
+//  fs::path s = clOptions.getArgumentValue<args::CurrentSourceDir>();
+//  cout << s << endl;
 }

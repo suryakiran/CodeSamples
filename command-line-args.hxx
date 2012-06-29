@@ -11,7 +11,8 @@ namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
 namespace args {
-  struct NoArgs;
+  struct NoArgs{};
+  struct OptionTakeNoValue{};
 }
 
 #define DEFINE_ARG(ArgName, ValueType, ArgKey, ArgDesc) \
@@ -43,6 +44,7 @@ DEFINE_ARG(SourceDir, fs::path, "srcdir", "Source Directory");
 DEFINE_ARG(BinaryDir, fs::path, "bindir", "Binary Directory");
 DEFINE_ARG(CurrentSourceDir, fs::path, "cur_srcdir", "Current Source Directory");
 DEFINE_ARG(CurrentBinaryDir, fs::path, "cur_bindir", "Current Binary Directory");
+DEFINE_ARG(Help, OptionTakeNoValue, "help", "Help");
 
 #define ARG(ArgName) detail::fusion_pair<ArgName>::type
 
@@ -50,11 +52,45 @@ DEFINE_ARG(CurrentBinaryDir, fs::path, "cur_bindir", "Current Binary Directory")
     ARG(SourceDir), 
     ARG(BinaryDir), 
     ARG(CurrentSourceDir), 
+    ARG(Help),
     ARG(CurrentBinaryDir)
       > CommonArgsDesc;
 }
 
 namespace args {
+
+  template <class ArgValueType>
+    struct add_option_t
+    {
+      template <class ArgNameType>
+        void operator()(po::options_description& p_desc, const ArgNameType& arg_name) const
+        {
+          p_desc.add_options()
+            (arg_name.key(), po::value<ArgValueType>(), arg_name.description());
+        }
+    };
+
+  template <>
+    struct add_option_t<void>
+    {
+      template <class ArgNameType>
+        void operator()(po::options_description& p_desc, const ArgNameType& arg_name) const
+        {
+          p_desc.add_options()
+            (arg_name.key(), arg_name.description());
+        }
+    };
+
+  template <>
+    struct add_option_t<args::OptionTakeNoValue>
+    {
+      template <class ArgNameType>
+        void operator()(po::options_description& p_desc, const ArgNameType& arg_name) const
+        {
+          p_desc.add_options()
+            (arg_name.key(), arg_name.description());
+        }
+    };
 
   struct ArgumentProcessor
   {
@@ -70,8 +106,8 @@ namespace args {
       typedef typename T::second_type arg_value_type;
       arg_name_type arg_name;
 
-      m_desc.add_options()
-        (arg_name.key(), po::value<arg_value_type>(), arg_name.description());
+      add_option_t<arg_value_type> add_option;
+      add_option (m_desc, arg_name);
     }
 
     private:
