@@ -34,6 +34,8 @@ namespace detail {
     };
 }
 
+namespace args {
+
 DEFINE_ARG(SourceDir, string, "srcdir", "Source Directory");
 DEFINE_ARG(BinaryDir, string, "bindir", "Binary Directory");
 DEFINE_ARG(CurrentSourceDir, string, "cur_srcdir", "Current Source Directory");
@@ -41,7 +43,6 @@ DEFINE_ARG(CurrentBinaryDir, string, "cur_bindir", "Current Binary Directory");
 
 #define ARG(ArgName) detail::fusion_pair<ArgName>::type
 
-namespace args {
   typedef fusion::map <
     ARG(SourceDir), 
     ARG(BinaryDir), 
