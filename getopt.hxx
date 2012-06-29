@@ -3,6 +3,8 @@
 
 #include "command-line-args.hxx"
 #include <boost/utility/enable_if.hpp>
+#include <boost/utility/value_init.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace arg_types {
   struct invalid { };
@@ -11,6 +13,7 @@ namespace arg_types {
 template <class AppArgsDesc>
 class GetOpt
 {
+  typedef fusion::joint_view<args::CommonArgsDesc, AppArgsDesc> AllArgs;
   public:
     GetOpt(int argc, char** argv)
       : m_argc(argc), m_argv(argv)
@@ -33,49 +36,32 @@ class GetOpt
       {
         cout << "Exception in reading command line variables: " << e.what() << endl ;
       }
-
-#if 0
-      if (vm.count ("srcdir")) {
-        m_args["src_dir"] = vm["srcdir"].as<string>();
-      }
-
-      if (vm.count ("cur_srcdir")) {
-        m_args["cur_src_dir"] = vm["cur_srcdir"].as<string>();
-      }
-
-      if (vm.count ("bindir")) {
-        m_args["bin_dir"] = vm["bindir"].as<string>();
-      }
-
-      if (vm.count ("cur_bindir")) {
-        m_args["cur_bin_dir"] = vm["cur_bindir"].as<string>();
-      }
-
-      return m_args;
-#endif
     }
 
   private:
-    template <class ArgName, class Sequence>
+    template <class ArgName>
     struct has_key 
-      : fusion::result_of::has_key<Sequence, ArgName> { };
+      : fusion::result_of::has_key<AllArgs, ArgName> { };
 
-    template <class ArgName, class Sequence>
+    template <class ArgName>
       struct at_key
       {
-        typedef typename fusion::result_of::at_key<Sequence, ArgName>::type key_type;
-        typedef typename boost::remove_reference<key_type>::type type;
+        typedef typename fusion::result_of::at_key<AllArgs, ArgName>::type arg_type;
+        typedef typename boost::remove_reference<arg_type>::type type;
       };
 
   public:
     template <class T>
-      typename boost::enable_if_c <has_key <T, args::CommonArgsDesc>::value, typename at_key<T, args::CommonArgsDesc>::type >::type
+      typename boost::enable_if_c <has_key <T>::value, typename at_key<T>::type >::type
       getArgumentValue()
       {
-        typedef typename at_key<T, args::CommonArgsDesc>::type type;
-        cout << boolalpha << boost::is_same<type, string>::value << endl;
-        type t;
-        return t;
+        typedef typename at_key<T>::type return_type;
+        boost::value_initialized<return_type> t;
+        T arg;
+        if (m_varMap.count(arg.key())) {
+          return m_varMap[arg.key()].template as<return_type>();
+        }
+        return t.data();
       }
 
   private:

@@ -28,6 +28,8 @@ ForEach (file ${SOURCES})
   Target_Link_Libraries (${exeName} 
     ${Boost_PROGRAM_OPTIONS_LIBRARIES}
     ${Boost_REGEX_LIBRARIES}
+    ${Boost_FILESYSTEM_LIBRARIES}
+    ${Boost_SYSTEM_LIBRARIES}
     )
 
   List (APPEND CPPTargets ${exeName})
