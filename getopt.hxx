@@ -5,10 +5,16 @@
 #include <boost/utility/enable_if.hpp>
 #include <boost/utility/value_init.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/optional.hpp>
 
 namespace arg_types {
   struct invalid { };
 }
+
+typedef boost::optional<fs::path> fs_path_optional;
+typedef boost::optional<string> string_optional;
+typedef boost::optional<int> int_optional;
+typedef boost::optional<double> double_optional;
 
 template <class AppArgsDesc>
 class GetOpt
@@ -47,21 +53,46 @@ class GetOpt
       struct at_key
       {
         typedef typename fusion::result_of::at_key<AllArgs, ArgName>::type arg_type;
-        typedef typename boost::remove_reference<arg_type>::type type;
+        typedef typename boost::remove_reference<arg_type>::type no_ref_type;
+
+        typedef typename 
+        boost::mpl::or_ < 
+          typename boost::is_void<no_ref_type>::type, 
+          typename boost::is_same<no_ref_type, args::OptionTakeNoValue>::type 
+            >::type arg_take_no_value_type;
+
+        typedef typename
+          boost::mpl::eval_if <
+            arg_take_no_value_type, 
+            boost::mpl::identity<bool>, 
+            boost::mpl::identity<no_ref_type> 
+              >::type value_type;
+
+#if 0
+          boost::mpl::eval_if <
+            arg_take_no_value_type,
+            boost::identity<check_option>,
+            boost::identity<get_option_value>
+              >;
+#endif
+
+        typedef boost::optional<value_type> return_type;
       };
 
   public:
     template <class T>
-      typename boost::enable_if_c <has_key <T>::value, typename at_key<T>::type >::type
+      typename boost::enable_if_c <has_key <T>::value, typename at_key<T>::return_type >::type
       getArgumentValue()
       {
-        typedef typename at_key<T>::type return_type;
-        boost::value_initialized<return_type> t;
+        typedef typename at_key<T>::return_type return_type;
+        typedef typename at_key<T>::value_type value_type;
+        typedef typename at_key<T>::no_ref_type no_ref_type;
+
         T arg;
         if (m_varMap.count(arg.key())) {
-          return m_varMap[arg.key()].template as<return_type>();
+          return return_type(m_varMap[arg.key()].template as<value_type>());
         }
-        return t.data();
+        return return_type();
       }
 
   private:

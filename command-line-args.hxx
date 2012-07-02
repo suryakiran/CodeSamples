@@ -36,28 +36,6 @@ namespace detail {
       typedef typename T::type value_type;
       typedef typename fusion::pair <T, value_type> type;
     };
-}
-
-namespace args {
-
-DEFINE_ARG(SourceDir, fs::path, "srcdir", "Source Directory");
-DEFINE_ARG(BinaryDir, fs::path, "bindir", "Binary Directory");
-DEFINE_ARG(CurrentSourceDir, fs::path, "cur_srcdir", "Current Source Directory");
-DEFINE_ARG(CurrentBinaryDir, fs::path, "cur_bindir", "Current Binary Directory");
-DEFINE_ARG(Help, OptionTakeNoValue, "help", "Help");
-
-#define ARG(ArgName) detail::fusion_pair<ArgName>::type
-
-  typedef fusion::map <
-    ARG(SourceDir), 
-    ARG(BinaryDir), 
-    ARG(CurrentSourceDir), 
-    ARG(Help),
-    ARG(CurrentBinaryDir)
-      > CommonArgsDesc;
-}
-
-namespace args {
 
   template <class ArgValueType>
     struct add_option_t
@@ -91,45 +69,68 @@ namespace args {
             (arg_name.key(), arg_name.description());
         }
     };
+}
 
-  struct ArgumentProcessor
-  {
-    ArgumentProcessor (po::options_description& p_desc)
-      : m_desc(p_desc)
-    {
-    }
+namespace args {
 
-    template <class T>
-    void operator()(const T& argDesc) const
-    {
-      typedef typename T::first_type arg_name_type;
-      typedef typename T::second_type arg_value_type;
-      arg_name_type arg_name;
+  DEFINE_ARG(SourceDir, fs::path, "srcdir", "Source Directory");
+  DEFINE_ARG(BinaryDir, fs::path, "bindir", "Binary Directory");
+  DEFINE_ARG(CurrentSourceDir, fs::path, "cur_srcdir", "Current Source Directory");
+  DEFINE_ARG(CurrentBinaryDir, fs::path, "cur_bindir", "Current Binary Directory");
+  DEFINE_ARG(Help, OptionTakeNoValue, "help", "Help");
 
-      add_option_t<arg_value_type> add_option;
-      add_option (m_desc, arg_name);
-    }
+#define ARG(ArgName) detail::fusion_pair<ArgName>::type
 
-    private:
-      po::options_description& m_desc;
-  };
+  typedef fusion::map <
+    ARG(SourceDir), 
+    ARG(BinaryDir), 
+    ARG(CurrentSourceDir), 
+    ARG(Help),
+    ARG(CurrentBinaryDir)
+      > CommonArgsDesc;
 
   template <class T>
     struct Parser
     {
       typedef typename boost::add_reference<T>::type tref;
       Parser (tref p_argsDesc)
-        : m_argsDesc(p_argsDesc)
-      {
-      }
+        : m_argsDesc(p_argsDesc) { }
 
       void parse (po::options_description& p_desc)
       {
-        ArgumentProcessor argProcessor (p_desc);
-        fusion::for_each (m_argsDesc, argProcessor);
+        fusion::for_each (m_argsDesc, option_processor(p_desc));
       }
 
       private:
+        struct option_processor
+        {
+          option_processor (po::options_description& p_desc)
+            : m_desc(p_desc) { }
+
+          template <class ArgNameType, class ArgValueType>
+            void
+            add_option (const ArgNameType& p_name, const ArgValueType& p_type) const
+            {
+              detail::add_option_t<ArgValueType> v;
+              v(m_desc, p_name);
+            }
+
+          template <class T>
+            void operator()(const T& argDesc) const
+            {
+              typedef typename T::first_type arg_name_type;
+              typedef typename T::second_type arg_value_type;
+
+              arg_name_type arg_name;
+              arg_value_type arg_value;
+
+              add_option (arg_name, arg_value);
+            }
+
+          private:
+          po::options_description& m_desc;
+        };
+
         tref m_argsDesc;
     };
 

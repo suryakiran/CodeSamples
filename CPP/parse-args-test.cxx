@@ -17,6 +17,18 @@ int main (int argc, char** argv)
   GetOpt<args::TestArgs> clOptions (argc, argv);
   clOptions.parseCommandLineOptions();
 
-//  fs::path s = clOptions.getArgumentValue<args::CurrentSourceDir>();
-//  cout << s << endl;
+  fs_path_optional s = clOptions.getArgumentValue<args::CurrentSourceDir>();
+  if (s) {
+    cout << s.get() << endl;
+  }
+
+#if 0
+  bool b = clOptions.getArgumentValue <args::Help>();
+  cout << boolalpha ;
+  if (b) {
+    cout << b.get() << endl;
+  } else {
+    cout << "NO ARGUMENT" << endl;
+  }
+#endif
 }
