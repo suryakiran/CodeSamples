@@ -2,6 +2,12 @@
 #define QT_HXX
 
 #include <QtGui>
-#include <QtOpenGL>
+
+inline ostream& operator<< (ostream& os, const QString& s)
+{
+  os << s.toStdString();
+  return os;
+}
+
 
 #endif

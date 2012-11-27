@@ -75,9 +75,11 @@ OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
 OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
 OPTION (BUILD_KDTREE "Build KDtree" FALSE)
 OPTION (BUILD_SAMPLES_OGL_QT "Build QtOpenGL Samples" FALSE)
+OPTION (BUILD_SAMPLES_QT "Build Qt Samples" FALSE)
 OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
 OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
 OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
+OPTION (BUILD_SAMPLES_DEBUGGING "Build Debugging Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -104,9 +106,11 @@ Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
 Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
 Add_Subdirectory_If (BUILD_KDTREE KDtree)
 Add_Subdirectory_If (BUILD_SAMPLES_OGL_QT QtOpenGL)
+Add_Subdirectory_If (BUILD_SAMPLES_QT Qt)
 Add_Subdirectory_If (BUILD_SAMPLES_OGL OpenGL)
 Add_Subdirectory_If (BUILD_MT MultiThreading)
 Add_Subdirectory_If (BUILD_ASIO Asio)
+Add_Subdirectory_If (BUILD_SAMPLES_DEBUGGING Debug-Code)
 
 Find_File (
   PERL_IN_FILE

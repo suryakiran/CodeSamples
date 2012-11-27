@@ -38,6 +38,10 @@ if (\$debugBuild) {
   [%- END %]
 }
 
+[% IF USE_QT == "ON" -%]
+unshift @LD_LIBRARY_PATH, dirname("[% QT_QTCORE_LIBRARY_RELEASE %]");
+[%- END %]
+
 my (\$debugApplication);
 
 my \$result = GetOptions (
