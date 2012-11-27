@@ -19,15 +19,15 @@ typedef boost::optional<double> double_optional;
 template <class AppArgsDesc>
 class GetOpt
 {
-  typedef fusion::joint_view<args::CommonArgsDesc, AppArgsDesc> AllArgs;
+  typedef fusion::joint_view<options::CommonArgsDesc, AppArgsDesc> AllArgs;
   public:
     GetOpt(int argc, char** argv)
       : m_argc(argc), m_argv(argv)
     {
-      args::Parser<args::CommonArgsDesc> commonArgsParser(m_commonArgsDesc);
+      options::Parser<options::CommonArgsDesc> commonArgsParser(m_commonArgsDesc);
       commonArgsParser.parse (m_desc);
 
-      args::Parser<AppArgsDesc> appArgsParser (m_appArgsDesc);
+      options::Parser<AppArgsDesc> appArgsParser (m_appArgsDesc);
       appArgsParser.parse(m_desc);
     }
 
@@ -49,6 +49,23 @@ class GetOpt
     struct has_key 
       : fusion::result_of::has_key<AllArgs, ArgName> { };
 
+    struct check_option_if_provided
+    {
+      template <class option_name>
+      bool operator()()
+      {
+        return true;
+      }
+    };
+
+    struct get_option_value
+    {
+      bool operator()()
+      {
+        return true;
+      }
+    };
+
     template <class ArgName>
       struct at_key
       {
@@ -56,27 +73,30 @@ class GetOpt
         typedef typename boost::remove_reference<arg_type>::type no_ref_type;
 
         typedef typename 
-        boost::mpl::or_ < 
+          mpl::or_ < 
           typename boost::is_void<no_ref_type>::type, 
-          typename boost::is_same<no_ref_type, args::OptionTakeNoValue>::type 
-            >::type arg_take_no_value_type;
+                   typename boost::is_same<no_ref_type, options::OptionTakeNoValue>::type 
+                     >::type arg_take_no_value_type;
 
         typedef typename
-          boost::mpl::eval_if <
-            arg_take_no_value_type, 
-            boost::mpl::identity<bool>, 
-            boost::mpl::identity<no_ref_type> 
-              >::type value_type;
+          mpl::eval_if <
+          arg_take_no_value_type, 
+          mpl::identity<bool>, 
+          mpl::identity<no_ref_type> 
+            >::type value_type;
 
-#if 0
-          boost::mpl::eval_if <
-            arg_take_no_value_type,
-            boost::identity<check_option>,
-            boost::identity<get_option_value>
-              >;
-#endif
+        typename mpl::eval_if <
+          arg_take_no_value_type,
+          mpl::identity<check_option_if_provided>,
+          mpl::identity<get_option_value>
+            >::type option_extractor_type;
 
         typedef boost::optional<value_type> return_type;
+
+        at_key()
+        {
+          cout << typeid(option_extractor_type).name() << endl;
+        }
       };
 
   public:
@@ -87,6 +107,8 @@ class GetOpt
         typedef typename at_key<T>::return_type return_type;
         typedef typename at_key<T>::value_type value_type;
         typedef typename at_key<T>::no_ref_type no_ref_type;
+
+        at_key<T> a;
 
         T arg;
         if (m_varMap.count(arg.key())) {
@@ -99,7 +121,7 @@ class GetOpt
     po::options_description m_desc;
     int m_argc;
     char** m_argv;
-    args::CommonArgsDesc m_commonArgsDesc;
+    options::CommonArgsDesc m_commonArgsDesc;
     AppArgsDesc m_appArgsDesc;
     po::variables_map m_varMap;
 };

@@ -117,10 +117,10 @@ struct CdrSequence
   typedef typename mpl::end<Sequence>::type end_iterator;
   typedef typename boost::is_same <next_iterator, end_iterator>::type next_is_last;
 
-  typedef typename mpl::if_ < next_is_last,
-                              NullType,
-                              mpl::iterator_range<next_iterator, end_iterator>
-                              >::type type;
+  typedef typename mpl::eval_if < next_is_last,
+                                  mpl::identity<NullType>,
+                                  mpl::identity< mpl::iterator_range<next_iterator, end_iterator> >
+                                  >::type type;
 };
 
 //

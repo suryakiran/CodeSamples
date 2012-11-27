@@ -1,5 +1,5 @@
-#ifndef command_line_args_hxx_INCLUDED
-#define command_line_args_hxx_INCLUDED
+#ifndef command_line_options_hxx_INCLUDED
+#define command_line_options_hxx_INCLUDED
 
 #include <std.hxx>
 #include <boost-fusion.hxx>
@@ -10,7 +10,7 @@ namespace po = boost::program_options;
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
 
-namespace args {
+namespace options {
   struct NoArgs{};
   struct OptionTakeNoValue{};
 }
@@ -60,7 +60,7 @@ namespace detail {
     };
 
   template <>
-    struct add_option_t<args::OptionTakeNoValue>
+    struct add_option_t<options::OptionTakeNoValue>
     {
       template <class ArgNameType>
         void operator()(po::options_description& p_desc, const ArgNameType& arg_name) const
@@ -71,7 +71,7 @@ namespace detail {
     };
 }
 
-namespace args {
+namespace options {
 
   DEFINE_ARG(SourceDir, fs::path, "srcdir", "Source Directory");
   DEFINE_ARG(BinaryDir, fs::path, "bindir", "Binary Directory");
@@ -93,12 +93,12 @@ namespace args {
     struct Parser
     {
       typedef typename boost::add_reference<T>::type tref;
-      Parser (tref p_argsDesc)
-        : m_argsDesc(p_argsDesc) { }
+      Parser (tref p_optionsDesc)
+        : m_optionsDesc(p_optionsDesc) { }
 
       void parse (po::options_description& p_desc)
       {
-        fusion::for_each (m_argsDesc, option_processor(p_desc));
+        fusion::for_each (m_optionsDesc, option_processor(p_desc));
       }
 
       private:
@@ -115,29 +115,29 @@ namespace args {
               v(m_desc, p_name);
             }
 
-          template <class T>
-            void operator()(const T& argDesc) const
+          template <class option>
+            void operator()(const option& argDesc) const
             {
-              typedef typename T::first_type arg_name_type;
-              typedef typename T::second_type arg_value_type;
+              typedef typename option::first_type opt_name_type;
+              typedef typename option::second_type opt_value_type;
 
-              arg_name_type arg_name;
-              arg_value_type arg_value;
+              opt_name_type opt_name;
+              opt_value_type opt_value;
 
-              add_option (arg_name, arg_value);
+              add_option (opt_name, opt_value);
             }
 
           private:
           po::options_description& m_desc;
         };
 
-        tref m_argsDesc;
+        tref m_optionsDesc;
     };
 
   template <>
-    struct Parser<args::NoArgs>
+    struct Parser<options::NoArgs>
     {
-      Parser (args::NoArgs&) { }
+      Parser (options::NoArgs&) { }
       void parse (po::options_description&) { }
     };
 }
