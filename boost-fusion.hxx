@@ -13,5 +13,6 @@
 #include <boost/fusion/view.hpp>
 
 namespace fusion = boost::fusion;
+namespace mpl = boost::mpl;
 
 #endif
