@@ -3,6 +3,7 @@
 
 int main (void)
 {
+    cout << BOOST_VERSION << endl;
   typedef boost::unordered_map<string, float> Map;
   Map m;
   m["ABC"] = 1.0f;

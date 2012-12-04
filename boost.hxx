@@ -1,6 +1,8 @@
 #ifndef BOOST_HXX
 #define BOOST_HXX 1
 
+#include <boost/version.hpp>
+
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/typeof/typeof.hpp>
@@ -8,7 +10,9 @@
 #include <boost/assign/std.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/preprocessor/cat.hpp>
+#if BOOST_VERSION >= 104700
 #include <boost/phoenix.hpp>
+#endif
 #include <boost/array.hpp>
 #include <boost/current_function.hpp>
 
@@ -24,8 +28,10 @@ using namespace boost::assign ;
 namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
 
+#if BOOST_VERSION >= 104700
 namespace phx = boost::phoenix;
 namespace pha = phx::arg_names;
+#endif
 
 namespace detail {
   template <class Container, class IteratorCategory>
