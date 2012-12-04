@@ -9,8 +9,11 @@ int main (void)
   m["ABC"] = 1.0f;
   m["PQR"] = 2.0f;
   m["XYZ"] = 3.0f;
-  Map::const_iterator it = m.find("ABC");
+  Map::iterator it = m.find("ABC");
+  cout << it->first << endl;
+  
   it = m.find("abc");
-  cout << "Unordered debug example" << endl;
+  cout << "it not found" << endl;
+
 
 }
