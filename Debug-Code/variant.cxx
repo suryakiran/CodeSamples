@@ -4,16 +4,24 @@
 typedef vector<string> int_vector;
 typedef boost::variant <int, bool, float, string, int_vector> variant_type;
 
+struct Test
+{
+  variant_type mVar;
+
+  Test()
+  {
+    mVar = string("Test String");
+  }
+
+  const variant_type& value() const {
+    return mVar;
+  }
+};
+
 int main (void)
 {
-  variant_type vi, vb, vf, vs;
-  int i(5);
-  vector<string> viv ;
-  viv += "A", "B", "C", "D";
-  vs = string("Surya Kiran");
-  vs = viv;
-  vi = 10;
-  vb = true;
-  vf = 1.234f;
+  Test t;
+  const variant_type& vRef = t.value();
+  variant_type vCopy = vRef;
   cout << "Variant Test" << endl;
 }
