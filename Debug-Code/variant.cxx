@@ -23,5 +23,8 @@ int main (void)
   Test t;
   const variant_type& vRef = t.value();
   variant_type vCopy = vRef;
+  vCopy = true;
+  vCopy = 10;
+  vCopy = 13.5f;
   cout << "Variant Test" << endl;
 }
