@@ -1,0 +1,14 @@
+#include <std.hxx>
+#include <qt.hxx>
+
+#include <@WindowName@.hpp>
+
+int main (int argc, char** argv)
+{
+  QApplication app (argc, argv);
+
+  Window* w = new @WindowName@;
+  w->show();
+
+  app.exec();
+}

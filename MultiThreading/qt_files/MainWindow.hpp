@@ -4,8 +4,8 @@
 #include "ui_MainWindow.h"
 #include <boost/lexical_cast.hpp> 
 #include <boost/signals2.hpp>
-#include <boost/phoenix.hpp>
 #include <boost/thread.hpp>
+#include <boost/asio.hpp>
 #include "std.hxx"
 namespace phx = boost::phoenix;
 namespace pha = boost::phoenix::arg_names ;
@@ -18,6 +18,9 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
     MainWindow (QWidget* p_parent = 0);
     ~MainWindow();
 
+  protected:
+    virtual void closeEvent (QCloseEvent*);
+
 Q_SIGNALS:
     void updateProgressBar();
 
@@ -27,11 +30,15 @@ Q_SIGNALS:
 
   private:
     void createThread();
+    void servicePost();
 
   private:
     boost::thread m_thread;
     boost::signals2::signal <void()> m_sig;
+    boost::shared_ptr<boost::asio::io_service> m_service;
+    boost::shared_ptr<boost::asio::io_service::work> m_work;
     bool m_endThread ;
+    bool m_serviceStarted ;
 };
 
 #endif

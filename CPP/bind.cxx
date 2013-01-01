@@ -49,9 +49,9 @@ int main (void)
   Test test;
   Temp temp;
 
-  typedef void (Test::*pf)();
-  pf = &Test::fun; 
-  test.pf();
+  typedef void (Test::*PointerFun)();
+  PointerFun pf = &Test::fun; 
+  (test.*pf)();
 
   auto mf = mem_fun_ref (&Test::fun);
 

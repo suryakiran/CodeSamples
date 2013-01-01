@@ -9,6 +9,7 @@ Include_Cmake_Module(Python)
 Check_Perl_Modules (
   Template
   XML::Simple
+  XML::Parser
   File::Find::Rule
   )
 
@@ -27,8 +28,6 @@ Include_Directories (
   ${CMAKE_SOURCE_DIR}/Global/Include
   )
 
-Link_Directories    (${Boost_LIBRARY_DIRS})
-
 Set (ParseArgsLib "parse_args")
 Include_Directories (${CMAKE_SOURCE_DIR}/CommandLineArgs)
 Add_Subdirectory (CommandLineArgs)
@@ -40,13 +39,12 @@ Macro (ADD_SUBDIRECTORY_IF p_varName p_dirName)
 EndMacro (ADD_SUBDIRECTORY_IF)
 
 If (CMAKE_COMPILER_IS_GNUCXX)
-  Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall")
+  Set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 EndIf (CMAKE_COMPILER_IS_GNUCXX)
 
-If (USE_QT)
-  Find_Package (Qt4 COMPONENTS QtCore QtGui)
-  Include (${QT_USE_FILE})
-EndIf (USE_QT)
+If (WIN32)
+  Add_Definitions("-DBOOST_ALL_DYN_LINK")
+EndIf (WIN32)
 
 OPTION (USE_GTKMM "Use Gtkmm Samples" FALSE)
 OPTION (BUILD_SAMPLES_MULTI_INDEX "Build Multi Index Samples" FALSE)
@@ -73,7 +71,12 @@ OPTION (BUILD_SAMPLES_OSG "Build OSG Samples" FALSE)
 OPTION (BUILD_SAMPLES_DSA "Build DSA Samples" FALSE)
 OPTION (BUILD_SAMPLES_ALG "Build ALG Samples" FALSE)
 OPTION (BUILD_KDTREE "Build KDtree" FALSE)
+OPTION (BUILD_SAMPLES_OGL_QT "Build QtOpenGL Samples" FALSE)
+OPTION (BUILD_SAMPLES_QT "Build Qt Samples" FALSE)
+OPTION (BUILD_SAMPLES_OGL "Build OpenGL Samples" FALSE)
 OPTION (BUILD_MT "Build MultiThreading Samples" FALSE)
+OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
+OPTION (BUILD_SAMPLES_DEBUGGING "Build Debugging Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -99,7 +102,12 @@ Add_Subdirectory_If (BUILD_SAMPLES_OSG OpenSceneGraph)
 Add_Subdirectory_If (BUILD_SAMPLES_DSA DataStructures)
 Add_Subdirectory_If (BUILD_SAMPLES_ALG Algorithms)
 Add_Subdirectory_If (BUILD_KDTREE KDtree)
+Add_Subdirectory_If (BUILD_SAMPLES_OGL_QT QtOpenGL)
+Add_Subdirectory_If (BUILD_SAMPLES_QT Qt)
+Add_Subdirectory_If (BUILD_SAMPLES_OGL OpenGL)
 Add_Subdirectory_If (BUILD_MT MultiThreading)
+Add_Subdirectory_If (BUILD_ASIO Asio)
+Add_Subdirectory_If (BUILD_SAMPLES_DEBUGGING Debug-Code)
 
 Find_File (
   PERL_IN_FILE
@@ -121,6 +129,20 @@ Find_File (
   PATHS
     ${CMAKE_SOURCE_DIR}
   )
+
+Find_File (
+  PL_FILE_SAMPLES_EXE
+    ProcessSamplesExeTemplate.pl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
+
+Find_File(
+  CMAKE_SAMPLES_TMPL
+    test.pl.tmpl
+  PATHS
+    ${CMAKE_SOURCE_DIR}
+    )
 
 Configure_Executable_File (
   ${CMAKE_SOURCE_DIR}/Config/dot2svg

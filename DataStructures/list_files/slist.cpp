@@ -46,6 +46,21 @@ void slist::reverse()
 {
   Node p,q,r;
 
+  Node cur, next, prev;
+  cur = m_head;
+  prev = (Node) 0;
+
+  while (cur)
+  {
+    next = cur->m_next;
+    cur->m_next = prev;
+    prev = cur;
+    cur = next;
+  }
+
+  m_head = prev;
+
+#if 0
   p = m_head;
   q = m_head->m_next;
   p->m_next = (Node)0;
@@ -57,6 +72,7 @@ void slist::reverse()
     m_head = q;
     q = r;
   }
+#endif
 }
 
 slist::~slist()

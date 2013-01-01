@@ -138,6 +138,26 @@ bool bst::find (int val, Node root)
     return find(val, root->left);
 }
 
+void bst::traversePreOrder (node* root)
+{
+  if (!root) {
+    return ;
+  }
+  cout << root->m_value << ',';
+  traversePreOrder (root->left);
+  traversePreOrder (root->right);
+}
+
+void bst::traversePostOrder (node* root)
+{
+  if (!root) {
+    return ;
+  }
+  traversePostOrder (root->left);
+  traversePostOrder (root->right);
+  cout << root->m_value << ',';
+}
+
 void bst::print () const
 {
   printToDot ((fileNameFmt % ++fileNum).str());
@@ -179,6 +199,7 @@ bst::range (int val)
   pair<int, int> r;
   r.first = numeric_limits<int>::min();
   r.second = numeric_limits<int>::max();
+  return r;
 }
 
 void bst::remove (int val, Node& root)

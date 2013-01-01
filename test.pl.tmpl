@@ -1,0 +1,68 @@
+#!$PERL_EXECUTABLE -w
+
+use Getopt::Long;
+use File::Spec::Functions;
+use File::Basename;
+use strict;
+use Env qw(@LD_LIBRARY_PATH);
+
+use constant true => 1;
+use constant false => 0;
+
+BEGIN {
+  unshift @INC, "$CMAKE_SOURCE_DIR/PerlModules";
+}
+
+use Gdb;
+use App;
+
+my \$debugBuild = false;
+my \$buildType = "$CMAKE_BUILD_TYPE";
+my \$gitBranchName = "$GIT_CURRENT_BRANCH_NAME";
+
+if (\$buildType =~ /^Debug\$/) {
+  \$debugBuild = true;
+}
+
+my \$current_exe_file ;
+
+if (\$debugBuild) {
+  \$current_exe_file = "$INSTALL_PREFIX_Debug/\$gitBranchName/bin/$exeName";
+  [% IF CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG -%]
+  unshift @LD_LIBRARY_PATH, "[% CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG %]";
+  [%- END %]
+} else {
+  \$current_exe_file = "$INSTALL_PREFIX_Release/bin/$exeName";
+  [% IF CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE -%]
+  unshift @LD_LIBRARY_PATH, "[% CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE %]";
+  [%- END %]
+}
+
+[% IF USE_QT == "ON" -%]
+unshift @LD_LIBRARY_PATH, dirname("[% QT_QTCORE_LIBRARY_RELEASE %]");
+[%- END %]
+
+my (\$debugApplication);
+
+my \$result = GetOptions (
+    "debug|d" => \(\$debugApplication),
+    );
+
+my %appArgs = (
+  srcdir => "$CMAKE_SOURCE_DIR",
+  bindir => "$CMAKE_BINARY_DIR",
+);
+
+if (\$debugApplication) {
+  my \$gdb = Gdb->new(
+      exe_file => "\$current_exe_file", 
+      init_file => catfile("$CMAKE_BINARY_DIR", 'init.gdb')
+      );
+  \$gdb->launch(%appArgs);
+} else {
+  my \$app = App->new (
+    exe_file => "\$current_exe_file", 
+  );
+
+  \$app->launch(%appArgs);
+}

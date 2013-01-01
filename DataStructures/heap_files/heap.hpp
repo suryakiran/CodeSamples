@@ -132,10 +132,10 @@ class heap
       for (idx = p_idx; idx < p_size/2; idx = child)
       {
         child = 2*idx + 1;
-        if (child != (p_size-1) && c[child + 1] < c[child]) {
+        if (child != (p_size-1) && c[child + 1] > c[child]) {
           child ++;
         }
-        if (c[child] < tmp) {
+        if (c[child] > tmp) {
           c[idx] = c[child];
         }
         else break;
@@ -151,7 +151,7 @@ class heap
       size_t parent ((child - 1) / 2);
       value_type tmp (c[child]);
 
-      for (child = (c.size()-1); tmp < c[parent]; child = parent, parent = (child - 1)/2)
+      for (child = (c.size()-1); tmp > c[parent]; child = parent, parent = (child - 1)/2)
       {
         c[child] = c[parent];
         if (parent == 0) {

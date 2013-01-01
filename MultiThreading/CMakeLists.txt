@@ -65,15 +65,28 @@ ForEach (file ${SOURCES})
 
   Target_Link_Libraries (
     ${exeName} ${CMAKE_THREAD_LIBS_INIT} ${Boost_THREAD_LIBRARY}
-    ${Boost_SIGNALS_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_REGEX_LIBRARY}
     ${MOTIF_LIBRARIES} ${X11_X11_LIB} ${GTKMM_LIBRARIES}
     ${QT_QTCORE_LIBRARIES}
     ${QT_QTGUI_LIBRARIES}
     )
 
+  Get_Filename_Component (ZORBA_BIN_PATH ${ZORBA_EXECUTABLE} PATH CACHE)
+
   List (APPEND MTTargets ${exeName})
-  Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
-  Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+
+  If (UNIX)
+    Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Else (UNIX)
+    Execute_Perl (
+      FILE 
+        ${PL_FILE_VCXPROJ_USER_FILE}
+      ARGS 
+        -o ${CMAKE_CURRENT_BINARY_DIR}/${exeName}.vcxproj.user
+        -x ${CMAKE_VARIABLES_XML_OUT_FILE}
+        -e ${exeName}
+      )
+  EndIf (UNIX)
 
 EndForEach (file ${SOURCES})
 

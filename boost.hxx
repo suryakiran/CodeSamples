@@ -1,6 +1,8 @@
 #ifndef BOOST_HXX
 #define BOOST_HXX 1
 
+#include <boost/version.hpp>
+
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/typeof/typeof.hpp>
@@ -8,10 +10,16 @@
 #include <boost/assign/std.hpp>
 #include <boost/iterator/zip_iterator.hpp>
 #include <boost/preprocessor/cat.hpp>
+#if BOOST_VERSION >= 104700
+#include <boost/phoenix.hpp>
+#endif
+#include <boost/array.hpp>
+#include <boost/current_function.hpp>
 
 #include <boost/lambda/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/range.hpp>
+#include <boost/range/algorithm.hpp>
 
 using boost::format ;
 typedef boost::format fmt;
@@ -19,6 +27,11 @@ using namespace boost::assign ;
 
 namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
+
+#if BOOST_VERSION >= 104700
+namespace phx = boost::phoenix;
+namespace pha = phx::arg_names;
+#endif
 
 namespace detail {
   template <class Container, class IteratorCategory>
@@ -50,7 +63,7 @@ namespace detail {
 
 template <class Container>
 typename boost::range_difference <Container>::type
-size (const Container& p_container)
+sizeFunc (const Container& p_container)
 {
   typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter;
   typedef BOOST_DEDUCED_TYPENAME std::iterator_traits<Iter>::iterator_category category;
@@ -70,7 +83,7 @@ void printContainer (const Format& p_message, const Container& p_container, char
 	typedef BOOST_DEDUCED_TYPENAME boost::range_result_iterator<const Container>::type Iter ;
 	cout << p_message ;
   if (p_printSize)
-    cout << fmt (" (Size: %1%)") % size(p_container) ;
+    cout << fmt (" (Size: %1%)") % sizeFunc(p_container) ;
   cout << endl;
 	Iter beginIter (boost::begin(p_container)), endIter (boost::end(p_container)) ;
 	for (Iter iter = beginIter; iter != endIter; ++iter) 

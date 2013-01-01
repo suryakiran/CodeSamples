@@ -3,6 +3,7 @@
 use Getopt::Long;
 use File::Spec::Functions;
 use File::Basename;
+use Env qw(@LD_LIBRARY_PATH @PATH);
 use strict;
 
 use constant true => 1;
@@ -20,12 +21,22 @@ my $debugBuild = false;
 my $showLibDeps = false;
 my $buildType = "@CMAKE_BUILD_TYPE@";
 my $gitBranchName = "@GIT_CURRENT_BRANCH_NAME@";
+my $osgLibPath = dirname("@OSG_LIBRARY@");
 
 if ($buildType =~ /^Debug$/) {
   $debugBuild = true;
 }
 
+if ($debugBuild) {
+  $osgLibPath = dirname("@OSG_LIBRARY_DEBUG@");
+}
+
+if ($osgLibPath) {
+  unshift @LD_LIBRARY_PATH, $osgLibPath;
+}
+
 my $current_exe_file ;
+unshift @LD_LIBRARY_PATH, "@Boost_LIBRARY_DIRS@";
 
 if ($debugBuild) {
   $current_exe_file = "@INSTALL_PREFIX_Debug@/$gitBranchName/bin/@exeName@";
@@ -47,12 +58,12 @@ my %appArgs = (
   cur_bindir => "@CMAKE_CURRENT_BINARY_DIR@"
 );
 
-if ($showLibDeps) {
+if ($showLibDeps) {;
   my $ldd = Ldd->new (
     exe_file => "$current_exe_file"
   );
 
-  $ldd->launch()
+  $ldd->launch();
 }
 
 if ($debugApplication) {
