@@ -1,0 +1,53 @@
+#!@PYTHON_EXECUTABLE@
+
+import os, sys
+sys.path.insert(0, os.path.join('@CMAKE_SOURCE_DIR@', 'PythonModules'))
+from Gdb import Gdb
+import argparse
+from Locator import Locator
+from Launcher import Launcher
+
+class TestApp:
+    def __init__(self, **kwargs):
+        self.debug_build = (kwargs['build_type'] == 'Debug')
+        if self.debug_build:
+            exe_dir = '@INSTALL_PREFIX_Debug@'
+        else:
+            exe_dir = '@INSTALL_PREFIX_Release@'
+        self.exe_file = os.path.join(exe_dir, kwargs['git_branch'], 'bin', kwargs['name'])
+
+    def __call__(self, **kwargs):
+        if kwargs['show_deps']:
+            l = Launcher(Locator('ldd')())
+            l.addArg(self.exe_file)
+            l(wait_for_command_to_complete = True)
+        else:
+            init_file = os.path.join('@CMAKE_BINARY_DIR@', 'init.gdb')
+            l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'])
+            l(
+                srcdir = '@CMAKE_SOURCE_DIR@',
+                bindir = '@CMAKE_BINARY_DIR@',
+                cur_srcdir = '@CMAKE_CURRENT_SOURCE_DIR@',
+                cur_bindir = '@CMAKE_CURRENT_BINARY_DIR@'
+                )
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog = '@exeName@')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-d', dest = 'debug', action = 'store_true')
+    group.add_argument('-l', dest = 'show_deps', action = 'store_true')
+
+    args = parser.parse_args()
+    args.run_app = True
+    if args.debug or args.show_deps:
+        args.run_app = False
+        
+    t = TestApp(
+        name = '@exeName@',
+        build_type = '@CMAKE_BUILD_TYPE@',
+        git_branch = '@GIT_CURRENT_BRANCH_NAME@',
+        )
+    
+    t(debug = args.debug, show_deps = args.show_deps)
+

@@ -5,6 +5,7 @@ Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
 Find_Package (PkgConfig)
 Include_Cmake_Module(Perl)
+Include_Cmake_Module(Python)
 Check_Perl_Modules (
   Template
   XML::Simple
@@ -19,12 +20,6 @@ Include_Cmake_Module(Zorba)
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
 EndIf (NOT CMAKE_BUILD_TYPE)
-
-Set(Boost_ADDITIONAL_VERSIONS "1.49" "1.48" "1.47")
-Find_Package (
-  Boost
-  COMPONENTS date_time program_options filesystem system thread signals
-  )
 
 Include_Directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -112,6 +107,13 @@ Find_File (
   PATHS
     ${CMAKE_SOURCE_DIR}
   )
+
+Find_File (
+  PYTHON_IN_FILE
+  test.py.in
+  PATHS
+  ${CMAKE_SOURCE_DIR}
+)
 
 Find_File (
   PERL_ALL_TESTS_IN_FILE

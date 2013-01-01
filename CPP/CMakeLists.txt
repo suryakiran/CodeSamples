@@ -27,7 +27,7 @@ ForEach (file ${SOURCES})
 
   List (APPEND CPPTargets ${exeName})
   Get_Target_Property (CURRENT_EXE_FILE ${exeName} LOCATION)
-  Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 
 EndForEach (file ${SOURCES})
 
