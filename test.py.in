@@ -6,14 +6,14 @@ from Gdb import Gdb
 import argparse
 from Locator import Locator
 from Launcher import Launcher
+import yaml
+
+yml = None
 
 class TestApp:
     def __init__(self, **kwargs):
-        self.debug_build = (kwargs['build_type'] == 'Debug')
-        if self.debug_build:
-            exe_dir = '@INSTALL_PREFIX_Debug@'
-        else:
-            exe_dir = '@INSTALL_PREFIX_Release@'
+        build_type = yml['cmake']['build_type'].lower()
+        exe_dir = yml[build_type]['inst_prefix']
         self.exe_file = os.path.join(exe_dir, kwargs['git_branch'], 'bin', kwargs['name'])
 
     def __call__(self, **kwargs):
@@ -22,11 +22,12 @@ class TestApp:
             l.addArg(self.exe_file)
             l(wait_for_command_to_complete = True)
         else:
-            init_file = os.path.join('@CMAKE_BINARY_DIR@', 'init.gdb')
+            cmake = yml['cmake']
+            init_file = os.path.join(cmake['binary_dir'], 'init.gdb')
             l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'], init_file = init_file)
             l(
-                srcdir = '@CMAKE_SOURCE_DIR@',
-                bindir = '@CMAKE_BINARY_DIR@',
+                srcdir = cmake['source_dir'],
+                bindir = cmake['binary_dir'],
                 cur_srcdir = '@CMAKE_CURRENT_SOURCE_DIR@',
                 cur_bindir = '@CMAKE_CURRENT_BINARY_DIR@'
                 )
@@ -37,6 +38,8 @@ if __name__ == '__main__':
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-d', dest = 'debug', action = 'store_true')
     group.add_argument('-l', dest = 'show_deps', action = 'store_true')
+    s = file('@CMAKE_VARIABLES_YML_OUT_FILE@', 'r')
+    yml = yaml.load(s)
 
     args = parser.parse_args()
     args.run_app = True
@@ -45,7 +48,6 @@ if __name__ == '__main__':
         
     t = TestApp(
         name = '@exeName@',
-        build_type = '@CMAKE_BUILD_TYPE@',
         git_branch = '@GIT_CURRENT_BRANCH_NAME@',
         )
     
