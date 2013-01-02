@@ -23,7 +23,7 @@ class TestApp:
             l(wait_for_command_to_complete = True)
         else:
             init_file = os.path.join('@CMAKE_BINARY_DIR@', 'init.gdb')
-            l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'])
+            l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'], init_file = init_file)
             l(
                 srcdir = '@CMAKE_SOURCE_DIR@',
                 bindir = '@CMAKE_BINARY_DIR@',

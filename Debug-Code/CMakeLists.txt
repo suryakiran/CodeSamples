@@ -13,7 +13,7 @@ ForEach (file ${SOURCES})
 		${exeName} PROPERTIES 
 		PROJECT_LABEL ${ProjectName}
 		)
-  Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+  Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 EndForEach (file ${SOURCES})
 
 Add_Custom_Target (debug DEPENDS ${DebugTargets}) 
