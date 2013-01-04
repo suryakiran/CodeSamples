@@ -1,0 +1,13 @@
+{
+   "menu": 
+   {
+      "foo": false,
+      "bar": "true",
+      "value": 102.3E+06,
+      "popup": 
+      [
+         {"value": "New", "onclick": "CreateNewDoc()"},
+         {"value": "Open", "onclick": "OpenDoc()"}
+      ]
+   }
+}
