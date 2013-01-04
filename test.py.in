@@ -14,7 +14,7 @@ class TestApp:
     def __init__(self, **kwargs):
         build_type = yml['cmake']['build_type'].lower()
         exe_dir = yml[build_type]['inst_prefix']
-        self.exe_file = os.path.join(exe_dir, kwargs['git_branch'], 'bin', kwargs['name'])
+        self.exe_file = os.path.join(exe_dir, yml['misc']['git_branch'], 'bin', kwargs['name'])
 
     def __call__(self, **kwargs):
         if kwargs['show_deps']:
@@ -48,7 +48,6 @@ if __name__ == '__main__':
         
     t = TestApp(
         name = '@exeName@',
-        git_branch = '@GIT_CURRENT_BRANCH_NAME@',
         )
     
     t(debug = args.debug, show_deps = args.show_deps)
