@@ -29,11 +29,11 @@ class TestApp:
             l(wait_for_command_to_complete = True)
         else:
             cmake = yml['cmake']
-            init_file = os.path.join(cmake['binary_dir'], 'init.gdb')
+            init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
             l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'], init_file = init_file, dry_run = kwargs['dry_run'])
             l(
-                srcdir = cmake['source_dir'],
-                bindir = cmake['binary_dir'],
+                srcdir = cmake['source-dir'],
+                bindir = cmake['binary-dir'],
                 cur_srcdir = '@CMAKE_CURRENT_SOURCE_DIR@',
                 cur_bindir = '@CMAKE_CURRENT_BINARY_DIR@'
                 )
