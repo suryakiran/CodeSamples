@@ -11,6 +11,15 @@ import yaml
 
 yml = None
 
+class RunOnExe:
+    def __init__(self, exe_name):
+        self.exe_name = exe_name
+
+    def __call__(self, cmd):
+        l = Launcher(Locator(cmd)())
+        l.addArg(self.exe_name)
+        l(wait_for_command_to_complete = True)
+
 class TestApp:
     def __init__(self, **kwargs):
         build_type = yml['cmake']['build_type'].lower()
@@ -23,14 +32,11 @@ class TestApp:
         self.exe_file = os.path.join(exe_dir, yml['misc']['git_branch'], 'bin', kwargs['name'])
 
     def __call__(self, **kwargs):
+        r = RunOnExe(self.exe_file)
         if kwargs['show_deps']:
-            l = Launcher(Locator('ldd')())
-            l.addArg(self.exe_file)
-            l(wait_for_command_to_complete = True)
+            r('ldd')
         elif kwargs['show_symbols']:
-            l = Launcher(Locator('nm')())
-            l.addArg(self.exe_file)
-            l(wait_for_command_to_complete = True)
+            r('nm')
         else:
             cmake = yml['cmake']
             init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
