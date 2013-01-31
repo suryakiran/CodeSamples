@@ -11,6 +11,17 @@ import yaml
 
 yml = None
 
+class Make:
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.make = Launcher(Locator('make')())
+        self.make += '-f'
+        self.make += os.path.join("@CMAKE_CURRENT_BINARY_DIR@", 'Makefile')
+
+    def __call__(self, suffix):
+        self.make += self.file_name + '.' + suffix
+        self.make(wait_for_command_to_complete = True)
+    
 class RunOnExe:
     def __init__(self, exe_name):
         self.exe_name = exe_name
@@ -33,10 +44,17 @@ class TestApp:
 
     def __call__(self, **kwargs):
         r = RunOnExe(self.exe_file)
+        m = Make(os.path.basename("@file@"))
         if kwargs['show_deps']:
             r('ldd')
         elif kwargs['show_symbols']:
             r('nm')
+        elif kwargs['create_assembly_file']:
+            m('s')
+        elif kwargs['create_preprocessed_file']:
+            m('i')
+        elif kwargs['create_object_file']:
+            m('o')
         else:
             cmake = yml['cmake']
             init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
@@ -56,6 +74,9 @@ if __name__ == '__main__':
     group.add_argument('-l', dest = 'show_deps', action = 'store_true')
     group.add_argument('-dr', dest = 'dry_run', action = 'store_true')
     group.add_argument('-nm', dest = 'show_symbols', action = 'store_true')
+    group.add_argument('-cs', dest = 'create_assembly_file', action = 'store_true')
+    group.add_argument('-ci', dest = 'create_preprocessed_file', action = 'store_true')
+    group.add_argument('-co', dest = 'create_object_file', action = 'store_true')
     s = file('@CMAKE_VARIABLES_YML_OUT_FILE@', 'r')
     yml = yaml.load(s)
 
@@ -72,6 +93,9 @@ if __name__ == '__main__':
         debug = args.debug,
         show_deps = args.show_deps,
         dry_run = args.dry_run,
+        create_assembly_file = args.create_assembly_file,
+        create_object_file = args.create_object_file,
+        create_preprocessed_file = args.create_preprocessed_file,
         show_symbols = args.show_symbols
         )
     
