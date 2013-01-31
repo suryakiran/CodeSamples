@@ -27,6 +27,10 @@ class TestApp:
             l = Launcher(Locator('ldd')())
             l.addArg(self.exe_file)
             l(wait_for_command_to_complete = True)
+        elif kwargs['show_symbols']:
+            l = Launcher(Locator('nm')())
+            l.addArg(self.exe_file)
+            l(wait_for_command_to_complete = True)
         else:
             cmake = yml['cmake']
             init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
@@ -45,6 +49,7 @@ if __name__ == '__main__':
     group.add_argument('-d', dest = 'debug', action = 'store_true')
     group.add_argument('-l', dest = 'show_deps', action = 'store_true')
     group.add_argument('-dr', dest = 'dry_run', action = 'store_true')
+    group.add_argument('-nm', dest = 'show_symbols', action = 'store_true')
     s = file('@CMAKE_VARIABLES_YML_OUT_FILE@', 'r')
     yml = yaml.load(s)
 
@@ -57,5 +62,11 @@ if __name__ == '__main__':
         name = '@exeName@',
         )
     
-    t(debug = args.debug, show_deps = args.show_deps, dry_run = args.dry_run)
+    t(
+        debug = args.debug,
+        show_deps = args.show_deps,
+        dry_run = args.dry_run,
+        show_symbols = args.show_symbols
+        )
+    
 
