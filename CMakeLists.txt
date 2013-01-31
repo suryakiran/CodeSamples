@@ -5,13 +5,6 @@ Set (EMACS_SERVER_NAME "CODE-SAMPLES")
 
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
-Check_Perl_Modules (
-  Template
-  XML::Simple
-  XML::Parser
-  File::Find::Rule
-  )
-
 Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
 Include_Cmake_Module(Xerces)
@@ -155,13 +148,6 @@ List (APPEND IncludeDirectories ${CMAKE_SOURCE_DIR})
 
 Cmake_List_To_Args (EditorSearchDirectories -d ${IncludeDirectories})
 Cmake_List_To_Args (ProjectModules -p ${PROJECT_MODULES})
-
-Process_Perl_Template (
-  PERL_FILE ${PL_FILE_GVIM_INIT}
-  TEMPLATE ${CMAKE_GVIM_INIT_TMPL_FILE}
-  OUTPUT ${CMAKE_GVIM_INIT_FILE_OUT}
-  ARGS ${EditorSearchDirectories} ${ProjectModules}
-  )
 
 Execute_Python (
   FILE ${PY_WRITE_EDITOR_FILE}
