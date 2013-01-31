@@ -2,11 +2,9 @@ Project (CodeSamples)
 
 CMake_Minimum_Required (VERSION 2.8.4)
 Set (EMACS_SERVER_NAME "CODE-SAMPLES")
+
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
-Find_Package (PkgConfig)
-Include_Cmake_Module(Perl)
-Include_Cmake_Module(Python)
 Check_Perl_Modules (
   Template
   XML::Simple
