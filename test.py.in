@@ -7,9 +7,8 @@ import argparse
 from Locator import Locator
 from Launcher import Launcher
 from Environment import Environment
+from Emacs import Emacs
 import yaml
-
-yml = None
 
 class Make:
     def __init__(self, file_name):
@@ -34,88 +33,107 @@ class RunOnExe:
         l.addArg(self.exe_name)
         l(wait_for_command_to_complete = True)
 
-class TestApp:
-    def __init__(self, **kwargs):
-        build_type = yml['cmake']['build_type'].lower()
-        exe_dir = yml[build_type]['inst_prefix']
+class Action(object):
+    def __init__(self):
+        self.yml = yaml.load(file('@CMAKE_VARIABLES_YML_OUT_FILE@', 'r'))
+        build_type = self.yml['cmake']['build_type'].lower()
+        exe_dir = self.yml[build_type]['inst_prefix']
         
         ld_lib_path = Environment('LD_LIBRARY_PATH')
-        ld_lib_path.prepend(yml[build_type]['output_dir']['library'])
-        ld_lib_path.prepend(yml['dir']['boost_lib'])
+        ld_lib_path.prepend(self.yml[build_type]['output_dir']['library'])
+        ld_lib_path.prepend(self.yml['dir']['boost_lib'])
         
-        self.exe_file = os.path.join(exe_dir, yml['misc']['git_branch'], 'bin', kwargs['name'])
+        self.exe_file = os.path.join(exe_dir, self.yml['misc']['git_branch'], 'bin', '@exeName@')
 
-    def __call__(self, **kwargs):
+class EditAction(Action):
+    def __init__(self, option):
+        super(EditAction, self).__init__()
+        bin_dir = os.path.join('@CMAKE_CURRENT_BINARY_DIR@', 'CMakeFiles', '@exeName@.dir')
+        base_name = os.path.basename('@file@')
+        self.file_map = {
+            's' : '@file@',
+            'c' : '@CMAKE_CURRENT_LIST_FILE@',
+            'i' : os.path.join(bin_dir, base_name + '.i'),
+            'a' : os.path.join(bin_dir, base_name + '.s'),
+            'w' : os.path.abspath(__file__),
+            't' : '@PYTHON_IN_FILE@',
+            'm' : self.yml['cmake']['parent_list_file']
+            }
+        self.file = self.file_map[option]
+
+    def __call__(self):
+        emacs = Emacs (
+            self.yml['misc']['emacs_server'],
+            files = [self.file]
+            )
+        emacs.launch()
+    
+class RunAction(Action):
+    def __init__(self, option):
+        super(RunAction, self).__init__()
+        self.option = option
+        self.run_on_exe = {
+            'l' : 'ldd',
+            's' : 'nm'
+            }
+        
+        self.debug = (option == 'd')
+        self.dry_run = (option == 'y')
+
+    def _runExe(self):
+        cmake = self.yml['cmake']
+        init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
+        l = Gdb(exe_file = self.exe_file, debug = self.debug, init_file = init_file, dry_run = self.dry_run)
+        l(
+            srcdir = cmake['source-dir'],
+            bindir = cmake['binary-dir'],
+            cur_srcdir = '@CMAKE_CURRENT_SOURCE_DIR@',
+            cur_bindir = '@CMAKE_CURRENT_BINARY_DIR@'
+            )
+
+    def _runOnExe(self):
         r = RunOnExe(self.exe_file)
-        m = Make(os.path.basename("@file@"))
-        if kwargs['show_deps']:
-            r('ldd')
-        elif kwargs['show_symbols']:
-            r('nm')
-        elif kwargs['create_assembly_file']:
-            m('s')
-        elif kwargs['create_preprocessed_file']:
-            m('i')
-        elif kwargs['create_object_file']:
-            m('o')
+        r(self.run_on_exe[self.option])
+        
+    def __call__(self):
+        if self.run_on_exe.has_key(self.option):
+            self._runOnExe()
         else:
-            cmake = yml['cmake']
-            init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
-            l = Gdb(exe_file = self.exe_file, debug = kwargs['debug'], init_file = init_file, dry_run = kwargs['dry_run'])
-            l(
-                srcdir = cmake['source-dir'],
-                bindir = cmake['binary-dir'],
-                cur_srcdir = '@CMAKE_CURRENT_SOURCE_DIR@',
-                cur_bindir = '@CMAKE_CURRENT_BINARY_DIR@'
-                )
+            self._runExe()
+        
+class CompileAction(Action):
+    def __init__(self, option):
+        self.make = Make(os.path.basename('@file@'))
+        if option == 'e':
+            self.make = Make('@exeName@')
+            self.suffix = None
+        else:
+            self.suffix = option
+        
+    def __call__(self):
+        self.make(self.suffix)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog = '@exeName@')
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-d', dest = 'debug', action = 'store_true')
-    group.add_argument('-l', dest = 'show_deps', action = 'store_true')
-    group.add_argument('-dr', dest = 'dry_run', action = 'store_true')
-    group.add_argument('-nm', dest = 'show_symbols', action = 'store_true')
-    group.add_argument('-cs', dest = 'create_assembly_file', action = 'store_true')
-    group.add_argument('-ci', dest = 'create_preprocessed_file', action = 'store_true')
-    group.add_argument('-co', dest = 'create_object_file', action = 'store_true')
-    group.add_argument('-bd', dest = 'build_and_debug', action = 'store_true')
-    group.add_argument('-br', dest = 'build_and_run', action = 'store_true')
-    s = file('@CMAKE_VARIABLES_YML_OUT_FILE@', 'r')
-    yml = yaml.load(s)
+    subparsers = parser.add_subparsers()
 
-    args = parser.parse_args()
-    args.run_app = True
-    if args.debug or args.show_deps:
-        args.run_app = False
+    compile_parser = subparsers.add_parser('c')
+    run_parser = subparsers.add_parser('r')
+    edit_parser = subparsers.add_parser('e')
 
-    build = False
-    if args.build_and_debug or args.build_and_run:
-        build = True
+    compile_parser.add_argument('-t', dest='compile_type', choices='eiso')
+    run_parser.add_argument('-t', dest='run_type', choices='drlys')
+    edit_parser.add_argument('-t', dest='edit_type', choices='siacwtm')
 
-    if args.build_and_debug:
-        args.debug = True
-
-    if args.build_and_run:
-        args.debug = False
-        
-    t = TestApp(
-        name = '@exeName@',
-        )
-
-    if build:
-        m = Make('@exeName@')
-        m()
-        
-    t(
-        debug = args.debug,
-        show_deps = args.show_deps,
-        dry_run = args.dry_run,
-        create_assembly_file = args.create_assembly_file,
-        create_object_file = args.create_object_file,
-        create_preprocessed_file = args.create_preprocessed_file,
-        show_symbols = args.show_symbols
-        )
+    actions = {
+        'edit_type' : lambda(option): EditAction(option),
+        'run_type' : lambda(option): RunAction(option),
+        'compile_type' : lambda(option): CompileAction(option)
+        }
     
+    args = parser.parse_args()
+    command_type = vars(args).keys()[0]
 
+    action = actions[command_type](getattr(args, command_type))
+    action()
