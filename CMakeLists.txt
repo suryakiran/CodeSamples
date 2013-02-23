@@ -7,8 +7,6 @@ Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
 
 Include_Cmake_Module(Macros)
 Include_Cmake_Module(Targets)
-Include_Cmake_Module(Xerces)
-Include_Cmake_Module(Zorba)
 
 If (NOT CMAKE_BUILD_TYPE)
   Set (CMAKE_BUILD_TYPE "Debug")
