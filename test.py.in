@@ -42,6 +42,7 @@ class Action(object):
         ld_lib_path = Environment('LD_LIBRARY_PATH')
         ld_lib_path.prepend(self.yml[build_type]['output_dir']['library'])
         ld_lib_path.prepend(self.yml['dir']['boost_lib'])
+        ld_lib_path.prepend(os.path.dirname(self.yml['lib'][build_type]['yaml']))
         
         self.exe_file = os.path.join(exe_dir, self.yml['misc']['git_branch'], 'bin', '@exeName@')
 
