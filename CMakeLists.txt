@@ -69,6 +69,7 @@ OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 OPTION (BUILD_SAMPLES_DEBUGGING "Build Debugging Samples" FALSE)
 OPTION (BUILD_SAMPLES_BOOST "Build Boost Samples" FALSE)
 OPTION (BUILD_SAMPLES_YAML "Build Yaml Samples" FALSE)
+OPTION (BUILD_SAMPLES_REST "Build Rest Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -102,6 +103,7 @@ Add_Subdirectory_If (BUILD_ASIO Asio)
 Add_Subdirectory_If (BUILD_SAMPLES_DEBUGGING Debug-Code)
 Add_Subdirectory_If (BUILD_SAMPLES_BOOST Boost)
 Add_Subdirectory_If (BUILD_SAMPLES_YAML Yaml)
+Add_Subdirectory_If (BUILD_SAMPLES_REST Rest)
 
 Find_File (
   PERL_IN_FILE
@@ -155,3 +157,7 @@ Execute_Python (
   -y ${CMAKE_VARIABLES_YML_OUT_FILE}
   ${EditorSearchDirectories}
 )
+
+Configure_File(
+  ${CMAKE_SOURCE_DIR}/CodeSamples.yml.in ${CMAKE_BINARY_DIR}/CodeSamples.yml @ONLY
+  )
