@@ -45,6 +45,7 @@ class Action(object):
         ld_lib_path.prepend(self.yml['dir']['boost_lib'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['yaml'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['curl'])
+        ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['tbb'])
         
         self.exe_file = os.path.join(exe_dir, self.yml['misc']['git_branch'], 'bin', '@exeName@')
 
