@@ -14,6 +14,7 @@ struct UserData
 
   ptree& m_pt;
   bool m_xml;
+  string m_isbn;
 };
 
 size_t writeData(void* buffer, size_t size, size_t nmemb, void* userp)
@@ -25,13 +26,22 @@ size_t writeData(void* buffer, size_t size, size_t nmemb, void* userp)
   i_stream.str(o_stream.str());
   
   UserData& ud = *(reinterpret_cast<UserData*>(userp));
+  ptree pt;
   if (ud.m_xml) {
-    read_xml(i_stream, ud.m_pt);
-    write_xml(cout, ud.m_pt);
+    read_xml(i_stream, pt);
+    string title = pt.get<string>("ISBNdb.BookList.BookData.Title");
+    string titleLong = pt.get<string>("ISBNdb.BookList.BookData.TitleLong");
+    cout << title << '\t' << titleLong << endl;
+    xml_writer_settings<char> settings(' ', 4);
+    // write_xml(cout, pt, settings);
   } else {
-    read_json(i_stream, ud.m_pt);
-    write_json(cout, ud.m_pt);
+    read_json(i_stream, pt);
+    // write_json(cout, pt);
+    
   }
+  // for(auto iter = pt.begin(); iter != pt.end(); ++iter) {
+  //   cout << iter->first << endl;
+  // }
   return count;
 }
 
@@ -44,13 +54,15 @@ struct GetIsbnData
 
   void operator()(const string& isbn) {
     ptree pt;
-    getDataFromOpenLib(isbn, pt);
+    // getDataFromOpenLib(isbn, pt);
+    getDataFromIsbnDb(isbn, pt);
   }
 
 private:
   void getDataFromIsbnDb(const string& isbn, ptree& pt)
   {
     UserData ud(pt, true);
+    ud.m_isbn = isbn;
     auto handle = curl_easy_init();
     struct curl_httppost *formpost = NULL;
     struct curl_httppost *lastptr = NULL;
@@ -82,6 +94,7 @@ private:
   void getDataFromOpenLib(const string& isbn, ptree& pt)
   {
     UserData ud(pt, false);
+    ud.m_isbn = isbn;
     auto handle = curl_easy_init();
     fmt s = fmt ("%1%?bibkeys=ISBN:%2%&jscmd=data&format=json") % m_open_lib % isbn;
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writeData);
@@ -98,7 +111,9 @@ int main (void)
 {
   curl_global_init(CURL_GLOBAL_ALL);
   GetIsbnData gid;
-  boost::thread t(gid, "3540323430");
+  // boost::thread t(gid, "3540323430");
+  // boost::thread t(gid, "0123820103");
+  boost::thread t(gid, "9780123820105");
   t.join();
   curl_global_cleanup();
   return 0;
