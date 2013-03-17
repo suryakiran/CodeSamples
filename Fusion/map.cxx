@@ -31,20 +31,6 @@ namespace signals = boost::signals2 ;
 BOOST_MPL_HAS_XXX_TRAIT_DEF(element_type);
 
 namespace detail {
-  template <class Class>
-  struct has_typedef
-  {
-    typedef char yes[1];
-    typedef char no[2];
-    
-    template <class T>
-    static yes& test(typename T::element_type*);
-    
-    template <class T>
-    static no& test(...);
-    static const bool value = sizeof(test<Class>(0)) == sizeof(yes);
-  };
-
   template <class SmartPtrType, bool b>
   struct element_type_p {
     typedef typename SmartPtrType::element_type value_type;
@@ -59,7 +45,7 @@ namespace detail {
   
   template <class SmartPtrType>
   struct element_type {
-    static const bool value = has_typedef<SmartPtrType>::value;
+    static const bool value = has_element_type<SmartPtrType>::value;
     typedef typename element_type_p<SmartPtrType, value>::value_type value_type;
     typedef typename element_type_p<SmartPtrType, value>::reference_type reference_type;
   };
