@@ -4,7 +4,7 @@ File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 
 Find_Package(CURL)
 Include_Directories (
-  ${CURL_INCLUDE_DIR}
+  ${CURL_INCLUDE_DIR} ${INTEL_TBB_INCLUDE_DIR}
   )
 Set(RestTargets)
 ForEach (file ${SOURCES})
@@ -21,6 +21,7 @@ ForEach (file ${SOURCES})
         Target_Link_Libraries (
           ${exeName} ${CURL_LIBRARIES}
           ${Boost_THREAD_LIBRARIES} ${Boost_SYSTEM_LIBRARIES}
+          ${INTEL_TBB_LIBRARIES}
           )
   Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 EndForEach (file ${SOURCES})

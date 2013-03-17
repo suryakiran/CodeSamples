@@ -28,6 +28,8 @@ namespace signals = boost::signals2 ;
 #define MAX_SIGNAL_PARAMS 10
 #endif
 
+BOOST_MPL_HAS_XXX_TRAIT_DEF(element_type);
+
 namespace detail {
   template <class Class>
   struct has_typedef
