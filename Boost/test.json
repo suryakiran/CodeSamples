@@ -1,0 +1,1785 @@
+	{
+	    "pam": {
+		"caching": {
+		    "proxy": "http://firesaw.ddu-india.com:31004"
+		},
+		"session": {
+		    "dragon2_devcre_GLD": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "GLD"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }
+			}, 
+			"service_environment": "devcre", 
+			"show": "dragon2"
+		    }, 
+		    "dragon2_devcre_RWC": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "RWC"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }
+			}, 
+			"service_environment": "devcre", 
+			"show": "dragon2"
+		    }, 
+		    "dragon2_devcre_LAS": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "GLD"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }
+			}, 
+			"service_environment": "devcre", 
+			"show": "dragon2"
+		    }, 
+		    "dragon2_testcre_GLD": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "GLD"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }
+			}, 
+			"service_environment": "testcre", 
+			"show": "dragon2"
+		    }, 
+		    "dragon2_testcre_RWC": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "RWC"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://rwc-pam-cache-1:3128"
+				}
+			    }
+			}, 
+			"service_environment": "testcre", 
+			"show": "dragon2"
+		    },
+		    "dragon2_testcre_LAS": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "GLD"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://las-pam-cache-1:3128"
+				}
+			    }
+			}, 
+			"service_environment": "testcre", 
+			"show": "dragon2"
+		    }, 
+		    "dragon2_stagecre_changed__GLD": {
+			"defaultSpaceAlias" : "default",
+					"spaceAliases" : [
+			    {
+				"alias" : "default",
+				"label" : "treespace"
+			    }
+			],
+			"spaces" : [
+			    {
+				"label" : "treespace",
+				"requirements" : [
+					  {
+						  "type"  : "location",
+					      "value" : "GLD"
+					  },
+					  {
+						  "type"  : "quality",
+						  "value" : "tree"
+					  }
+				    ]
+			    }
+			],
+			"service": {
+			    "general_store": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "note": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "project_attribute": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "sandbox": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "tag": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "msgconf": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+				}
+			    }, 
+			    "spaces": {
+				"logging": {
+				    "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+				    "container": "pam_logEntry_request", 
+				    "enabled": true, 
+				    "heartbeat": 2, 
+				    "reconnect": true, 
+				    "reconnectLimit": 2, 
+				    "reconnectTimeout": 2
+				}, 
+				"maxResponseWaitMillis": 10000000, 
+				"proxy": {
+				    "url": "http://firesaw.ddu-india.com:31004"
+                        }
+                    }
+                }, 
+                "service_environment": "stagecre", 
+                "show": "dragon2"
+            }, 
+            "dragon2_stagecre_RWC": {
+                "defaultSpaceAlias" : "default",
+				"spaceAliases" : [
+                    {
+                    	"alias" : "default",
+                    	"label" : "treespace"
+                    }
+                ],
+                "spaces" : [
+                    {
+                    	"label" : "treespace",
+                    	"requirements" : [
+        	                  {
+        	                	  "type"  : "location",
+        	                      "value" : "RWC"
+        	                  },
+        	                  {
+        	                	  "type"  : "quality",
+        	                	  "value" : "tree"
+        	                  }
+	                    ]
+                    }
+                ],
+                "service": {
+                    "general_store": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "note": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project_attribute": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "sandbox": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "tag": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "msgconf": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "spaces": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }
+                }, 
+                "service_environment": "stagecre", 
+                "show": "dragon2"
+            },
+            "dragon2_stagecre_LAS": {
+                "defaultSpaceAlias" : "default",
+				"spaceAliases" : [
+                    {
+                    	"alias" : "default",
+                    	"label" : "treespace"
+                    }
+                ],
+                "spaces" : [
+                    {
+                    	"label" : "treespace",
+                    	"requirements" : [
+        	                  {
+        	                	  "type"  : "location",
+        	                      "value" : "GLD"
+        	                  },
+        	                  {
+        	                	  "type"  : "quality",
+        	                	  "value" : "tree"
+        	                  }
+	                    ]
+                    }
+                ],
+                "service": {
+                    "general_store": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "note": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project_attribute": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "sandbox": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "tag": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "msgconf": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "spaces": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }
+                }, 
+                "service_environment": "stagecre", 
+                "show": "dragon2"
+            }, 
+            "dragon2_stagecre_GLD": {
+                "defaultSpaceAlias" : "default",
+				"spaceAliases" : [
+                    {
+                    	"alias" : "default",
+                    	"label" : "treespace"
+                    }
+                ],
+                "spaces" : [
+                    {
+                    	"label" : "treespace",
+                    	"requirements" : [
+        	                  {
+        	                	  "type"  : "location",
+        	                      "value" : "TTP"
+        	                  },
+        	                  {
+        	                	  "type"  : "quality",
+        	                	  "value" : "tree"
+        	                  }
+	                    ]
+                    }
+                ],
+                "service": {
+                    "general_store": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "note": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "project": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "project_attribute": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "sandbox": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "tag": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "msgconf": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }, 
+                    "spaces": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": false, 
+                            "heartbeat": 2, 
+                            "reconnect": false, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31004"
+                        }
+                    }
+                }, 
+                "service_environment": "prod", 
+                "show": "dragon2"
+            }, 
+            "dragon2_prod_RWC": {
+                "defaultSpaceAlias" : "default",
+				"spaceAliases" : [
+                    {
+                    	"alias" : "default",
+                    	"label" : "treespace"
+                    }
+                ],
+                "spaces" : [
+                    {
+                    	"label" : "treespace",
+                    	"requirements" : [
+        	                  {
+        	                	  "type"  : "location",
+        	                      "value" : "RWC"
+        	                  },
+        	                  {
+        	                	  "type"  : "quality",
+        	                	  "value" : "tree"
+        	                  }
+	                    ]
+                    }
+                ],
+                "service": {
+                    "general_store": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "note": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project_attribute": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31002"
+                        }
+                    }, 
+                    "sandbox": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "tag": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://localhost:31002"
+                        }
+                    }, 
+                    "msgconf": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }, 
+                    "spaces": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://rwc-pam-cache-1:3128"
+                        }
+                    }
+                }, 
+                "service_environment": "prod", 
+                "show": "dragon2"
+            },
+            "dragon2_prod_LAS": {
+                "defaultSpaceAlias" : "default",
+				"spaceAliases" : [
+                    {
+                    	"alias" : "default",
+                    	"label" : "treespace"
+                    }
+                ],
+                "spaces" : [
+                    {
+                    	"label" : "treespace",
+                    	"requirements" : [
+        	                  {
+        	                	  "type"  : "location",
+        	                      "value" : "GLD"
+        	                  },
+        	                  {
+        	                	  "type"  : "quality",
+        	                	  "value" : "tree"
+        	                  }
+	                    ]
+                    }
+                ],
+                "service": {
+                    "general_store": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "note": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "project_attribute": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "sandbox": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "tag": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "msgconf": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }, 
+                    "spaces": {
+                        "logging": {
+                            "brokerUrl": "pamlogprod/pamlogprod@pamlogprod.anim.dreamworks.com:5672", 
+                            "container": "pam_logEntry_request", 
+                            "enabled": true, 
+                            "heartbeat": 2, 
+                            "reconnect": true, 
+                            "reconnectLimit": 2, 
+                            "reconnectTimeout": 2
+                        }, 
+                        "maxResponseWaitMillis": 10000000, 
+                        "proxy": {
+                            "url": "http://las-pam-cache-1:3128"
+                        }
+                    }
+                }, 
+                "service_environment": "prod", 
+                "show": "dragon2"
+            }
+        }
+    }
+}

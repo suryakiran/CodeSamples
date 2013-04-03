@@ -12,14 +12,14 @@ int main (int argc, char** argv)
   ParseArgs pa (argc, argv);
   Args args = pa();
   fs::path jsonFile (args["cur_src_dir"]);
-  jsonFile /= "json_sample.json";
+  jsonFile /= "test.json";
   if (!fs::exists(jsonFile)) {
     exit(-1);
   }
 
   ptree pt;
   read_json(jsonFile.string(), pt);
-  ptree& child = pt.get_child("menu.value");
+  string s = pt.get<string>("pam.caching.proxy", "surya");
   cout << boolalpha ;
-  cout << child.get_value<double>() << endl;
+  cout << s << endl;
 }
