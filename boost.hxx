@@ -27,6 +27,7 @@ using namespace boost::assign ;
 
 namespace str = boost::algorithm ;
 namespace bl  = boost::lambda ;
+namespace rng = boost::range;
 
 #if BOOST_VERSION >= 104700
 namespace phx = boost::phoenix;
