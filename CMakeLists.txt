@@ -70,6 +70,7 @@ OPTION (BUILD_SAMPLES_DEBUGGING "Build Debugging Samples" FALSE)
 OPTION (BUILD_SAMPLES_BOOST "Build Boost Samples" FALSE)
 OPTION (BUILD_SAMPLES_YAML "Build Yaml Samples" FALSE)
 OPTION (BUILD_SAMPLES_REST "Build Rest Samples" FALSE)
+OPTION (BUILD_SAMPLES_TBB "Build TBB Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
 Add_Subdirectory_If (BUILD_SAMPLES_FUSION Fusion)
@@ -104,6 +105,7 @@ Add_Subdirectory_If (BUILD_SAMPLES_DEBUGGING Debug-Code)
 Add_Subdirectory_If (BUILD_SAMPLES_BOOST Boost)
 Add_Subdirectory_If (BUILD_SAMPLES_YAML Yaml)
 Add_Subdirectory_If (BUILD_SAMPLES_REST Rest)
+Add_Subdirectory_If (BUILD_SAMPLES_TBB TBB)
 
 Find_File (
   PERL_IN_FILE
