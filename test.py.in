@@ -43,12 +43,21 @@ class Action(object):
 
         exe_dir = self.yml[build_type]['inst_prefix']
         
+        poco_lib_dir = None
+        if self.yml['use']['poco']:
+            poco_inc_dir = self.yml['dir']['poco_include']
+            poco_dir=os.path.dirname(poco_inc_dir)
+            poco_lib_dir=os.path.join(poco_dir, 'lib')
+            
         ld_lib_path = Environment('LD_LIBRARY_PATH')
         ld_lib_path.prepend(self.yml[build_type]['output_dir']['library'])
         ld_lib_path.prepend(self.yml['dir']['boost_lib'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['yaml'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['curl'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['tbb'])
+
+        if poco_lib_dir:
+            ld_lib_path.prepend(poco_lib_dir)
         
         self.exe_file = os.path.join(exe_dir, self.yml['misc']['git_branch'], 'bin', '@exeName@')
 
@@ -90,7 +99,12 @@ class RunAction(Action):
     def _runExe(self):
         cmake = self.yml['cmake']
         init_file = os.path.join(cmake['binary-dir'], 'init.gdb')
-        l = Gdb(exe_file = self.exe_file, debug = self.debug, init_file = init_file, dry_run = self.dry_run)
+        l = Gdb(exe_file = self.exe_file,
+                debug = self.debug,
+                init_file = init_file,
+                wait = True,
+                dry_run = self.dry_run
+        )
         l(
             srcdir = cmake['source-dir'],
             bindir = cmake['binary-dir'],
