@@ -33,15 +33,9 @@ size_t writeData(void* buffer, size_t size, size_t nmemb, void* userp)
     string titleLong = pt.get<string>("ISBNdb.BookList.BookData.TitleLong");
     cout << title << '\t' << titleLong << endl;
     xml_writer_settings<char> settings(' ', 4);
-    // write_xml(cout, pt, settings);
   } else {
     read_json(i_stream, pt);
-    // write_json(cout, pt);
-    
   }
-  // for(auto iter = pt.begin(); iter != pt.end(); ++iter) {
-  //   cout << iter->first << endl;
-  // }
   return count;
 }
 
@@ -54,7 +48,6 @@ struct GetIsbnData
 
   void operator()(const string& isbn) {
     ptree pt;
-    // getDataFromOpenLib(isbn, pt);
     getDataFromIsbnDb(isbn, pt);
   }
 
