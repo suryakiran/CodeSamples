@@ -22,6 +22,8 @@ ForEach (file ${SOURCES})
     ${exeName} ${INTEL_TBB_LIBRARIES}
     ${Poco_Foundation_LIBRARY} ${Poco_Net_LIBRARY}
     ${Poco_Util_LIBRARY} ${Poco_XML_LIBRARY}
+    # optimized /usr/pic1/packages/gcc/Poco/1.5.1/lib/libPocoJSON.so
+    # debug /usr/pic1/packages/gcc/Poco/1.5.1/lib/libPocoJSONd.so
     )
   Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 EndForEach (file ${SOURCES})

@@ -55,6 +55,8 @@ class Action(object):
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['yaml'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['curl'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['tbb'])
+        if self.yml['use']['qt']:
+            ld_lib_path.prepend(os.path.join(os.path.dirname(self.yml['dir']['qt_bin']), 'lib'))
 
         if poco_lib_dir:
             ld_lib_path.prepend(poco_lib_dir)

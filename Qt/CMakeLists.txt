@@ -1,6 +1,6 @@
 Project(Qt)
 
-Find_Package (Qt4 COMPONENTS QtCore QtGui)
+Find_Package (Qt4 COMPONENTS QtCore QtGui QtNetwork)
 Include (${QT_USE_FILE})
 Include_Directories (main ${CMAKE_CURRENT_BINARY_DIR}/main)
 
