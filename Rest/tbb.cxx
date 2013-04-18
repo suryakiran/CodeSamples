@@ -1,12 +1,9 @@
 #include <std.hxx>
 #include <curl/curl.h>
 #include <boost.hxx>
-#include <boost/thread/thread.hpp>
-#include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <boost/bind.hpp>
-#include <boost/function.hpp>
+#include <tbb/task_scheduler_init.h>
 using namespace boost::property_tree;
 
 size_t writeFunction (void*, size_t, size_t, void*);
@@ -53,10 +50,10 @@ public:
         CURLFORM_END
         );
 
-      curl_easy_setopt(m_handle, CURLOPT_URL, url.c_str());
-      curl_easy_setopt(m_handle, CURLOPT_WRITEFUNCTION, writeFunction);
-      curl_easy_setopt(m_handle, CURLOPT_WRITEDATA, this);
-      curl_easy_setopt(m_handle, CURLOPT_HTTPPOST, m_formPost);
+      curl_easy_setopt(m_handle.get(), CURLOPT_URL, url.c_str());
+      curl_easy_setopt(m_handle.get(), CURLOPT_WRITEFUNCTION, writeFunction);
+      curl_easy_setopt(m_handle.get(), CURLOPT_WRITEDATA, this);
+      curl_easy_setopt(m_handle.get(), CURLOPT_HTTPPOST, m_formPost);
     }
 
   void addValue(const string& searchString)
@@ -85,11 +82,11 @@ public:
 
   void operator()()
     {
-      curl_easy_perform(m_handle);
+      curl_easy_perform(m_handle.get());
     }
   
 private:
-  Handle m_handle;
+  shared_ptr<void> m_handle;
   struct curl_httppost* m_formPost;
   struct curl_httppost* m_lastPtr;
   string m_searchString;
@@ -161,6 +158,7 @@ private:
 
 int main (void)
 {
+  tbb::task_scheduler_init init;
   IsbnDb isbnDb;
   isbnDb.addIsbn("3540323430");
   isbnDb.addIsbn("0123820103");
