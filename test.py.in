@@ -50,17 +50,18 @@ class Action(object):
             poco_lib_dir=os.path.join(poco_dir, 'lib')
             
         ld_lib_path = Environment('LD_LIBRARY_PATH')
+        
+        if poco_lib_dir:
+            ld_lib_path.prepend(poco_lib_dir)
+        ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['tbb'])
+
         ld_lib_path.prepend(self.yml[build_type]['output_dir']['library'])
         ld_lib_path.prepend(self.yml['dir']['boost_lib'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['yaml'])
         ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['curl'])
-        ld_lib_path.prepend_dir_of(self.yml['lib'][build_type]['tbb'])
         if self.yml['use']['qt']:
             ld_lib_path.prepend(os.path.join(os.path.dirname(self.yml['dir']['qt_bin']), 'lib'))
 
-        if poco_lib_dir:
-            ld_lib_path.prepend(poco_lib_dir)
-        
         self.exe_file = os.path.join(exe_dir, self.yml['misc']['git_branch'], 'bin', '@exeName@')
 
 class EditAction(Action):

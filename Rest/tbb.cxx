@@ -16,8 +16,26 @@ class Curl
   typedef CURL* Handle;
 
 public:
+  struct Result
+  {
+    Result()
+      : m_success(false)
+    {
+      
+    }
+
+    operator bool() const {
+      return m_success;
+    }
+    
+    string m_title, m_isbn, m_isbn13, m_publisher;
+    stl::StringVector m_authors;
+    bool m_success;
+  };
+  
   Curl(const string& searchType, const string& url)
-    : m_handle(curl_easy_init())
+    : m_handle(curl_easy_init()),
+      m_formPost(nullptr), m_lastPtr(nullptr)
     {
       curl_formadd(
         &m_formPost,
@@ -38,27 +56,30 @@ public:
       curl_easy_setopt(m_handle, CURLOPT_URL, url.c_str());
       curl_easy_setopt(m_handle, CURLOPT_WRITEFUNCTION, writeFunction);
       curl_easy_setopt(m_handle, CURLOPT_WRITEDATA, this);
+      curl_easy_setopt(m_handle, CURLOPT_HTTPPOST, m_formPost);
     }
 
   void addValue(const string& searchString)
     {
+      m_searchString = searchString;
       curl_formadd(
         &m_formPost,
         &m_lastPtr,
         CURLFORM_COPYNAME, "value1",
-        CURLFORM_COPYCONTENTS, searchString.c_str(),
+        CURLFORM_COPYCONTENTS, m_searchString.c_str(),
         CURLFORM_END
         );
-      curl_easy_setopt(m_handle, CURLOPT_HTTPPOST, m_formPost);
 
     }
+
+  const Result& result() const {
+    return m_result;
+  }
 
   size_t writeData(void* buffer, size_t size, size_t nmemb)
     {
       size_t count = size * nmemb;
-      ostringstream os;
-      os.write(reinterpret_cast<const char*>(buffer), count);
-      cout << os.str() << endl;
+      cout.write(reinterpret_cast<const char*>(buffer), count);
       return count;
     }
 
@@ -68,17 +89,20 @@ public:
     }
   
 private:
+  Handle m_handle;
   struct curl_httppost* m_formPost;
   struct curl_httppost* m_lastPtr;
-  Handle m_handle;
-  boost::shared_ptr<Handle> m_handles;
-  
+  string m_searchString;
+  Result m_result;
 };
 
 size_t writeFunction (void* buffer, size_t size, size_t nmemb, void* userp)
 {
   Curl* curl = reinterpret_cast<Curl*> (userp);
-  return curl->writeData(buffer, size, nmemb);
+  if (curl) {
+    return curl->writeData(buffer, size, nmemb);
+  }
+  return 0;
 }
 
 class IsbnDb
@@ -114,8 +138,7 @@ public:
       {
         Curl c("isbn", m_url);
         c.addValue(isbn);
-        c();
-        // curls.push_back (c);
+        curls.push_back (c);
       }
 
       for(const string& title: m_titles)
@@ -140,7 +163,7 @@ int main (void)
 {
   IsbnDb isbnDb;
   isbnDb.addIsbn("3540323430");
-  // isbnDb.addIsbn("0123820103");
+  isbnDb.addIsbn("0123820103");
   isbnDb.fetch();
   return 0;
 }
