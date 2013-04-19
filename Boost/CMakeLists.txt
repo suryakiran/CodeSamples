@@ -16,7 +16,7 @@ ForEach (file ${SOURCES})
               Target_Link_Libraries (
                 ${exeName}
                 ${ParseArgsLib}
-                ${Boost_FILESYSTEM_LIBRARY}
+                ${Boost_IOSTREAMS_LIBRARY}
                 )
   Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 EndForEach (file ${SOURCES})
