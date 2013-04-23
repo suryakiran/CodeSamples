@@ -7,6 +7,7 @@
 #include <tbb/parallel_for.h>
 #include <boost/type_traits/add_reference.hpp>
 #include <tbb/spin_mutex.h>
+#include <tbb/concurrent_hash_map.h>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/range/algorithm_ext/erase.hpp>
@@ -15,73 +16,96 @@ size_t writeFunction (void*, size_t, size_t, void*);
 
 namespace {
 
- template <class T>
- T getAttributeValue(const boost::property_tree::ptree& pt, const string& attr, const T& defaultValue)
-    {
-      ostringstream os;
-      os << defaultValue ;
-      auto key = pt.get_child_optional(attr);
-      if (!key) {
-        return defaultValue;
-      }
-
-      T value(defaultValue);
-      try {
-        value = boost::lexical_cast<T>(key->get_value<string>(os.str()));
-      } catch (boost::bad_lexical_cast&) { }
-      return value;
+  template <class T>
+  T getAttributeValue(const boost::property_tree::ptree& pt, const string& attr, const T& defaultValue)
+  {
+    ostringstream os;
+    os << defaultValue ;
+    auto key = pt.get_child_optional(attr);
+    if (!key) {
+      return defaultValue;
     }
+
+    T value(defaultValue);
+    try {
+      value = boost::lexical_cast<T>(key->get_value<string>(os.str()));
+    } catch (boost::bad_lexical_cast&) { }
+    return value;
+  }
 
   void write(const boost::property_tree::ptree& pt)
   {
     boost::property_tree::xml_writer_settings<char> settings(' ', 4);
     boost::property_tree::write_xml(cout, pt, settings);
   }
-}
 
-struct Book
-{
-  string title;
-  stl::StringVector authors;
-  pair<string, string> isbn; //(isbn, isbn13)
-  string publisher;
-  bool valid;
+  struct Book
+  {
+    string title;
+    stl::StringVector authors;
+    pair<string, string> isbn; //(isbn, isbn13)
+    string publisher;
+    bool valid;
 
-  bool operator<(const Book& other)
-    {
-      return isbn.second < other.isbn.second;
-    }
-
-  bool operator== (const Book& other)
-    {
-      return (isbn.second == other.isbn.second);
-    }
-
-  Book (const boost::property_tree::ptree& pt)
-    : valid(true)
-    {
-      isbn.first = getAttributeValue<string>(pt, "<xmlattr>.isbn", "");
-      isbn.second = getAttributeValue<string>(pt, "<xmlattr>.isbn13", "");
-      if (isbn.first.empty() && isbn.second.empty())
+    Book()
+      :valid(false)
       {
-        valid = false;
-        return;
+        
       }
 
-      title = pt.get<string>("TitleLong");
-      if (title.empty()) {
-        title = pt.get<string>("Title");
+    bool operator<(const Book& other)
+      {
+        return isbn.second < other.isbn.second;
       }
-      publisher = pt.get<string>("PublisherText");
-      string authorsText(pt.get<string>("AuthorsText"));
-      str::split(authors, authorsText, str::is_any_of(","), str::token_compress_on);
-      boost::for_each(authors,
-               [](string& s){
-                 str::trim(s);
-               });
-      boost::remove_erase(authors, "");
-    }
-};
+
+    bool operator== (const Book& other)
+      {
+        return (isbn.second == other.isbn.second);
+      }
+
+    size_t hash(const string& s)
+      {
+        try {
+          return boost::lexical_cast<size_t>(s);
+        } catch (boost::bad_lexical_cast&) {
+          return numeric_limits<size_t>::max();
+        }
+      }
+
+    bool equal(const string& first, const string& second) const
+      {
+        return first == second;
+      }
+  
+    Book (const boost::property_tree::ptree& pt)
+      : valid(true)
+      {
+        isbn.first = getAttributeValue<string>(pt, "<xmlattr>.isbn", "");
+        isbn.second = getAttributeValue<string>(pt, "<xmlattr>.isbn13", "");
+        if (isbn.first.empty() && isbn.second.empty())
+        {
+          valid = false;
+          return;
+        }
+
+        title = pt.get<string>("TitleLong");
+        if (title.empty()) {
+          title = pt.get<string>("Title");
+        }
+        publisher = pt.get<string>("PublisherText");
+        string authorsText(pt.get<string>("AuthorsText"));
+        str::split(authors, authorsText, str::is_any_of(","), str::token_compress_on);
+        boost::for_each(authors,
+                        [](string& s){
+                          str::trim(s);
+                        });
+        boost::remove_erase(authors, "");
+      }
+  };
+
+  typedef tbb::concurrent_hash_map<string, Book, Book> HashMap;
+  HashMap finalResults;
+}
 
 class Curl
 {
@@ -270,9 +294,13 @@ public:
                             Curl& c = curls[i];
                             c();
                             Curl::ResultReference& res = c.results();
-                            BOOST_FOREACH(auto& a, res)
+                            BOOST_FOREACH(auto& r, res)
                             {
-                              Book b(a.second);
+                              Book b(r.second);
+                              if (b.valid) {
+                                HashMap::accessor a;
+                                finalResults.insert(a, make_pair(b.isbn.second, b));
+                              }
                             }
                             if (!c.isDone()) {
                               int numPages = (c.numResults() / c.pageSize()) + 1;
@@ -285,13 +313,22 @@ public:
                           }
                         });
 
-      // tbb::parallel_for(tbb::blocked_range<size_t>(0, newCurls.size()),
-      //                   [&](const tbb::blocked_range<size_t>& range) {
-      //                     for(size_t i = range.begin(); i != range.end(); ++i) {
-      //                       Curl& c = newCurls[i];
-      //                       c();
-      //                     }
-      //                   });
+      tbb::parallel_for(tbb::blocked_range<size_t>(0, newCurls.size()),
+                        [&](const tbb::blocked_range<size_t>& range) {
+                          for(size_t i = range.begin(); i != range.end(); ++i) {
+                            Curl& c = newCurls[i];
+                            c();
+                            Curl::ResultReference& res = c.results();
+                            BOOST_FOREACH(auto& r, res)
+                            {
+                              Book b(r.second);
+                              if (b.valid) {
+                                HashMap::accessor a;
+                                finalResults.insert(a, make_pair(b.isbn.second, b));
+                              }
+                            }
+                          }
+                        });
 
     }
 
@@ -304,10 +341,15 @@ int main (void)
 {
   tbb::task_scheduler_init init;
   IsbnDb isbnDb;
-  // isbnDb.addIsbn("3540323430");
-  // isbnDb.addIsbn("0123820103");
-  // isbnDb.addTitle("Tarrasch");
+  isbnDb.addIsbn("3540323430");
+  isbnDb.addIsbn("0123820103");
+  isbnDb.addTitle("Tarrasch");
   isbnDb.addTitle("Chess Strategy");
   isbnDb.fetch();
+  for (auto iter = finalResults.begin(); iter != finalResults.end(); ++iter)
+  {
+    HashMap::value_type& value = *iter;
+    cout << value.second.title << endl;
+  }
   return 0;
 }
