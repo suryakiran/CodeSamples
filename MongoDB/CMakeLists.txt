@@ -3,6 +3,7 @@ Project(MongoDB)
 Set (dir_tmpl ${CMAKE_CURRENT_SOURCE_DIR}/@exeName@_files)
 
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
+Add_Definitions("-DBOOST_THREAD_USE_LIB=1")
 
 Set (MongoDBTargets)
 Find_Package(MongoDB)
@@ -29,11 +30,12 @@ ForEach (file ${SOURCES})
     )
 
   Target_Link_Libraries (${exeName} 
-    ${Boost_PROGRAM_OPTIONS_LIBRARIES}
-    ${Boost_REGEX_LIBRARIES}
-    ${Boost_FILESYSTEM_LIBRARIES}
-    ${Boost_SYSTEM_LIBRARIES}
-    ${Boost_THREAD_LIBRARIES}
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    ${Boost_REGEX_LIBRARY}
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
+    ${Boost_THREAD_LIBRARY}
+    ${Boost_DATETIME_LIBRARY}
     ${MONGODB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     )
