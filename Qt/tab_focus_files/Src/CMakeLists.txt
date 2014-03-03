@@ -14,16 +14,9 @@ Set (mainFile ${CMAKE_CURRENT_BINARY_DIR}/${exeName}_main.cxx)
 
 Execute_Python (
   FILE ${PY_COMMANDS_FILE}
-  ARGS -c to_camel_case ${
-  OUTPUT 
-Execute_Perl (
-  FILE ${PL_FILE_CASE_CONV}
-  ARGS
-  -i ${exeName}_window
-  -t camel_case
-  -d _
+  ARGS -c to_camel_case ${exeName}_window
   OUTPUT WindowName
-  )
+)
 
 Configure_File (
   ${main_cxx_in_file}
@@ -32,6 +25,7 @@ Configure_File (
   )
 
 Set (exeName qt-${exeName})
+
 Qt_Exe (
   NAME ${exeName}
   UI_DIR ${ui_dir}
@@ -43,12 +37,7 @@ Target_Link_Libraries (
   ${QT_MAIN_LIB}
   )
 
-Process_Perl_Template (
-  PERL_FILE ${PL_FILE_SAMPLES_EXE}
-  TEMPLATE ${CMAKE_SAMPLES_TMPL}
-  OUTPUT ${CMAKE_BINARY_DIR}/${exeName}
-  ARGS -e ${exeName} -d ${QT_MAIN_LIB_DIR}
-  )
+Configure_Executable_File (${PYTHON_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
 
 Set_Property (
   DIRECTORY ${QtSamplesDir} APPEND
