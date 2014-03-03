@@ -1,8 +1,11 @@
 #include <TabFocusWindow.hxx>
+#include <TabWidget.hxx>
 
 TabFocusWindow::TabFocusWindow (QWidget* parent)
   : Window (parent)
 {
+  TabWidget* tw = new TabWidget(this);
+  setCentralWidget(tw);
 }
 
 bool
