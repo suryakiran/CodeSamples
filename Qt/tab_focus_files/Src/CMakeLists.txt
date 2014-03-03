@@ -12,6 +12,10 @@ Set_Property (
 
 Set (mainFile ${CMAKE_CURRENT_BINARY_DIR}/${exeName}_main.cxx)
 
+Execute_Python (
+  FILE ${PY_COMMANDS_FILE}
+  ARGS -c to_camel_case ${
+  OUTPUT 
 Execute_Perl (
   FILE ${PL_FILE_CASE_CONV}
   ARGS
