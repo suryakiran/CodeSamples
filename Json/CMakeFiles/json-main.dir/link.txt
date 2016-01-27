@@ -1,1 +1,0 @@
-/usr/pic1/packages/gcc/bin/g++      CMakeFiles/json-main.dir/main.cxx.o  -o json-main -rdynamic -ljsoncpp 
