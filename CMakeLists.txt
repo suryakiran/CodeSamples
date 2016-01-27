@@ -1,6 +1,6 @@
 Project (CodeSamples)
 
-CMake_Minimum_Required (VERSION 2.8.4)
+CMake_Minimum_Required (VERSION 3.3.0)
 Set (EMACS_SERVER_NAME "CODE-SAMPLES")
 
 Include (${CMAKE_SOURCE_DIR}/CMake/Config.cmake)
@@ -69,6 +69,7 @@ OPTION (BUILD_ASIO "Build Asio Samples" FALSE)
 OPTION (BUILD_SAMPLES_DEBUGGING "Build Debugging Samples" FALSE)
 OPTION (BUILD_SAMPLES_BOOST "Build Boost Samples" FALSE)
 OPTION (BUILD_SAMPLES_YAML "Build Yaml Samples" FALSE)
+OPTION (BUILD_SAMPLES_JSON "Build Json Samples" FALSE)
 OPTION (BUILD_SAMPLES_REST "Build Rest Samples" FALSE)
 
 Add_Subdirectory_If (BUILD_SAMPLES_MULTI_INDEX Multi-Index)
@@ -103,6 +104,7 @@ Add_Subdirectory_If (BUILD_ASIO Asio)
 Add_Subdirectory_If (BUILD_SAMPLES_DEBUGGING Debug-Code)
 Add_Subdirectory_If (BUILD_SAMPLES_BOOST Boost)
 Add_Subdirectory_If (BUILD_SAMPLES_YAML Yaml)
+Add_Subdirectory_If (BUILD_SAMPLES_JSON Json)
 Add_Subdirectory_If (BUILD_SAMPLES_REST Rest)
 
 Find_File (
