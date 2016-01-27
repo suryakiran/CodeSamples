@@ -1,0 +1,2 @@
+/usr/pic1/Projects/SourceArea/CodeSamples/Json/CMakeFiles/json-main.dir
+/usr/pic1/Projects/SourceArea/CodeSamples/Json/CMakeFiles/json.dir
