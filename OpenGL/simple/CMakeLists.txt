@@ -10,4 +10,6 @@ Add_Executable (${exeName} ${cxx_files} ${moc_files} ${hxx_files})
 
 Target_Link_Libraries (${exeName} ${OPENGL_LIB})
 
+Configure_Executable_File (${PERL_IN_FILE} ${CMAKE_BINARY_DIR}/${exeName} @ONLY)
+
 List (APPEND OGLTargets ${exeName})

@@ -8,11 +8,11 @@ class SimpleWindow : public OpenGLWindow
     Q_OBJECT
 
 public:
-    SimpleWindow ();
+    SimpleWindow (QWindow* parent = nullptr);
     ~SimpleWindow();
 
-    void initialize() override;
-    void render() override;
+    virtual void initializeGL() override;
+    virtual void paintGL() override;
 };
 
 #endif
