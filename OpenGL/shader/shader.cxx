@@ -1,27 +1,27 @@
-#include "simple.hxx"
+#include "shader.hxx"
 #include <QtGui/QMatrix4x4>
 #include <iostream>
 using namespace std;
 
-SimpleWindow::SimpleWindow (QWindow* parent)
+ShaderWindow::ShaderWindow (QWindow* parent)
     :OpenGLWindow(parent)
 {
 }
 
-SimpleWindow::~SimpleWindow ()
+ShaderWindow::~ShaderWindow ()
 {
     teardownGL();
 }
 
 
 void
-SimpleWindow::initializeGL()
+ShaderWindow::initializeGL()
 {
     OpenGLWindow::initializeGL();
 }
 
 void
-SimpleWindow::paintGL()
+ShaderWindow::paintGL()
 {
     cout << BOOST_CURRENT_FUNCTION << endl;
     OpenGLWindow::paintGL();
@@ -30,7 +30,7 @@ SimpleWindow::paintGL()
 }
 
 void
-SimpleWindow::timedEventImp(QTimer* timer)
+ShaderWindow::timedEventImp(QTimer* timer)
 {
     cout << BOOST_CURRENT_FUNCTION << endl;
 }

@@ -1,15 +1,15 @@
-#ifndef SIMPLE_HXX_INCLUDED
-#define SIMPLE_HXX_INCLUDED
+#ifndef SHADER_HXX_INCLUDED
+#define SHADER_HXX_INCLUDED
 
 #include <openglwindow.hpp>
 
-class SimpleWindow : public OpenGLWindow
+class ShaderWindow : public OpenGLWindow
 {
     Q_OBJECT
 
 public:
-    SimpleWindow (QWindow* parent = nullptr);
-    ~SimpleWindow();
+    ShaderWindow (QWindow* parent = nullptr);
+    ~ShaderWindow();
 
     virtual void initializeGL() override;
     virtual void paintGL() override;

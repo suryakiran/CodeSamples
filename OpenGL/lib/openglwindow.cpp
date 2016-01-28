@@ -2,6 +2,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
+#include <QtCore/QTimer>
 
 #include <QtGui/QOpenGLContext>
 #include <QtGui/QOpenGLPaintDevice>
@@ -25,10 +26,24 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     setFormat(format);
     resize(QSize(800, 600));
 
+    m_timer = new QTimer(this);
+    connect (m_timer, SIGNAL (timeout()), this, SLOT(timedEvent()));
+
 }
-//! [1]
 
 OpenGLWindow::~OpenGLWindow()
+{
+    m_timer->stop();
+}
+
+void
+OpenGLWindow::timedEvent()
+{
+    timedEventImp(m_timer);
+}
+
+void
+OpenGLWindow::timedEventImp(QTimer* timer)
 {
 }
 
@@ -46,6 +61,7 @@ OpenGLWindow::paintGL()
 {
     
     glClear(GL_COLOR_BUFFER_BIT);
+    m_timer->start(1000);
 }
 
 void

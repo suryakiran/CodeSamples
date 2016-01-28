@@ -1,4 +1,4 @@
-Project(openglSimple)
+Project(openglShader)
 
 Get_Filename_Component(exeName ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 Set (exeName "ogl-${exeName}")

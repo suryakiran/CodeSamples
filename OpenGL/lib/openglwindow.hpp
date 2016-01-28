@@ -8,6 +8,7 @@ QT_BEGIN_NAMESPACE
 class QPainter;
 class QOpenGLContext;
 class QOpenGLPaintDevice;
+class QTimer;
 QT_END_NAMESPACE
 
 //! [1]
@@ -24,9 +25,17 @@ public:
     virtual void paintGL();
     virtual void teardownGL();
 
+
 protected:
     std::unique_ptr<QOpenGLFunctions_4_3_Core> gl;
     void printContextInformation();
+    QTimer* m_timer;
+
+protected:
+    virtual void timedEventImp(QTimer* timer);
+
+private Q_SLOTS:
+    void timedEvent();
 };
 //! [1]
 
