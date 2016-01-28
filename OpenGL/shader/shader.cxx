@@ -18,6 +18,8 @@ void
 ShaderWindow::initializeGL()
 {
     OpenGLWindow::initializeGL();
+    shaderProgram()->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl");
+    shaderProgram()->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl");
 }
 
 void

@@ -4,6 +4,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QTimer>
 
+#include <QtGui/QOpenGLShader>
 #include <QtGui/QOpenGLContext>
 #include <QtGui/QOpenGLPaintDevice>
 #include <QtGui/QPainter>
@@ -29,6 +30,7 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     m_timer = new QTimer(this);
     connect (m_timer, SIGNAL (timeout()), this, SLOT(timedEvent()));
 
+    m_shaderProgram = new QOpenGLShaderProgram(this);
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -61,6 +63,9 @@ OpenGLWindow::paintGL()
 {
     
     glClear(GL_COLOR_BUFFER_BIT);
+    if (hasShaders()) {
+        m_shaderProgram->bind();
+    }
     m_timer->start(1000);
 }
 
@@ -102,4 +107,10 @@ OpenGLWindow::printContextInformation()
  
     // qPrintable() will print our QString w/o quotes around it.
     qDebug() << qPrintable(glType) << qPrintable(glVersion) << "(" << qPrintable(glProfile) << ")";
+}
+
+void
+OpenGLWindow::addShaderToProgram(QOpenGLShader* shader)
+{
+    m_shaderProgram->addShader(shader);
 }
