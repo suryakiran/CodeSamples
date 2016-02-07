@@ -16,12 +16,12 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     : QOpenGLWindow(QOpenGLWindow::NoPartialUpdate, parent)
 {
     setSurfaceType(QWindow::OpenGLSurface);
-    gl.reset(new QOpenGLFunctions_4_3_Core);
+    gl.reset(new QOpenGLFunctions_4_5_Core);
     
     QSurfaceFormat format;
     format.setRenderableType(QSurfaceFormat::OpenGL);
     format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setVersion(4,3);
+    format.setVersion(4,5);
  
     // Set the window up
     setFormat(format);

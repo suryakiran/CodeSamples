@@ -1,7 +1,7 @@
 #include <QtGui/QOpenGLWindow>
 #include <QtGui/QOpenGLFunctions>
 #include <boost/current_function.hpp>
-#include <QtGui/QOpenGLFunctions_4_3_Core>
+#include <QtGui/QOpenGLFunctions_4_5_Core>
 #include <QtGui/QOpenGLShaderProgram>
 #include <memory>
 
@@ -43,7 +43,7 @@ protected:
             
 
 protected:
-    std::unique_ptr<QOpenGLFunctions_4_3_Core> gl;
+    std::unique_ptr<QOpenGLFunctions_4_5_Core> gl;
     void printContextInformation();
     QTimer* m_timer;
     QOpenGLShaderProgram* m_shaderProgram = nullptr;

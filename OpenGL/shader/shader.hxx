@@ -2,6 +2,7 @@
 #define SHADER_HXX_INCLUDED
 
 #include <openglwindow.hpp>
+#include <QElapsedTimer>
 
 class ShaderWindow : public OpenGLWindow
 {
@@ -16,6 +17,11 @@ public:
 
 protected:
     virtual void timedEventImp(QTimer* timer) override;
+
+private:
+    GLuint mVao;
+    std::vector<GLfloat> mBackground;
+    QElapsedTimer mElapsedTimer;
 };
 
 #endif
