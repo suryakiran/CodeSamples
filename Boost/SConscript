@@ -1,0 +1,14 @@
+import glob,os,sys
+
+Import('env')
+
+env = env.Clone()
+# print env.Dump('CPPPATH')
+# help(env)
+
+cxx_files = glob.glob('*.cxx')
+
+for f in cxx_files:
+    name,ext = os.path.splitext(f)
+    env.Program(target = name, source = [f])
+    # env.Program(name, 
