@@ -1,2 +1,5 @@
 .*sw*
 #*
+
+.sconsign.dblite
+*.o
