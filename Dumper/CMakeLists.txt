@@ -10,6 +10,7 @@ pkg_check_modules(Yaml REQUIRED yaml-cpp)
 
 Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 Include_Directories (${Json_INCLUDE_DIRS} ${Yaml_INCLUDE_DIRS} ${Qt5Core_DIR})
+Link_Directories (${Json_LIBRARY_DIRS})
 
 Add_Executable(
   ${exe_file}
