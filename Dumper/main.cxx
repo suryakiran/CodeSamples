@@ -10,7 +10,7 @@
 
 #include <boost/assign.hpp>
 
-#include "dumper.hxx"
+#include "prettyprint.hxx"
 
 using namespace boost::assign;
 
@@ -38,7 +38,7 @@ int main (void)
     std::cout << "QVariant:" << std::endl;
     QVariantList var;
     var << 3.4 << 4.5 << 5.6 << 6.7;
-    DumpUtils::dump(var);
+    PrettyPrint::print(var);
 
     std::cout << "" << std::endl;
     std::cout << "QVariantMap:" << std::endl;
@@ -50,32 +50,31 @@ int main (void)
     submap["3"] = "Three";
     map["Kiran"] = submap;
     map["Gullapalli"] = 1;
-    DumpUtils::dump(map);
+    PrettyPrint::print(map);
 
     
     std::cout << "" << std::endl;
     std::cout << "std::list<std::string>:" << std::endl;
     std::list<std::string> ls = {"Surya", "kiran", "Gullapalli"};
-    DumpUtils::dump(ls);
+    PrettyPrint::print(ls);
 
     std::cout << "" << std::endl;
     std::set<std::string> ss;
     std::cout << "std::set<std::string>: " << std::endl;
     insert(ss) ("Surya") ("Kiran") ("Gullapalli");
-    DumpUtils::dump(ss);
+    PrettyPrint::print(ss);
 
     std::cout << "" << std::endl;
     std::cout << "std::vector<int>:" << std::endl;
     std::vector<int> vi = {1, 2, 3, 4, 5};
-    DumpUtils::dump(vi);
+    PrettyPrint::print(vi);
 
     std::cout << "" << std::endl;
     std::cout << "std::deque<int>:" << std::endl;
     std::deque<int> di;
     di += 1,2,3,4,5;
-    DumpUtils::dump(di);
+    PrettyPrint::print(di);
 
-    typedef std::vector<int> Vector;
     typedef std::map<std::string, int> Map;
     std::cout << "" << std::endl;
     std::cout << "std::map<std::string, int>:" << std::endl;
@@ -83,7 +82,7 @@ int main (void)
     sm["surya"] = 1;
     sm["kiran"] = 2;
     sm["gullapalli"] = 3;
-    DumpUtils::dump(sm);
+    PrettyPrint::print(sm);
 
     std::cout << "----- END -----"  << std::endl;
 }

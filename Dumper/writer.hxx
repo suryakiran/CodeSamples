@@ -23,9 +23,6 @@ struct VariantType {};
 struct SequenceType {};
 struct MapType {};
 
-#define DECLARE_SEQUENCE(name)                                          \
-    template <typename Type, typename Alloc> struct IsContainer <name<Type, Alloc>> : public std::true_type {}
-
 template <typename Type>
 struct Writer {};
 
@@ -76,18 +73,6 @@ struct Writer <MapType>
 };
 
 template <typename Type>
-struct IsContainer : public std::false_type {};
-
-DECLARE_SEQUENCE(std::vector);
-DECLARE_SEQUENCE(std::list);
-DECLARE_SEQUENCE(std::map);
-DECLARE_SEQUENCE(std::deque);
-DECLARE_SEQUENCE(std::set);
-DECLARE_SEQUENCE(std::multimap);
-DECLARE_SEQUENCE(std::multiset);
-// DECLARE_SEQUENCE(std::unordered_map);
-
-template <typename Type>
 struct CheckMap : public std::conditional<has_type_mapped_type<Type>::value,
                                           std::true_type,
                                           std::false_type>::type
@@ -127,13 +112,10 @@ public:
     void write (const QVariant& data, std::ostream& os);
 };
 
+template <typename Type>
 struct IfTrue
 {
-    template <typename Type>
-    struct apply
-    {
-        static const bool value = Type::value;
-    };
+    static const bool value = Type::value;
 };
 
 template <typename Type>
@@ -147,7 +129,7 @@ struct GetVarType
 
     typedef typename mpl::find_if <
         checks,
-        typename IfTrue::apply<mpl::_1>
+        IfTrue<mpl::_1>
         >::type iterator_type;
 
     typedef typename mpl::deref<iterator_type>::type FoundType;
