@@ -2,13 +2,6 @@
 #define pretty_print_hxx_INCLUDED
 
 #include <ostream>
-#include <string>
-#include <typeinfo>
-#include <boost/utility/enable_if.hpp>
-#include <boost/mpl/eval_if.hpp>
-
-namespace mpl = boost::mpl;
-
 #include "writer.hxx"
 
 namespace PrettyPrint {

@@ -6,7 +6,7 @@
 void
 JsonWriter::writeJsonRoot(std::ostream& os, const Json::Value& root)
 {
-    Json::StyledStreamWriter writer;
+    Json::StyledStreamWriter writer("    ");
     writer.write(os, root);
 }
 
