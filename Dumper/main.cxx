@@ -7,6 +7,7 @@
 #include <vector>
 #include <set>
 #include <type_traits>
+#include <unordered_map>
 
 #include <boost/assign.hpp>
 
@@ -83,6 +84,15 @@ int main (void)
     sm["kiran"] = 2;
     sm["gullapalli"] = 3;
     PrettyPrint::print(sm);
+
+    typedef std::unordered_map <std::string, std::string> Umap;
+    std::cout << "" << std::endl;
+    std::cout << "Unordered map" << std::endl;
+    Umap um;
+    um["first name"] = "surya";
+    um["middle name"] = "kiran";
+    um["last name"] = "gullapalli";
+    PrettyPrint::print(um);
 
     std::cout << "----- END -----"  << std::endl;
 }
