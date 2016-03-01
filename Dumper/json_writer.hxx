@@ -4,7 +4,7 @@
 #include <json/value.h>
 #include <QtCore/QVariant>
 #include <iostream>
-#include <sstream>
+#include "stream.hxx"
 
 struct JsonWriter
 {
@@ -27,9 +27,7 @@ public:
     writeMap (const MapType& data, std::ostream& os) {
         Json::Value root;
         for (auto i: data) {
-            std::ostringstream str;
-            str << i.first;
-            root [str.str()] = Json::Value(i.second) ;
+            root [StreamUtils::stream(i.first)] = Json::Value(i.second) ;
         }
         writeJsonRoot(os, root);
     }
