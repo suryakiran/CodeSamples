@@ -8,16 +8,22 @@
 #include <boost/tti/has_member_function.hpp>
 #include <boost/type_traits/has_operator.hpp>
 #include <iostream>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/find_if.hpp>
+
+namespace mpl = boost::mpl;
 
 BOOST_TTI_HAS_TYPE(iterator)
 BOOST_TTI_HAS_TYPE(const_iterator)
 BOOST_TTI_HAS_MEMBER_FUNCTION(begin)
 BOOST_TTI_HAS_MEMBER_FUNCTION(end)
+BOOST_TTI_HAS_TYPE(mapped_type)
 
 struct VariantType {};
 struct SequenceType {};
+struct MapType {};
 
-#define DEFINE_CONTAINER(name) \
+#define DECLARE_SEQUENCE(name)                                          \
     template <typename Type, typename Alloc> struct IsContainer <name<Type, Alloc>> : public std::true_type {}
 
 template <typename Type>
@@ -53,26 +59,60 @@ struct Writer <SequenceType>
         }
 };
 
+template <>
+struct Writer <MapType>
+{
+    template <typename Sequence>
+    static void writeJson (const Sequence& var, std::ostream& os)
+        {
+            JsonWriter json;
+            json.writeMap(var, os);
+        }
+
+    template <typename Sequence>
+    static void writeYaml (const Sequence& var, std::ostream& os)
+        {
+        }
+};
+
 template <typename Type>
 struct IsContainer : public std::false_type {};
 
-DEFINE_CONTAINER(std::vector);
-DEFINE_CONTAINER(std::list);
-DEFINE_CONTAINER(std::map);
-DEFINE_CONTAINER(std::deque);
-DEFINE_CONTAINER(std::set);
-DEFINE_CONTAINER(std::multimap);
-DEFINE_CONTAINER(std::multiset);
-// DEFINE_CONTAINER(std::unordered_map);
+DECLARE_SEQUENCE(std::vector);
+DECLARE_SEQUENCE(std::list);
+DECLARE_SEQUENCE(std::map);
+DECLARE_SEQUENCE(std::deque);
+DECLARE_SEQUENCE(std::set);
+DECLARE_SEQUENCE(std::multimap);
+DECLARE_SEQUENCE(std::multiset);
+// DECLARE_SEQUENCE(std::unordered_map);
 
 template <typename Type>
-struct IsSequence
+struct CheckMap : public std::conditional<has_type_mapped_type<Type>::value,
+                                          std::true_type,
+                                          std::false_type>::type
+{
+    typedef MapType type;
+};
+
+template <typename Type>
+struct CheckSequence
 {
     static const bool value = has_type_const_iterator<Type>::value &&
         boost::mpl::and_<
         has_member_function_begin<typename Type::const_iterator (Type::*)() const>
         , has_member_function_end<typename Type::const_iterator (Type::*)() const>
         >::value;
+    typedef SequenceType type;
+};
+
+template <typename Type>
+struct CheckVariant
+    : public std::conditional<std::is_convertible <Type, QVariant>::value,
+                              std::true_type,
+                              std::false_type>::type
+{
+    typedef VariantType type;
 };
 
 typedef boost::add_reference<std::ostream>::type StreamRef;
@@ -85,6 +125,34 @@ struct YamlWriter
 public:
     YamlWriter () {}
     void write (const QVariant& data, std::ostream& os);
+};
+
+struct IfTrue
+{
+    template <typename Type>
+    struct apply
+    {
+        static const bool value = Type::value;
+    };
+};
+
+template <typename Type>
+struct GetVarType
+{
+    typedef mpl::vector<
+        CheckVariant<Type>
+        , CheckMap<Type>
+        , CheckSequence<Type>
+        > checks;
+
+    typedef typename mpl::find_if <
+        checks,
+        typename IfTrue::apply<mpl::_1>
+        >::type iterator_type;
+
+    typedef typename mpl::deref<iterator_type>::type FoundType;
+    typedef typename FoundType::type type;
+        
 };
     
 #endif /* writer_hxx_INCLUDED */

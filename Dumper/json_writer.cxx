@@ -4,11 +4,9 @@
 #include <typeinfo>
 
 void
-JsonWriter::write (const QVariant& var, std::ostream& os)
+JsonWriter::writeJsonRoot(std::ostream& os, const Json::Value& root)
 {
     Json::StyledStreamWriter writer;
-    Json::Value root;
-    toJson (var, root);
     writer.write(os, root);
 }
 
@@ -21,7 +19,9 @@ JsonWriter::toJson(const QString& var, Json::Value& root)
 void
 JsonWriter::writeVariant (const QVariant& var, std::ostream& os)
 {
-    write(var, os);
+    Json::Value root;
+    toJson(var, root);
+    writeJsonRoot(os, root);
 }
 
 void

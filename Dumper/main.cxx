@@ -32,6 +32,8 @@ Q_DECLARE_METATYPE(Test)
 
 int main (void)
 {
+    std::cout << "----- BEGIN -----"  << std::endl;
+
     std::cout << "Is Test Streamable: " << IsStreamable<Test>::value << std::endl;
     std::cout << "QVariant:" << std::endl;
     QVariantList var;
@@ -50,23 +52,38 @@ int main (void)
     map["Gullapalli"] = 1;
     DumpUtils::dump(map);
 
+    
     std::cout << "" << std::endl;
-    // std::cout << "std::list<std::string>:" << std::endl;
-    // std::list<std::string> ls = {"Surya", "kiran", "Gullapalli"};
-    // DumpUtils::dump(ls);
+    std::cout << "std::list<std::string>:" << std::endl;
+    std::list<std::string> ls = {"Surya", "kiran", "Gullapalli"};
+    DumpUtils::dump(ls);
 
-    // std::cout << "" << std::endl;
-    
-    // std::set<std::string> ss;
-    // std::cout << "std::set<std::string>: " << std::endl;
-    // insert(ss) ("Surya") ("Kiran") ("Gullapalli");
-    // DumpUtils::dump(ss);
+    std::cout << "" << std::endl;
+    std::set<std::string> ss;
+    std::cout << "std::set<std::string>: " << std::endl;
+    insert(ss) ("Surya") ("Kiran") ("Gullapalli");
+    DumpUtils::dump(ss);
 
-    // std::cout << "" << std::endl;
-    
+    std::cout << "" << std::endl;
     std::cout << "std::vector<int>:" << std::endl;
     std::vector<int> vi = {1, 2, 3, 4, 5};
     DumpUtils::dump(vi);
 
-    std::cout << has_type_const_iterator<QVariant>::value << std::endl;
+    std::cout << "" << std::endl;
+    std::cout << "std::deque<int>:" << std::endl;
+    std::deque<int> di;
+    di += 1,2,3,4,5;
+    DumpUtils::dump(di);
+
+    typedef std::vector<int> Vector;
+    typedef std::map<std::string, int> Map;
+    std::cout << "" << std::endl;
+    std::cout << "std::map<std::string, int>:" << std::endl;
+    std::map<std::string, int> sm;
+    sm["surya"] = 1;
+    sm["kiran"] = 2;
+    sm["gullapalli"] = 3;
+    DumpUtils::dump(sm);
+
+    std::cout << "----- END -----"  << std::endl;
 }

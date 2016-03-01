@@ -33,12 +33,14 @@ namespace DumpUtils {
     template <typename T>
     void dump (const T& var, std::ostream& os = std::cout)
     {
-        typedef typename mpl::eval_if <
-            std::is_convertible<T, QVariant>,
-            mpl::identity<VariantType>,
-            mpl::identity<SequenceType>
-            >::type VarType;
+        typedef typename GetVarType<T>::type VarType;
         Writer <VarType>::writeJson(var, os);
+        // typedef typename mpl::eval_if <
+        //     std::is_convertible<T, QVariant>,
+        //     mpl::identity<VariantType>,
+        //     mpl::identity<SequenceType>
+        //     >::type VarType;
+        // Writer <VarType>::writeJson(var, os);
     }
 }
 
