@@ -4,6 +4,7 @@
 #include <QtCore/QVariant>
 #include <sstream>
 #include "json_writer.hxx"
+#include "yamlwriter.hxx"
 #include <boost/tti/has_type.hpp>
 #include <boost/tti/has_member_function.hpp>
 #include <boost/type_traits/has_operator.hpp>
@@ -37,6 +38,8 @@ struct Writer <VariantType>
 
     static void writeYaml (const QVariant& var, std::ostream& os)
         {
+            YamlWriter yaml;
+            yaml.writeVariant(var, os);
         }
 };
 
@@ -53,6 +56,8 @@ struct Writer <SequenceType>
     template <typename Sequence>
     static void writeYaml (const Sequence& var, std::ostream& os)
         {
+            YamlWriter yaml;
+            yaml.writeSequence(var, os);
         }
 };
 
@@ -69,6 +74,8 @@ struct Writer <MapType>
     template <typename Sequence>
     static void writeYaml (const Sequence& var, std::ostream& os)
         {
+            YamlWriter yaml;
+            yaml.writeMap(var, os);
         }
 };
 
@@ -104,13 +111,6 @@ typedef boost::add_reference<std::ostream>::type StreamRef;
 
 template <typename T>
 struct IsStreamable : public std::integral_constant <bool, boost::has_left_shift<StreamRef, T, StreamRef>::value> {};
-
-struct YamlWriter
-{
-public:
-    YamlWriter () {}
-    void write (const QVariant& data, std::ostream& os);
-};
 
 template <typename Type>
 struct IfTrue

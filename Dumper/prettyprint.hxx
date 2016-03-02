@@ -9,7 +9,7 @@ namespace PrettyPrint {
     void print (const T& var, std::ostream& os = std::cout)
     {
         typedef typename GetVarType<T>::type VarType;
-        Writer <VarType>::writeJson(var, os);
+        Writer <VarType>::writeYaml(var, os);
     }
 }
 
