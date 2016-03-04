@@ -12,7 +12,7 @@
 #include <boost/assign.hpp>
 
 #include "prettyprint.hxx"
-
+#include <yaml-cpp/emitter.h>
 using namespace boost::assign;
 
 struct Test
@@ -22,6 +22,12 @@ struct Test
     int i;
 
 };
+
+YAML::Emitter& operator<< (YAML::Emitter& emitter, const Test& t)
+{
+    emitter << t.i;
+    return emitter;
+}
 
 std::ostream&
 operator<< (std::ostream& os, const Test& test){
@@ -51,6 +57,7 @@ int main (void)
     submap["3"] = "Three";
     map["Kiran"] = submap;
     map["Gullapalli"] = 1;
+    map["other"] = QVariant::fromValue(Test(234));
     PrettyPrint::print(map);
 
     
@@ -93,6 +100,6 @@ int main (void)
     um["middle name"] = "kiran";
     um["last name"] = "gullapalli";
     PrettyPrint::print(um);
-
+ 
     std::cout << "----- END -----"  << std::endl;
 }

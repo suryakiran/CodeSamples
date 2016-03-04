@@ -51,6 +51,8 @@ YAML::Emitter& operator<< (YAML::Emitter& emitter, const QVariant& variant)
     case QVariant::Int:
         emitter << variant.toInt();
         break;
+    case QVariant::UserType:
+        break;
     default:
         break;
     }

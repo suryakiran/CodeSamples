@@ -15,7 +15,7 @@ public:
     template <typename Sequence>
     void writeSequence (const Sequence& data, std::ostream& os) {
         YAML::Emitter emitter (os);
-        emitter << YAML::Flow << YAML::BeginSeq;
+        emitter << YAML::BeginSeq;
         for (auto i: data) {
             emitter << i;
         }
@@ -25,12 +25,12 @@ public:
     template <typename MapType>
     void writeMap (const MapType& data, std::ostream& os) {
         YAML::Emitter emitter (os);
-        emitter << YAML::Flow << YAML::BeginMap;
+        emitter << YAML::Block << YAML::BeginMap ;
         for (auto i: data) {
             emitter << YAML::Key << i.first;
             emitter << YAML::Value << i.second;
         }
-        emitter << YAML::EndMap << YAML::Newline ;
+        emitter << YAML::Newline << YAML::EndMap;
     }
 };
 
