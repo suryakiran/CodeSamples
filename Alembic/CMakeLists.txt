@@ -3,18 +3,14 @@ Project(Alembic)
 File (GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx)
 
 # Include_Directories (${GenericDir}/Include)
-Find_Package(HDF5 REQUIRED)
+# Find_Package(HDF5 REQUIRED)
 Find_Package(Alembic)
 Find_Package(PkgConfig REQUIRED)
-pkg_check_modules(Yaml REQUIRED yaml-cpp)
-pkg_check_modules(Ilm REQUIRED IlmBase)
-
-message (${Ilm_INCLUDE_DIRS})
-
+# pkg_check_modules(Yaml REQUIRED yaml-cpp)
+pkg_check_modules(Ilm REQUIRED OpenEXR)
 
 Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 Include_Directories (${Yaml_INCLUDE_DIRS} ${ALEMBIC_INCLUDE_DIR} ${Ilm_INCLUDE_DIRS})
-Link_Directories (${Ilm_LIBRARY_DIRS})
 
 message (${CMAKE_CXX_FLAGS})
 ForEach (file ${SOURCES})
@@ -31,9 +27,9 @@ ForEach (file ${SOURCES})
 
   Target_Link_Libraries (
     ${exeName}
-    ${Yaml_LIBRARIES}
+    # ${Yaml_LIBRARIES}
+    Half Iex
     ${ALEMBIC_LIBRARIES}
-    ${Ilm_LIBRARIES}
     )
 
   List (APPEND ALEMBICTargets ${exeName})

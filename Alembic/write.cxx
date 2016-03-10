@@ -9,11 +9,11 @@ int main (void)
 {
     {
         std::cout << "Writing ogawa" << std::endl;
-        Alembic::AbcGeom::OArchive outArchive (Alembic::AbcCoreOgawa::WriteArchive(), "test-ogawa.abc");
+        Alembic::Abc::OArchive outArchive (Alembic::AbcCoreOgawa::WriteArchive(), "test-ogawa.abc");
     }
     {
         std::cout << "Writing hdf5" << std::endl;
-        Alembic::AbcGeom::OArchive outArchive (Alembic::AbcCoreHDF5::WriteArchive(), "test-hdf5.abc");
+        Alembic::Abc::OArchive outArchive (Alembic::AbcCoreHDF5::WriteArchive(), "test-hdf5.abc");
     }
 
     return 0;
