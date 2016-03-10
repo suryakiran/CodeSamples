@@ -27,7 +27,8 @@ struct header {
 
 int main(void)
 {
-    FILE *fp = fopen("/usr/pic1/sandbox/abc/cube.abc", "r");
+    // FILE *fp = fopen("/usr/pic1/sandbox/abc/cube.abc", "r");
+    FILE *fp = fopen("/usr/pic1/downloads/test-hdf5.abc", "r");
     header h;
     std::cout << "Size is: " << sizeof(header) << std::endl;
     fread (&h, sizeof(header), 1, fp);
@@ -36,6 +37,9 @@ int main(void)
     } else {
         char buf[37];
         uuid_unparse(h.uuid, buf);
+        std::cout << "Magic: " << h.magic << std::endl;
+        std::cout << "Version: " << h.version << std::endl;
+        std::cout << "Reserved: " << h.reserved << std::endl;
         std::cout << "UUid is " << buf << std::endl;
     }
 
@@ -43,9 +47,9 @@ int main(void)
     boost::uuids::uuid u;
     ::memcpy(&u, h.uuid, 16);
 
-    for (auto i: u) {
-        std::cout << i << std::endl;
-    }
+    // for (auto i: u) {
+        // std::cout << i << std::endl;
+    // }
 
     std::cout << "uint16_t: " << sizeof(uint16_t) << std::endl;
     std::cout << "uuid_t: " << sizeof(uuid_t) << std::endl;
