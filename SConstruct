@@ -12,5 +12,6 @@ env.Append(
         '/usr/local/boost/1.60.0/lib',
     ],
 )
+
 for d in subdirs:
-    SConscript(os.path.join(d, 'SConscript'), exports = ['env'])
+    SConscript(os.path.join(d, 'SConscript'), variant_dir = 'build', exports = ['env'])
