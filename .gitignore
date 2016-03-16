@@ -1,5 +1,9 @@
 .*sw*
 #*
-
+.waf*
+build
+waf
+*.pyc
+.lock-waf*
 .sconsign.dblite
 *.o

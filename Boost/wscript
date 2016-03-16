@@ -1,0 +1,12 @@
+from waflib.Configure import conf
+import utils
+import os, sys, re
+
+def configure(ctx):
+    pass
+
+def build(bld):
+    cxx_files = utils.getCxxFiles(bld)
+    for f in cxx_files:
+        name,ext=os.path.splitext(f)
+        bld.program(source = [f], target = name, use = ['boost', 'parse_args'])

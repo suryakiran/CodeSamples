@@ -1,5 +1,6 @@
 #include <ParseArgs.hxx>
 #include <boost/program_options.hpp>
+#include <iostream>
 using namespace boost::program_options ;
 
 const Args&

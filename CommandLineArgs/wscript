@@ -1,0 +1,14 @@
+from waflib.Configure import conf
+import utils
+import os, sys, re
+
+def configure(ctx):
+    pass
+
+def build(bld):
+    bld.env.append_value('INCLUDES', [bld.path.abspath()])
+    cxx_files = utils.getCxxFiles(bld)
+    hxx_files = utils.getHxxFiles(bld)
+    bld.shlib(
+        source = cxx_files, target = 'parse_args', use = ['boost']
+    )
