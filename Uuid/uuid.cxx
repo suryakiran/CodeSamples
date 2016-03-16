@@ -2,6 +2,7 @@
 #include <uuid/uuid.h>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/string_generator.hpp>
 #include <cstring>
 
 #define PDI_MAGIC_METADATA 0x7E20
@@ -60,6 +61,12 @@ int main(void)
     std::cout << "Version: " << u.version() << std::endl;
     std::cout << u << std::endl;
     std::cout << "Hello uuid" << std::endl;
+
+    boost::uuids::string_generator gen;
+    boost::uuids::uuid u1 = gen("{16fe7483-905c-ce7a-8567-0e43e4678877}");
+    
+    std::cout << "Size: " << u1.size() << std::endl;
+    std::cout << "Variant: " << u1.variant() << std::endl;
+    std::cout << "Version: " << u1.version() << std::endl;
+    std::cout << u1 << std::endl;
 }
-
-
